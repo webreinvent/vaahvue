@@ -3,9 +3,7 @@
     <b-field :label="label"
              :labelPosition="labelPosition">
         <b-input type="text"
-                 ref="VvText"
-                 :value="slug"
-                 :type="type"
+                 :value="content"
                  :size="size"
                  :class="custom_class"
                  :placeholder="placeholder"
@@ -55,8 +53,6 @@
         {
             let obj = {
 
-                slug: null
-
             };
 
             return obj;
@@ -66,9 +62,6 @@
 
         },
         watch: {
-            content: function (newVal, oldVal) {
-                this.slug = this.$vaah.strToSlug(newVal);
-            }
         },
         mounted() {
             //----------------------------------------------------
@@ -83,3 +76,4 @@
         },
     }
 </script>
+

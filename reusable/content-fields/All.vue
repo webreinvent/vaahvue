@@ -1,7 +1,9 @@
 <template>
     <div v-if="field_slug">
 
-        <template v-if="field_slug === 'text'">
+        <template v-if="field_slug === 'text' || field_slug === 'slug'
+        || field_slug === 'seo-title' || field_slug === 'seo-meta-keywords'
+        ">
             <vv-text :content="value"
                      :type="type"
                      :size="size"
@@ -30,39 +32,6 @@
                      @onBlur="emitOnBlur"
                      @onFocus="emitOnFocus" >
             </vv-editor>
-        </template>
-
-        <template v-if="field_slug === 'slug'">
-            <vv-slug :content="value"
-                     :type="type"
-                     :size="size"
-                     :class="custom_class"
-                     :label="label"
-                     :labelPosition="labelPosition"
-                     :placeholder="placeholder"
-                     :ref="field_slug"
-                     @input="emitOnInput"
-                     @onChange="emitOnChange"
-                     @onBlur="emitOnBlur"
-                     @onFocus="emitOnFocus" >
-            </vv-slug>
-        </template>
-
-
-        <template v-if="field_slug === 'seo-title'">
-            <vv-slug :content="value"
-                     :type="type"
-                     :size="size"
-                     :class="custom_class"
-                     :label="label"
-                     :labelPosition="labelPosition"
-                     :placeholder="placeholder"
-                     :ref="field_slug"
-                     @input="emitOnInput"
-                     @onChange="emitOnChange"
-                     @onBlur="emitOnBlur"
-                     @onFocus="emitOnFocus" >
-            </vv-slug>
         </template>
 
 

@@ -3,7 +3,6 @@
     <b-field :label="label"
              :labelPosition="labelPosition">
         <b-input type="text"
-                 ref="VvText"
                  :value="content"
                  :size="size"
                  :class="custom_class"
