@@ -3,9 +3,7 @@
     <b-field :label="label"
              :labelPosition="labelPosition">
         <b-input type="textarea"
-                 ref="VvText"
                  :value="content"
-                 :type="type"
                  :size="size"
                  :class="custom_class"
                  :placeholder="placeholder"

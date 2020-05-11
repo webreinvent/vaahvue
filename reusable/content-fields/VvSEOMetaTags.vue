@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <h5 class="title is-5">Facebook Card</h5>
+        <h5 class="title is-5">SEO Meta Tags</h5>
         <b-field  v-for="(item, index) in list"
                   :label="list[index].name"
                   :message="list[index].message"
@@ -60,24 +60,22 @@
             let obj = {
 
                 list: {
-                    "og_title":{
-                        name: "og:title",
+                    "seo_title":{
+                        name: "SEO Title",
                         type: 'text',
-                        message: "Title of content (max 70 characters).",
                         maxlength: 70,
                         content: null
                     },
-                    "og_description":{
-                        name: "og:description",
+                    "seo_description":{
+                        name: "SEO Meta Description",
                         type: 'textarea',
                         message: "Description of content (maximum 200 characters)",
                         maxlength: 200,
                         content: null
                     },
-                    "og_image":{
-                        name: "og:image",
-                        type: 'text',
-                        message: "URL of image to use in the card. Images must be less than 5MB in size. JPG, PNG, WEBP and GIF formats are supported.",
+                    "seo_keywords":{
+                        name: "SEO Meta Keywords",
+                        type: 'textarea',
                         maxlength: 200,
                         content: null
                     }
@@ -99,7 +97,6 @@
             {
                 this.list = this.content;
             }
-            console.log('--->this.list', this.list);
             //----------------------------------------------------
         },
         methods: {

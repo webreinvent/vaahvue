@@ -1,34 +1,285 @@
 <template>
-    <div>
-        Input
+
+    <div :class="custom_class">
+
+        <div class="level">
+
+            <div class="level-left">
+                <div class="filepond">
+                    <file-pond
+                        :name="file_input_name"
+                        :ref="uid"
+                        :id="uid"
+                        :maxFileSize="max_size"
+                        :label-idle="label"
+                        :allow-multiple="allow_multiple"
+                        allowImageEdit="true"
+                        allowImageCrop="true"
+                        :instantUpload="instant_upload"
+                        :imageCropAspectRatio="aspect_ratio"
+                        :accepted-file-types="allowed_types"
+                        :onprocessfile="onFileProcessed"
+                        v-bind:files="files"
+                        v-on:init="handleFilePondInit()">
+                    </file-pond>
+
+                    <p class="help">Maximum size allowed is {{max_size}}.
+                        <span v-if="show_allowed_types">File Types: {{allowed_types}}</span>
+                    </p>
+                </div>
+            </div>
+
+            <div class="level-right" v-if="uploaded_files">
+                <div v-for="(file, index) in uploaded_files"
+                     :key="index">
+                    <div class="level-item">
+                        <div >
+                            <img style="max-height: 100px;" :src="app_url+'/'+file">
+                        </div>
+                    </div>
+                    <div class="level-item">
+
+                        <b-field >
+
+                            <p class="control">
+                                <b-tooltip label="Open Image" type="is-dark">
+                                    <b-button tag="a" :href="app_url+'/'+file"
+                                              target="_blank"
+                                              icon-left="external-link-alt"></b-button>
+                                </b-tooltip>
+                            </p>
+
+                            <p class="control">
+                                <b-tooltip label="Remove File" type="is-dark">
+                                    <b-button type="is-danger" @click="removeFile(index)">Remove</b-button>
+                                </b-tooltip>
+                            </p>
+
+                        </b-field>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+        </div>
+
     </div>
+
+
 </template>
 
 <script>
+    import {VaahHelper as Vaah} from "../../../vaahvue/helpers/VaahHelper";
 
     export default {
+        name: "VvImageGroup",
+        props: {
+            content: {
+                type: Array,
+                default: function () {
+                    return null
+                }
+            },
+            upload_url: {
+                type: String,
+                default: null
+            },
+            folder_path: {
+                type: String,
+                default: 'public/media'
+            },
+            file_input_name: {
+                type: String,
+                default: 'file'
+            },
+            file_name: {
+                type: String,
+                default: null
+            },
+            uid: {
+                type: String,
+                default: function () {
+                    return 'uid-image-group-'+Date.now();
+                }
+            },
+            custom_class: {
+                type: String,
+                default: function () {
+                    return 'is-primary';
+                }
+            },
+            label: {
+                type: String,
+                default: function () {
+                    return 'Drop your image here or click to upload.';
+                }
+            },
+            icon: {
+                type: String,
+                default: "search"
+            },
+            aspect_ratio: {
+                type: String,
+                default: null
+            },
+            allow_multiple: {
+                type: Boolean,
+                default: true
+            },
+            allowed_types: {
+                type: String,
+                default: 'image/jpeg, image/png, image/gif'
+            },
+            max_size: {
+                type: String,
+                default: '2MB'
+            },
+            remove_after_upload: {
+                type: Boolean,
+                default: true
+            },
+            show_allowed_types: {
+                type: Boolean,
+                default: true
+            },
+            instant_upload: {
+                type: Boolean,
+                default: true
+            },
+            app_url: {
+                type: String,
+                default: null
+            },
+
+        },
+        computed:{
+        },
+        components:{
+
+        },
         data()
         {
             let obj = {
-
+                server: {},
+                url: null,
+                pond: null,
+                files: [],
+                uploaded_files: [],
             };
 
             return obj;
         },
-
         created() {
+        },
+        mounted(){
+
+            this.onLoad();
+
+            console.log('--->this.content image', this.content);
+
+            if(this.content)
+            {
+                this.uploaded_files = this.content;
+            }
 
         },
         watch: {
-        },
-        mounted() {
-            //----------------------------------------------------
-            //----------------------------------------------------
+
         },
         methods: {
-            //----------------------------------------------------
-            //----------------------------------------------------
-        },
+
+            //---------------------------------------------------------------------
+            onLoad: function()
+            {
+
+            },
+            //---------------------------------------------------------------------
+            serverConfig: function()
+            {
+
+
+                self = this;
+
+                let server = {
+                    url: this.upload_url,
+                    process:{
+                        method: 'POST',
+                        timeout: 7000,
+                        ondata: function (formData) {
+                            formData.append('folder_path', self.folder_path);
+                            formData.append('file_name', self.file_name);
+                            return formData;
+                        },
+                        headers: {
+                            'X-CSRF-TOKEN': $('#_token').attr('content')
+                        },
+                        onload: function (data) {
+                            data = JSON.parse(data);
+                            console.log('--->', data);
+                            if(data && data.data)
+                            {
+                                console.log('--->image group - data.data', data.data);
+                                self.afterUpload(data.data);
+                            }
+                            let res = {
+                                data: data
+                            };
+                            Vaah.processResponse(res);
+                        },
+                        onerror: function (error) {
+
+                            console.log('--->', error);
+
+                            //Vaah.processError(error);
+                        },
+
+                    }
+                };
+
+
+                return server;
+
+
+            },
+            //---------------------------------------------------------------------
+            handleFilePondInit: function () {
+                this.pond = this.$refs[this.uid];
+
+                this.$refs[this.uid].server = this.serverConfig();
+
+            },
+            //---------------------------------------------------------------------
+            afterUpload: function (data) {
+                console.log('--->image group - after upload data', data);
+                this.addFile(data.url);
+            },
+            //---------------------------------------------------------------------
+
+            //---------------------------------------------------------------------
+            onFileProcessed: function (error, file) {
+                if(!error && this.remove_after_upload == true)
+                {
+                    this.pond.removeFile(file.id);
+                }
+            },
+            //---------------------------------------------------------------------
+            addFile: function(file){
+                this.uploaded_files.push(file);
+                this.emitData();
+            },
+            //---------------------------------------------------------------------
+            removeFile: function (index) {
+                this.uploaded_files.splice(index, 1);
+                this.emitData();
+            },
+            //---------------------------------------------------------------------
+            emitData: function () {
+                this.$emit('input', this.uploaded_files);
+            }
+            //---------------------------------------------------------------------
+        }
     }
 </script>
 

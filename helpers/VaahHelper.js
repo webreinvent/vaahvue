@@ -870,7 +870,26 @@ const VaahHelper = {
         return Number(n) === n && n % 1 !== 0;
     },
     //---------------------------------------------------------------------
+    fileNameFromUrl: function (url) {
+        if (url)
+        {
+            var m = url.toString().match(/.*\/(.+?)\./);
+            if (m && m.length > 1)
+            {
+                return m[1];
+            }
+        }
+        return null;
+    },
     //---------------------------------------------------------------------
+    fileExtensionFromUrl: function (url) {
+        if (url)
+        {
+            let extension = url.split('.').pop();
+            return extension;
+        }
+        return null;
+    }
     //---------------------------------------------------------------------
 
     //---------------------------------------------------------------------
