@@ -18,6 +18,7 @@
                         :instantUpload="instant_upload"
                         :imageCropAspectRatio="aspect_ratio"
                         :accepted-file-types="allowed_types"
+                        :server="server"
                         :onprocessfile="onFileProcessed"
                         v-bind:files="files"
                         v-on:init="handleFilePondInit()">
@@ -188,7 +189,7 @@
             //---------------------------------------------------------------------
             onLoad: function()
             {
-                //this.serverConfig();
+                this.serverConfig();
             },
             //---------------------------------------------------------------------
             serverConfig: function()
@@ -199,7 +200,7 @@
 
                 this.server = {
                     url: this.url,
-                    p rocess:{
+                    process:{
                         method: 'POST',
                         timeout: 7000,
                         ondata: function (formData) {
@@ -230,13 +231,11 @@
 
                     }
                 };
-
-                this.$refs[this.uid].server = this.server;
             },
             //---------------------------------------------------------------------
             handleFilePondInit: function () {
                 this.pond = this.$refs[this.uid];
-                this.serverConfig();
+
             },
             //---------------------------------------------------------------------
             afterUpload: function (data) {

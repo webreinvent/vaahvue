@@ -265,6 +265,25 @@ export default {
 
     },
     watch: {
+        '$route' (to, from) {
+            if(this.editor)
+            {
+                this.editor.destroy();
+                this.editor = this.setupEditor();
+                this.setEditorContent();
+            }
+        },
+        content(newValue)
+        {
+            console.log('--->newValue', newValue);
+            if(!newValue)
+            {
+                this.editor.clearContent();
+            } else {
+                this.setEditorContent();
+            }
+
+        }
     },
     mounted() {
         //----------------------------------------------------
@@ -326,7 +345,7 @@ export default {
         //----------------------------------------------------
 
         setLinkUrl(command, url) {
-            command({ href: url })
+            command({ href: url });
             this.hideLinkMenu()
         },
         //----------------------------------------------------
@@ -349,7 +368,6 @@ export default {
         //----------------------------------------------------
     },
     beforeCreate() {
-        console.log('for created-->');
         if(this.editor)
         {
             this.editor.destroy()

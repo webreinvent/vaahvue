@@ -8,6 +8,7 @@
                  :class="custom_class"
                  :placeholder="placeholder"
                  password-reveal
+                 autocomplete="new-password"
                  @input="emitOnInput"
         ></b-input>
     </b-field>

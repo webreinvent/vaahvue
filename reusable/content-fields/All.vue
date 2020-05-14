@@ -2,7 +2,7 @@
     <div v-if="field_slug">
 
         <template v-if="field_slug === 'text' || field_slug === 'slug'
-
+        || field_slug === 'title'
         ">
             <vv-text :content="value"
                      :type="type"
