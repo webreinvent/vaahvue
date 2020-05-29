@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="upload_url"  :class="custom_class">
+    <div v-if="server"  :class="custom_class">
 
         <div class="level">
 
@@ -10,6 +10,7 @@
                         :name="file_input_name"
                         :ref="uid"
                         :id="uid"
+                        :server="server"
                         :maxFileSize="max_size"
                         :label-idle="label"
                         :allow-multiple="allow_multiple"
@@ -70,6 +71,9 @@
 </template>
 
 <script>
+
+    let base_url = document.getElementsByTagName('base')[0].href;
+
     import {VaahHelper as Vaah} from "../../../vaahvue/helpers/VaahHelper";
 
     export default {
@@ -157,8 +161,11 @@
         data()
         {
             let obj = {
-                server: {},
+                server: null,
                 url: null,
+                base_url: base_url,
+                default_app_url: base_url,
+                default_upload_url: base_url+'/backend/media/upload',
                 pond: null,
                 files: [],
                 full_url: null,
@@ -170,14 +177,21 @@
         },
         mounted(){
 
-            this.onLoad();
 
-            console.log('--->this.content image', this.content);
+            if(this.app_url)
+            {
+                this.default_app_url = this.app_url;
+            }
+
+            this.server = this.serverConfig();
 
             if(this.content)
             {
                 this.full_url = this.content;
             }
+
+            this.onLoad();
+
 
         },
         watch: {
@@ -188,17 +202,24 @@
             //---------------------------------------------------------------------
             onLoad: function()
             {
-                //this.serverConfig();
+                this.serverConfig();
             },
             //---------------------------------------------------------------------
             serverConfig: function()
             {
 
 
-                self = this;
+                let self = this;
+
+                if(this.upload_url)
+                {
+                    this.default_upload_url = this.upload_url;
+                }
+
+                console.log('--->', this.default_upload_url);
 
                 let server = {
-                    url: this.upload_url,
+                    url: this.default_upload_url,
                     process:{
                         method: 'POST',
                         timeout: 7000,
@@ -242,7 +263,7 @@
             handleFilePondInit: function () {
                 this.pond = this.$refs[this.uid];
 
-                this.$refs[this.uid].server = this.serverConfig();
+                //this.$refs[this.uid].server = this.serverConfig();
 
             },
             //---------------------------------------------------------------------

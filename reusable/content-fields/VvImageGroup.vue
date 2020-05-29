@@ -1,6 +1,6 @@
 <template>
 
-    <div :class="custom_class">
+    <div v-if="server" :class="custom_class">
 
         <div class="level">
 
@@ -10,6 +10,7 @@
                         :name="file_input_name"
                         :ref="uid"
                         :id="uid"
+                        :server="server"
                         :maxFileSize="max_size"
                         :label-idle="label"
                         :allow-multiple="allow_multiple"
@@ -34,7 +35,7 @@
                      :key="index">
                     <div class="level-item">
                         <div >
-                            <img style="max-height: 100px;" :src="app_url+'/'+file">
+                            <img style="max-height: 100px;" :src="default_app_url+'/'+file">
                         </div>
                     </div>
                     <div class="level-item">
@@ -43,7 +44,7 @@
 
                             <p class="control">
                                 <b-tooltip label="Open Image" type="is-dark">
-                                    <b-button tag="a" :href="app_url+'/'+file"
+                                    <b-button tag="a" :href="default_app_url+'/'+file"
                                               target="_blank"
                                               icon-left="external-link-alt"></b-button>
                                 </b-tooltip>
@@ -71,6 +72,9 @@
 </template>
 
 <script>
+
+    let base_url = document.getElementsByTagName('base')[0].href;
+
     import {VaahHelper as Vaah} from "../../../vaahvue/helpers/VaahHelper";
 
     export default {
@@ -162,8 +166,11 @@
         data()
         {
             let obj = {
-                server: {},
+                server: null,
                 url: null,
+                base_url: base_url,
+                default_app_url: base_url,
+                default_upload_url: base_url+'/backend/media/upload',
                 pond: null,
                 files: [],
                 uploaded_files: [],
@@ -175,14 +182,22 @@
         },
         mounted(){
 
-            this.onLoad();
 
-            console.log('--->this.content image', this.content);
+
+            if(this.app_url)
+            {
+                this.default_app_url = this.app_url;
+            }
+
+            this.server = this.serverConfig();
+
 
             if(this.content)
             {
                 this.uploaded_files = this.content;
             }
+
+            this.onLoad();
 
         },
         watch: {
@@ -200,10 +215,16 @@
             {
 
 
-                self = this;
+                let self = this;
+
+                if(this.upload_url)
+                {
+                    this.default_upload_url = this.upload_url;
+                }
+
 
                 let server = {
-                    url: this.upload_url,
+                    url: this.default_upload_url,
                     process:{
                         method: 'POST',
                         timeout: 7000,
@@ -217,7 +238,6 @@
                         },
                         onload: function (data) {
                             data = JSON.parse(data);
-                            console.log('--->', data);
                             if(data && data.data)
                             {
                                 console.log('--->image group - data.data', data.data);
@@ -247,12 +267,11 @@
             handleFilePondInit: function () {
                 this.pond = this.$refs[this.uid];
 
-                this.$refs[this.uid].server = this.serverConfig();
+                //this.$refs[this.uid].server = this.serverConfig();
 
             },
             //---------------------------------------------------------------------
             afterUpload: function (data) {
-                console.log('--->image group - after upload data', data);
                 this.addFile(data.url);
             },
             //---------------------------------------------------------------------
