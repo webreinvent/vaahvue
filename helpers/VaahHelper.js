@@ -379,7 +379,7 @@ const VaahHelper = {
             if (obj[key] && typeof obj[key] === 'object'){
                 self.removeEmpty(obj[key]);
             }
-            else if (obj[key] == null) {
+            else if (obj[key] == null || obj[key] == '') {
                 delete obj[key]
             }
         });
@@ -517,6 +517,22 @@ const VaahHelper = {
             return "";
         }
         return moment(value).format('YYYY-MM-DD');
+    },
+    //---------------------------------------------------------------------
+    formatTime: function (value) {
+        if(!value)
+        {
+            return "";
+        }
+        return moment(value).format('HH:mm');
+    },
+    //---------------------------------------------------------------------
+    formatDateTime: function (value) {
+        if(!value)
+        {
+            return "";
+        }
+        return moment(value).format('YYYY-MM-DD HH:mm')
     },
     //---------------------------------------------------------------------
     fromNow: function (value) {
