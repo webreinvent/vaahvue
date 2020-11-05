@@ -133,6 +133,22 @@
             </vv-date-time>
         </template>
 
+
+        <template v-else-if="field_slug === 'user'">
+            <vv-auto-complete-users :content="value"
+                     :size="size"
+                     :class="custom_class"
+                     :label="label"
+                     :labelPosition="labelPosition"
+                     :placeholder="placeholder"
+                     :ref="field_slug"
+                     @input="emitOnInput"
+                     @onChange="emitOnChange"
+                     @onBlur="emitOnBlur"
+                     @onFocus="emitOnFocus" >
+            </vv-auto-complete-users>
+        </template>
+
         <template v-else-if="field_slug === 'email'">
             <vv-email :content="value"
                           :size="size"
@@ -389,6 +405,7 @@
 </template>
 
 <script>
+import VvAutoCompleteUsers from "./VvAutoCompleteUsers";
 import VvAddress from "./VvAddress";
 import VvBoolean from "./VvBoolean";
 import VvCurrencyCode from "./VvCurrencyCode";
@@ -480,7 +497,7 @@ export default {
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
         VvSlug, VvTags, VvText, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
-        VvVisualEditor,
+        VvVisualEditor,VvAutoCompleteUsers
     },
     data()
     {
