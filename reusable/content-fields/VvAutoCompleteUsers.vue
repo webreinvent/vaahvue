@@ -6,13 +6,11 @@
                 expanded
                 v-model="content_value"
                 :data="data"
-                placeholder="Search Users"
-                field="name"
+                :placeholder="placeholder"
+                field="email"
                 @input="emitOnInput"
                 :loading="isFetching"
-                @typing="getAsyncData"
-                @select="option => onSelect(option)">
-
+                @typing="getAsyncData">
             <template slot-scope="props">
                 <div class="media">
                     <div class="media-content">
@@ -47,7 +45,7 @@
         },
         props:{
             content: {
-                type: String,
+                type: String|Number,
                 default: null
             },
             type: {
@@ -92,6 +90,9 @@
             //----------------------------------------------------
             this.content_value = this.content;
             //----------------------------------------------------
+            if(this.content_value){
+                this.getUserDetailById();
+            }
             //----------------------------------------------------
         },
         methods: {
@@ -113,6 +114,20 @@
                     this.data = [];
                     response.data.forEach((item) => this.data.push(item));
                     self.isFetching = false;
+                });
+
+            }, 500),
+            // You have to install and import debounce to use it,
+            // it's not mandatory though.
+            getUserDetailById: debounce(function () {
+
+                let self = this;
+
+                let url = this.root_state.ajax_url+'/json/getUserById/';
+                url += this.content_value;
+
+                this.axios.get(url).then((response) => {
+                    self.content_value = response.data.email;
                 });
 
             }, 500),
