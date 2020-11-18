@@ -3,9 +3,12 @@
     <tr>
         <th align="right">{{$vaah.toLabel(label)}}</th>
         <td colspan="2">
-            <b-tag v-if="value">
+            <b-tag v-if="value == 'Yes'" type="is-success" >
                 {{value}}
             </b-tag>
+
+            <b-tag v-else>{{value}}</b-tag>
+
         </td>
     </tr>
 
