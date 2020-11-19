@@ -3,7 +3,7 @@
     <tr>
         <th align="right">{{$vaah.toLabel(label)}}</th>
         <td colspan="2">
-            <b-tag v-if="value == 'Yes'" type="is-success" >
+            <b-tag v-if="value == 'Yes' || value == 1" type="is-success" >
                 {{value}}
             </b-tag>
 
@@ -16,7 +16,7 @@
 <script>
 
     export default {
-        name: "TableTrActedBy",
+        name: "TableTrStatus",
         props: ['label', 'value'],
         computed: {
         },
