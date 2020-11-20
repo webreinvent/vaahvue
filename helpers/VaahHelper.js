@@ -4,6 +4,7 @@ import copy from 'copy-to-clipboard';
 
 import {store} from './../../store/store';
 import {ToastProgrammatic as Toast} from "buefy";
+import {SnackbarProgrammatic as Snackbar} from "buefy";
 import axios from "axios";
 
 var debug = document.getElementById('debug').getAttribute('content');
@@ -275,7 +276,7 @@ const VaahHelper = {
     toastErrors(messages){
         let list_html = "";
         let i = 1;
-        let duration = 1000;
+        let duration = 2000;
 
         if(messages.length > 1)
         {
@@ -283,22 +284,31 @@ const VaahHelper = {
                 list_html += i+") "+error+"<br/>";
                 i++;
             });
+            duration = duration*i;
         } else
         {
             if(messages[0])
             {
                 list_html += messages[0];
+                let leng = list_html.length;
+                duration = leng*duration/10;
+
+
             }
+
+
         }
 
+        console.log('duration', duration+' ms');
         console.log('--->', list_html);
 
         if(list_html != "")
         {
-            Toast.open({
+            Snackbar.open({
                 message: list_html,
+                position: 'is-top',
                 type: 'is-danger',
-                duration: duration*i
+                duration: duration
             });
         }
 
