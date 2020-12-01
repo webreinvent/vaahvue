@@ -662,14 +662,21 @@ const VaahHelper = {
     //---------------------------------------------------------------------
     toLabel: function(str)
     {
-        str = str.replace(/_/g, " ");
-        str = this.toUpperCaseWords(str);
-        return str;
+        if(typeof str === 'string' )
+        {
+            str = str.replace(/_/g, " ");
+            str = this.toUpperCaseWords(str);
+            return str;
+        }
+
     },
     //---------------------------------------------------------------------
     toUpperCaseWords: function(str)
     {
-        return str.charAt(0).toUpperCase() + str.slice(1);
+        if(str)
+        {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
     },
     //---------------------------------------------------------------------
     currencyToSymbol: function (currency) {

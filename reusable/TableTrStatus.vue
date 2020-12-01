@@ -1,13 +1,13 @@
 <template>
 
     <tr>
-        <th align="right">{{$vaah.toLabel(label)}}</th>
+        <th align="right"><span v-if="label">{{$vaah.toLabel(label)}}</span></th>
         <td colspan="2">
             <b-tag v-if="value == 'Yes' || value == 1" type="is-success" >
-                {{value}}
+                Yes
             </b-tag>
 
-            <b-tag v-else>{{value}}</b-tag>
+            <b-tag v-else>No</b-tag>
 
         </td>
     </tr>
