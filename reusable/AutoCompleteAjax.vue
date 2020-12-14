@@ -2,7 +2,7 @@
 
     <b-autocomplete
         expanded
-        v-model="selected_value"
+        v-model="selected_string"
         :data="data"
         :placeholder="label"
         :field="display_column"
@@ -39,7 +39,7 @@
     export default {
         props: {
             selected_value:{
-                type: Object,
+                type: String,
                 default: null
             },
             label:{
@@ -65,10 +65,13 @@
             return {
                 data: [],
                 selected: null,
+                selected_string: null,
                 isFetching: false,
             }
         },
         mounted() {
+
+            this.selected_string = this.selected_value;
 
         },
         methods: {
@@ -103,6 +106,7 @@
             //----------------------------------------------------
             onSelect: function (option) {
                 this.selected = option;
+                this.selected_string = option[this.display_column];
                 this.$emit('onSelect', option);
             }
             //----------------------------------------------------
