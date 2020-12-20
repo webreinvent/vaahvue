@@ -922,9 +922,14 @@ const VaahHelper = {
             return extension;
         }
         return null;
-    }
+    },
     //---------------------------------------------------------------------
+    getClipboardValue: function () {
 
+        let text =  (!!e.clipboardData)? e.clipboardData.getData("text/plain") : window.clipboardData.getData("Text");
+
+        return text;
+    }
     //---------------------------------------------------------------------
 
     //---------------------------------------------------------------------
