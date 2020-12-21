@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="root_assets" class="filepond" :class="custom_class">
+    <div class="filepond" :class="custom_class">
         <file-pond
             :name="file_input_name"
             :ref="uid"
@@ -98,7 +98,7 @@ export default {
 
     },
     computed:{
-        root_assets() {return this.$store.getters['root/state'].assets},
+
     },
     components:{
 
@@ -134,15 +134,7 @@ export default {
         //---------------------------------------------------------------------
         serverConfig: function()
         {
-
-            if(this.upload_url)
-            {
-                this.url = this.upload_url;
-            } else
-            {
-                this.url =  this.root_assets.urls.upload;
-            }
-
+            this.url = this.upload_url;
             self = this;
 
             this.server = {
