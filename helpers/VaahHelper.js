@@ -463,8 +463,6 @@ const VaahHelper = {
             return false;
         }
 
-        console.log("array===>", array);
-
         array.map(function(item, index) {
 
             if(item[key] == element[key])
@@ -929,8 +927,11 @@ const VaahHelper = {
         let text =  (!!e.clipboardData)? e.clipboardData.getData("text/plain") : window.clipboardData.getData("Text");
 
         return text;
-    }
+    },
     //---------------------------------------------------------------------
+    getNonReactiveObject: function (obj) {
+        return JSON.parse(JSON.stringify(obj));
+    },
 
     //---------------------------------------------------------------------
 
