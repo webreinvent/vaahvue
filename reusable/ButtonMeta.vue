@@ -1,7 +1,7 @@
 <template>
     <b-button size="is-small"
               @click="showModal"
-              type="is-primary"
+              :type="type"
               rounded
               icon-left="eye">
         {{label}}
@@ -14,12 +14,16 @@
     export default {
         name: "ButtonMeta",
         props: {
+            type: {
+                type: Object|String,
+                default: "is-default"
+            },
             label: {
-                type: String,
+                type: String|Number,
                 default: "View"
             },
             value: {
-                type: Object,
+                type: Object|String,
                 default: null
             },
         },
@@ -27,6 +31,7 @@
         },
         components:{
         },
+
 
         data()
         {
