@@ -15,14 +15,13 @@
         <template slot-scope="props">
             <div class="media">
                 <div class="media-content" v-if="props.option">
-                            <span v-if="props.option[field_name]">
-                                {{ props.option[field_name] }}
-                            </span>
+                    {{props.option[field_name]}}
+
                 </div>
             </div>
         </template>
 
-        <template slot="empty">No results found</template>
+        <template #empty>No results found</template>
     </b-autocomplete>
     <!--/autocomplete users-->
 
@@ -95,20 +94,26 @@
         },
         computed: {
             filteredDataArray() {
-                let list_filtered;
+                let list_filtered = [];
+
                 if(this.options && this.q && this.q != this.selected_value)
                 {
+                    this.fuse_config.keys = this.search_fields;
                     let fuse = new Fuse(this.options, this.fuse_config);
-                    list_filtered = fuse.search(this.q);
+                    let searched  = fuse.search(this.q);
+
+                    if(searched.length)
+                    {
+                        for(let key in searched)
+                        {
+                            list_filtered.push(searched[key].item);
+                        }
+                    }
+
                 } else
                 {
                     list_filtered = this.options;
                 }
-
-
-
-                //console.log('--->auto list_filtered', list_filtered);
-
 
                 return list_filtered;
             }
@@ -122,17 +127,20 @@
             selected: function (newValue, oldValue) {
                 if(newValue && newValue != this.selected_value)
                 {
+                    console.log('--->', newValue);
                     this.$emit('onSelect', newValue);
                 }
             },
+            selected_value: function (newValue)
+            {
+                console.log('--->', newValue);
+                this.$refs.autocomplete.setSelected(newValue);
+            }
 
         },
         methods: {
             //---------------------------------------------------------------------
             setSelectedValue: function (selected_value) {
-
-                console.log('--->selected_value', selected_value);
-
                 this.$refs.autocomplete.setSelected(selected_value);
             },
             //---------------------------------------------------------------------
