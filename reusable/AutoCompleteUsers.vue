@@ -6,6 +6,7 @@
         placeholder="Search Users"
         field="name"
         :loading="isFetching"
+        ref="autocompleteuser"
         @typing="getAsyncData"
         @select="option => onSelect(option)">
 
@@ -37,6 +38,9 @@
     import debounce from 'lodash/debounce'
 
     export default {
+        props: {
+            selected_value: String|Number,
+        },
         computed:{
             root_state() {return this.$store.getters['root/state']},
         },
@@ -48,7 +52,38 @@
                 isFetching: false
             }
         },
+        watch: {
+            options: function (newValue, oldValue) {
+                this.options = newValue;
+
+            },
+            selected_value: function (newValue, oldValue) {
+                console.log('--->newValue auto', newValue);
+                this.setSelectedValue(newValue);
+            },
+            selected: function (newValue, oldValue) {
+                if(newValue && newValue != this.selected_value)
+                {
+                    this.$emit('onSelect', newValue);
+                }
+            },
+
+        },
+        mounted(){
+
+            this.setSelectedValue(this.selected_value);
+        },
         methods: {
+            setSelectedValue: function (selected_value) {
+                if(selected_value)
+                {
+                    this.$refs.autocompleteuser.setSelected(selected_value);
+                } else
+                {
+                    this.$refs.autocompleteuser.setSelected('');
+                }
+
+            },
             // You have to install and import debounce to use it,
             // it's not mandatory though.
             getAsyncData: debounce(function (name) {
