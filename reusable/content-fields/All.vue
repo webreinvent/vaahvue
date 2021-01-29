@@ -69,7 +69,7 @@
 
 
         <template v-else-if="field_slug === 'editor'">
-            <vv-editor :content="value"
+<!--            <vv-editor :content="value"
                      :size="size"
                      :class="custom_class"
                      :label="label"
@@ -80,7 +80,21 @@
                      @onChange="emitOnChange"
                      @onBlur="emitOnBlur"
                      @onFocus="emitOnFocus" >
-            </vv-editor>
+            </vv-editor>-->
+
+            <vv-c-k-editor :content="value"
+                       :size="size"
+                       :class="custom_class"
+                       :label="label"
+                       :labelPosition="labelPosition"
+                       :placeholder="placeholder"
+                       :ref="field_slug"
+                       @input="emitOnInput"
+                       @onChange="emitOnChange"
+                       @onBlur="emitOnBlur"
+                       @onFocus="emitOnFocus" >
+            </vv-c-k-editor>
+
         </template>
 
 
@@ -412,6 +426,7 @@ import VvCurrencyCode from "./VvCurrencyCode";
 import VvDate from "./VvDate";
 import VvDateTime from "./VvDateTime";
 import VvEditor from "./VvEditor";
+import VvCKEditor from "./VvCKEditor";
 import VvEmail from "./VvEmail";
 import VvFacebookCard from "./VvFacebookCard";
 import VvImage from './VvImage';
@@ -493,7 +508,7 @@ export default {
     },
     components:{
         VvAddress, VvBoolean, VvCurrencyCode, VvDate, VvDateTime,
-        VvEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
+        VvEditor, VvCKEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
         VvSlug, VvTags, VvText, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,

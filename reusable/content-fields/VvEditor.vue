@@ -11,22 +11,25 @@
                 <editor-menu-bar :editor="editor" v-slot="{ commands, isActive }">
                     <div class="btn-toolbar" role="toolbar" aria-label="Toolbar with button groups">
                         <b-field>
-
+                            <b-tooltip label="Undo" type="is-dark">
                             <p class="control">
-                                <b-tooltip label="Undo" type="is-dark">
+
                                     <b-button icon-left="undo"
                                               @click="commands.undo">
                                     </b-button>
-                                </b-tooltip>
-                            </p>
 
+                            </p>
+                            </b-tooltip>
+
+                            <b-tooltip label="Redo" type="is-dark">
                             <p class="control">
-                                <b-tooltip label="Redo" type="is-dark">
+
                                 <b-button icon-left="redo"
                                           @click="commands.redo">
                                 </b-button>
-                                </b-tooltip>
+
                             </p>
+                            </b-tooltip>
 
                             <p class="control">
                                 <b-button icon-left="bold"
@@ -191,8 +194,8 @@
 
             </div>
 
-            <div class="tiptap-editor-content">
-                <editor-content  :editor="editor" />
+            <div class="tiptap-editor-content wysiwyg">
+                <editor-content rows="15"  :editor="editor" />
             </div>
         </div>
 
@@ -201,6 +204,13 @@
 
 
 </template>
+
+<style>
+.ProseMirror {
+    min-height: 200px;
+
+}
+</style>
 
 <script>
 
@@ -273,22 +283,23 @@ export default {
                 this.setEditorContent();
             }
         },
-        content(newValue)
-        {
-            console.log('--->newValue', newValue);
-            if(!newValue)
-            {
-                this.editor.clearContent();
-            } else {
-                this.setEditorContent();
-            }
+        content: {
+            immediate: true,
+            handler(newValue) {
+                if(!newValue)
+                {
+                    this.editor.clearContent();
+                } else {
+                    this.setEditorContent(newValue);
+                }
+            },
+        },
 
-        }
     },
     mounted() {
         //----------------------------------------------------
         this.editor = this.setupEditor();
-        this.setEditorContent();
+        this.setEditorContent(this.content);
         //----------------------------------------------------
     },
     methods: {
@@ -325,8 +336,14 @@ export default {
             return editor;
         },
         //---------------------------------------------------------------------
-        setEditorContent: function () {
-            this.editor.setContent(this.content);
+        setEditorContent: function (content) {
+            console.log('--->content', content);
+            this.editor.setContent(content);
+
+            this.$nextTick(() => {
+                this.editor.focus();
+            });
+
         },
         //----------------------------------------------------
         showLinkMenu(attrs) {
