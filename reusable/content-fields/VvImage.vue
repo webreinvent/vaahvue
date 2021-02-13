@@ -4,7 +4,7 @@
 
         <div class="level">
 
-            <div class="level-left" v-if="!full_url">
+            <div class="level-left">
                 <div class="filepond">
                     <file-pond
                         :name="file_input_name"
@@ -41,20 +41,18 @@
 
                     <b-field>
                         <b-tooltip label="Open Image" type="is-dark">
-                        <p class="control">
+                            <p class="control">
                                 <b-button tag="a" :href="full_url"
                                           target="_blank"
                                           icon-left="external-link-alt">
                                 </b-button>
-                        </p>
+                            </p>
                         </b-tooltip>
 
                         <b-tooltip label="Remove File" type="is-dark">
-                        <p class="control">
-
+                            <p class="control">
                                 <b-button type="is-danger" @click="removeImage">Remove</b-button>
-
-                        </p>
+                            </p>
                         </b-tooltip>
 
                     </b-field>
