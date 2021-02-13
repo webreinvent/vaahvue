@@ -35,26 +35,26 @@
                      :key="index">
                     <div class="level-item">
                         <div >
-                            <img style="max-height: 100px;" :src="default_app_url+'/'+file">
+                            <img style="max-height: 100px;" :src="file">
                         </div>
                     </div>
                     <div class="level-item">
 
                         <b-field >
 
-                            <p class="control">
-                                <b-tooltip label="Open Image" type="is-dark">
-                                    <b-button tag="a" :href="default_app_url+'/'+file"
+                            <b-tooltip label="Open Image" type="is-dark">
+                                <p class="control">
+                                    <b-button tag="a" :href="file"
                                               target="_blank"
                                               icon-left="external-link-alt"></b-button>
-                                </b-tooltip>
-                            </p>
+                                </p>
+                            </b-tooltip>
 
-                            <p class="control">
-                                <b-tooltip label="Remove File" type="is-dark">
+                            <b-tooltip label="Remove File" type="is-dark">
+                                <p class="control">
                                     <b-button type="is-danger" @click="removeFile(index)">Remove</b-button>
-                                </b-tooltip>
-                            </p>
+                                </p>
+                            </b-tooltip>
 
                         </b-field>
                     </div>
@@ -272,7 +272,7 @@
             },
             //---------------------------------------------------------------------
             afterUpload: function (data) {
-                this.addFile(data.url);
+                this.addFile(data.full_url);
             },
             //---------------------------------------------------------------------
 

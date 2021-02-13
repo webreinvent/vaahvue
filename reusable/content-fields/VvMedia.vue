@@ -1,6 +1,6 @@
 <template>
 
-    <div v-if="upload_url"  :class="custom_class">
+    <div :class="custom_class">
 
         <div class="level">
 
@@ -39,19 +39,19 @@
                         <span class="button is-static">.{{full_url_ext}}</span>
                     </p>
 
-                    <p class="control">
-                        <b-tooltip label="Open File" type="is-dark">
-                        <b-button tag="a" :href="full_url"
-                                  target="_blank"
-                                  icon-left="external-link-alt"></b-button>
-                        </b-tooltip>
-                    </p>
+                    <b-tooltip label="Open File" type="is-dark">
+                        <p class="control">
+                            <b-button tag="a" :href="full_url"
+                                      target="_blank"
+                                      icon-left="external-link-alt"></b-button>
+                        </p>
+                    </b-tooltip>
 
-                    <p class="control">
-                        <b-tooltip label="Remove File" type="is-dark">
-                            <b-button type="is-danger" @click="removeImage">Remove</b-button>
-                        </b-tooltip>
-                    </p>
+                    <b-tooltip label="Remove File" type="is-dark">
+                        <p class="control">
+                                <b-button type="is-danger" @click="removeImage">Remove</b-button>
+                        </p>
+                    </b-tooltip>
 
                 </b-field>
 
