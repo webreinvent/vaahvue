@@ -1,27 +1,27 @@
 <template>
 
-    <div :class="custom_class">
+    <div v-if="server"  :class="custom_class">
 
         <div class="level">
 
             <div class="level-left">
                 <div class="filepond">
                     <file-pond
-                        :name="file_input_name"
-                        :ref="uid"
-                        :id="uid"
-                        :maxFileSize="max_size"
-                        :label-idle="label"
-                        :allow-multiple="allow_multiple"
-                        allowImageEdit="true"
-                        allowImageCrop="true"
-                        :instantUpload="instant_upload"
-                        :imageCropAspectRatio="aspect_ratio"
-                        :accepted-file-types="allowed_types"
-                        :server="server"
-                        :onprocessfile="onFileProcessed"
-                        v-bind:files="files"
-                        v-on:init="handleFilePondInit()">
+                            :name="file_input_name"
+                            :ref="uid"
+                            :id="uid"
+                            :server="server"
+                            :maxFileSize="max_size"
+                            :label-idle="label"
+                            :allow-multiple="allow_multiple"
+                            allowImageEdit="true"
+                            allowImageCrop="true"
+                            :instantUpload="instant_upload"
+                            :imageCropAspectRatio="aspect_ratio"
+                            :accepted-file-types="allowed_types"
+                            :onprocessfile="onFileProcessed"
+                            v-bind:files="files"
+                            v-on:init="handleFilePondInit()">
                     </file-pond>
 
                     <p class="help">Maximum size allowed is {{max_size}}.
@@ -31,7 +31,6 @@
             </div>
 
             <div class="level-right" v-if="full_url">
-
 
                 <b-field>
 
@@ -49,7 +48,7 @@
 
                     <b-tooltip label="Remove File" type="is-dark">
                         <p class="control">
-                                <b-button type="is-danger" @click="removeImage">Remove</b-button>
+                            <b-button type="is-danger" @click="removeImage">Remove</b-button>
                         </p>
                     </b-tooltip>
 
@@ -68,9 +67,13 @@
 </template>
 
 <script>
+
+    let base_url = document.getElementsByTagName('base')[0].href;
+
     import {VaahHelper as Vaah} from "../../../vaahvue/helpers/VaahHelper";
 
     export default {
+        name: "VvMedia",
         props: {
             content: {
                 type: String,
@@ -154,8 +157,11 @@
         data()
         {
             let obj = {
-                server: {},
+                server: null,
                 url: null,
+                base_url: base_url,
+                default_app_url: base_url,
+                default_upload_url: base_url+'/backend/media/upload',
                 pond: null,
                 files: [],
                 full_url: null,
@@ -169,9 +175,13 @@
         },
         mounted(){
 
-            this.onLoad();
 
+            if(this.app_url)
+            {
+                this.default_app_url = this.app_url;
+            }
 
+            this.server = this.serverConfig();
 
             if(this.content)
             {
@@ -179,6 +189,9 @@
                 this.full_url_name = Vaah.fileNameFromUrl(this.content);
                 this.full_url_ext = Vaah.fileExtensionFromUrl(this.content);
             }
+
+            this.onLoad();
+
 
         },
         watch: {
@@ -195,11 +208,18 @@
             serverConfig: function()
             {
 
-                this.url = this.upload_url;
-                self = this;
 
-                this.server = {
-                    url: this.url,
+                let self = this;
+
+                if(this.upload_url)
+                {
+                    this.default_upload_url = this.upload_url;
+                }
+
+                console.log('--->', this.default_upload_url);
+
+                let server = {
+                    url: this.default_upload_url,
                     process:{
                         method: 'POST',
                         timeout: 7000,
@@ -213,8 +233,10 @@
                         },
                         onload: function (data) {
                             data = JSON.parse(data);
+                            console.log('--->', data);
                             if(data && data.data)
                             {
+                                console.log('--->image - data.data', data.data);
                                 self.afterUpload(data.data);
                             }
                             let res = {
@@ -231,22 +253,30 @@
 
                     }
                 };
+
+
+                return server;
+
+
             },
             //---------------------------------------------------------------------
             handleFilePondInit: function () {
                 this.pond = this.$refs[this.uid];
 
+                //this.$refs[this.uid].server = this.serverConfig();
+
             },
             //---------------------------------------------------------------------
             afterUpload: function (data) {
 
-                console.log('--->media - after upload data', data);
+                if(data){
+                    this.full_url = data.full_url;
+                    this.full_url_name = Vaah.fileNameFromUrl(data.full_url);
+                    this.full_url_ext = Vaah.fileExtensionFromUrl(data.full_url);
 
-                this.full_url = data.full_url;
-                this.full_url_name = Vaah.fileNameFromUrl(data.full_url);
-                this.full_url_ext = Vaah.fileExtensionFromUrl(this.content);
+                    this.$emit('input', data.url);
+                }
 
-                this.$emit('input', data.url);
             },
             //---------------------------------------------------------------------
             onFileProcessed: function (error, file) {
@@ -254,16 +284,12 @@
                 {
                     this.pond.removeFile(file.id);
                 }
-
-
             },
             //---------------------------------------------------------------------
             removeImage: function () {
                 this.full_url = null;
                 this.$emit('input', null);
             },
-            //---------------------------------------------------------------------
-
             //---------------------------------------------------------------------
         }
     }

@@ -81,7 +81,7 @@
                         maxlength: 200,
                         content: null
                     },
-                    "twitter_imaage":{
+                    "twitter_image":{
                         name: "twitter:image",
                         type: 'text',
                         message: "URL of image to use in the card. Images must be less than 5MB in size. JPG, PNG, WEBP and GIF formats are supported.",
