@@ -195,6 +195,9 @@
 
         },
         watch: {
+            content(to, from) {
+                this.full_url = to;
+            },
 
         },
         methods: {
@@ -273,7 +276,7 @@
 
                 console.log('--->image - after upload data', data);
 
-                this.$emit('input', data.url);
+                this.$emit('input', data.full_url);
 
             },
             //---------------------------------------------------------------------
