@@ -1,9 +1,10 @@
 import Vue from "vue";
-import moment from "moment";
+import moment from 'moment/moment';
 import copy from 'copy-to-clipboard';
 
 import {store} from './../../store/store';
 import {ToastProgrammatic as Toast} from "buefy";
+import {SnackbarProgrammatic as Snackbar} from "buefy";
 import axios from "axios";
 
 var debug = document.getElementById('debug').getAttribute('content');
@@ -275,7 +276,7 @@ const VaahHelper = {
     toastErrors(messages){
         let list_html = "";
         let i = 1;
-        let duration = 1000;
+        let duration = 2000;
 
         if(messages.length > 1)
         {
@@ -283,22 +284,31 @@ const VaahHelper = {
                 list_html += i+") "+error+"<br/>";
                 i++;
             });
+            duration = duration*i;
         } else
         {
             if(messages[0])
             {
                 list_html += messages[0];
+                let leng = list_html.length;
+                duration = leng*duration/10;
+
+
             }
+
+
         }
 
+        console.log('duration', duration+' ms');
         console.log('--->', list_html);
 
         if(list_html != "")
         {
-            Toast.open({
+            Snackbar.open({
                 message: list_html,
+                position: 'is-top',
                 type: 'is-danger',
-                duration: duration*i
+                duration: duration
             });
         }
 
@@ -379,7 +389,7 @@ const VaahHelper = {
             if (obj[key] && typeof obj[key] === 'object'){
                 self.removeEmpty(obj[key]);
             }
-            else if (obj[key] == null) {
+            else if (obj[key] == null || obj[key] == '') {
                 delete obj[key]
             }
         });
@@ -453,8 +463,6 @@ const VaahHelper = {
             return false;
         }
 
-        console.log("array===>", array);
-
         array.map(function(item, index) {
 
             if(item[key] == element[key])
@@ -517,6 +525,22 @@ const VaahHelper = {
             return "";
         }
         return moment(value).format('YYYY-MM-DD');
+    },
+    //---------------------------------------------------------------------
+    formatTime: function (value) {
+        if(!value)
+        {
+            return "";
+        }
+        return moment(value).format('HH:mm');
+    },
+    //---------------------------------------------------------------------
+    formatDateTime: function (value) {
+        if(!value)
+        {
+            return "";
+        }
+        return moment(value).format('YYYY-MM-DD HH:mm')
     },
     //---------------------------------------------------------------------
     fromNow: function (value) {
@@ -636,14 +660,21 @@ const VaahHelper = {
     //---------------------------------------------------------------------
     toLabel: function(str)
     {
-        str = str.replace(/_/g, " ");
-        str = this.toUpperCaseWords(str);
-        return str;
+        if(typeof str === 'string' )
+        {
+            str = str.replace(/_/g, " ");
+            str = this.toUpperCaseWords(str);
+            return str;
+        }
+
     },
     //---------------------------------------------------------------------
     toUpperCaseWords: function(str)
     {
-        return str.charAt(0).toUpperCase() + str.slice(1);
+        if(str)
+        {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
     },
     //---------------------------------------------------------------------
     currencyToSymbol: function (currency) {
@@ -870,10 +901,37 @@ const VaahHelper = {
         return Number(n) === n && n % 1 !== 0;
     },
     //---------------------------------------------------------------------
+    fileNameFromUrl: function (url) {
+        if (url)
+        {
+            var m = url.toString().match(/.*\/(.+?)\./);
+            if (m && m.length > 1)
+            {
+                return m[1];
+            }
+        }
+        return null;
+    },
     //---------------------------------------------------------------------
+    fileExtensionFromUrl: function (url) {
+        if (url)
+        {
+            let extension = url.split('.').pop();
+            return extension;
+        }
+        return null;
+    },
     //---------------------------------------------------------------------
+    getClipboardValue: function () {
 
+        let text =  (!!e.clipboardData)? e.clipboardData.getData("text/plain") : window.clipboardData.getData("Text");
+
+        return text;
+    },
     //---------------------------------------------------------------------
+    getNonReactiveObject: function (obj) {
+        return JSON.parse(JSON.stringify(obj));
+    },
 
     //---------------------------------------------------------------------
 

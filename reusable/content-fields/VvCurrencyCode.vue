@@ -1,10 +1,13 @@
 <template>
 
+    <div>
     <!--autocomplete users-->
+
     <b-autocomplete
+        v-if="options"
         expanded
         v-model="q"
-        :data="filteredDataArray"
+        :data="getSearchedData"
         :field="field_name"
         :placeholder="placeholder"
         :icon="icon"
@@ -15,16 +18,17 @@
         <template slot-scope="props">
             <div class="media">
                 <div class="media-content" v-if="props.option">
-                    {{props.option[field_name]}}
-
+                            <span v-if="props.option[field_name]">
+                                {{props.option.slug}} ({{ props.option[field_name] }})
+                            </span>
                 </div>
             </div>
         </template>
 
-        <template #empty>No results found</template>
+        <template slot="empty">No results found</template>
     </b-autocomplete>
     <!--/autocomplete users-->
-
+    </div>
 
 </template>
 
@@ -34,6 +38,36 @@
 
     export default {
         props: {
+            content: {
+                type: String|Number,
+                default: function () {
+                    return null
+                }
+            },
+            type: {
+                type: String,
+                default: null,
+            },
+            size: {
+                type: String,
+                default: null,
+            },
+            custom_class: {
+                type: String,
+                default: null,
+            },
+            label: {
+                type: String,
+                default: null,
+            },
+            labelPosition: {
+                type: String,
+                default: null,
+            },
+            placeholder: {
+                type: String,
+                default: null,
+            },
             options: {
                 type: Array|Object,
                 required: true
@@ -45,7 +79,7 @@
             search_fields: {
                 type: Array,
                 default: function () {
-                    return ["name"]
+                    return ["name", "slug"]
                 }
             },
             icon: {
@@ -54,12 +88,7 @@
             },
             open_on_focus: {
                 type: Boolean,
-                default: false
-            },
-            selected_value: String|Number,
-            placeholder: {
-                type: String,
-                default: "Search"
+                default: true
             },
         },
         components:{
@@ -71,10 +100,11 @@
                 //----autocomplete users
                 q: null,
                 data: [],
+                content_value: null,
                 selected: null,
                 fuse_config: {
                     shouldSort: true,
-                    threshold: 0.6,
+                    threshold: 0.2,
                     location: 0,
                     distance: 100,
                     maxPatternLength: 32,
@@ -89,31 +119,25 @@
         created() {
         },
         mounted(){
+
+            if(this.content)
+            {
+                this.setSelectedValue(this.content);
+            }
             this.fuse_config.keys = this.search_fields;
-            this.setSelectedValue(this.selected_value);
+
         },
         computed: {
-            filteredDataArray() {
-                let list_filtered = [];
+            getSearchedData() {
 
-                if(this.options && this.q && this.q != this.selected_value)
+                let list_filtered = this.options;
+
+                if(this.options && this.q && this.q != this.content)
                 {
-                    this.fuse_config.keys = this.search_fields;
                     let fuse = new Fuse(this.options, this.fuse_config);
-                    let searched  = fuse.search(this.q);
-
-                    if(searched.length)
-                    {
-                        for(let key in searched)
-                        {
-                            list_filtered.push(searched[key].item);
-                        }
-                    }
-
-                } else
-                {
-                    list_filtered = this.options;
+                    list_filtered = fuse.search(this.q);
                 }
+
 
                 return list_filtered;
             }
@@ -121,38 +145,33 @@
         },
         watch: {
             options: function (newValue, oldValue) {
-                this.options = newValue;
-
+                this.currency_options = newValue;
             },
             selected: function (newValue, oldValue) {
-                if(newValue && newValue != this.selected_value)
+
+                console.log('--->', newValue);
+
+                if(newValue && newValue != this.content)
                 {
-                    console.log('--->', newValue);
-                    this.$emit('onSelect', newValue);
+                    this.emitOnInput(newValue.slug);
+                } else{
+                    this.emitOnInput(null);
                 }
             },
-            selected_value: function (newValue)
-            {
-                console.log('--->', newValue);
-                this.$refs.autocomplete.setSelected(newValue);
-            }
 
         },
         methods: {
             //---------------------------------------------------------------------
             setSelectedValue: function (selected_value) {
+
+                console.log('--->selected_value', selected_value);
+
                 this.$refs.autocomplete.setSelected(selected_value);
             },
             //---------------------------------------------------------------------
-            toArray: function (obj) {
-
-                let result = Object.keys(obj).map(function(key) {
-                    return [Number(key), obj[key]];
-                });
-
-                return result;
-            }
-            //---------------------------------------------------------------------
+            emitOnInput: function (data) {
+                this.$emit('input', data);
+            },
             //---------------------------------------------------------------------
         }
     }
