@@ -69,7 +69,12 @@
 
         },
         watch: {
-
+            content: function (newVal, oldVal) {
+                if(newVal)
+                {
+                    this.json = newVal;
+                }
+            }
         },
         mounted() {
             //----------------------------------------------------
