@@ -24,19 +24,20 @@
 <script>
 
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-//import SimpleUploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/simpleuploadadapter';
 
 window.ClassicEditor = ClassicEditor;
-//window.SimpleUploadAdapter = SimpleUploadAdapter;
 
+let base_url = document.getElementsByTagName("base")[0].getAttribute('href');
 
+let media_upload_url = base_url+"/backend/cms/media/upload"
 
 class MyUploadAdapter {
     constructor(props) {
         // CKEditor 5's FileLoader instance.
         this.loader = props;
         // URL where to send files.
-        this.url = `http://localhost/jalapeno-website-dev/public/backend/cms/media/upload`;
+        //this.url = `http://localhost/jalapeno-website-dev/public/backend/cms/media/upload`;
+        this.url = media_upload_url;
     }
 
     // Starts the upload process.
@@ -194,9 +195,9 @@ export default {
         '$route' (to, from) {
             if(this.editor)
             {
-                //this.editor.destroy();
-                //this.editor = this.setupEditor();
-                //this.setEditorContent();
+                this.editor.destroy();
+                this.editor = this.setupEditor();
+                this.setEditorContent();
             }
         },
         content: {
