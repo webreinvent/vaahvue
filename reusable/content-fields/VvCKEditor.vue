@@ -218,7 +218,7 @@ export default {
         this.editor = this.setupEditor();
         this.setEditorContent(this.content);
         //----------------------------------------------------
-    },
+    },       
     methods: {
         //----------------------------------------------------
         setupEditor: function()
