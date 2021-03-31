@@ -69,18 +69,6 @@
 
 
         <template v-else-if="field_slug === 'editor'">
-<!--            <vv-editor :content="value"
-                     :size="size"
-                     :class="custom_class"
-                     :label="label"
-                     :labelPosition="labelPosition"
-                     :placeholder="placeholder"
-                     :ref="field_slug"
-                     @input="emitOnInput"
-                     @onChange="emitOnChange"
-                     @onBlur="emitOnBlur"
-                     @onFocus="emitOnFocus" >
-            </vv-editor>-->
 
             <vv-c-k-editor :content="value"
                        :size="size"
@@ -94,6 +82,26 @@
                        @onBlur="emitOnBlur"
                        @onFocus="emitOnFocus" >
             </vv-c-k-editor>
+
+        </template>
+
+        <template v-else-if="field_slug === 'select' && meta">
+
+            <vv-select :content="value"
+                     :type="type"
+                     :size="size"
+                     :options="meta.option"
+                     :is_multiple="meta.is_multiple"
+                     :class="custom_class"
+                     :label="label"
+                     :labelPosition="labelPosition"
+                     :placeholder="placeholder"
+                     :ref="field_slug"
+                     @input="emitOnInput"
+                     @onChange="emitOnChange"
+                     @onBlur="emitOnBlur"
+                     @onFocus="emitOnFocus" >
+            </vv-select>
 
         </template>
 
@@ -443,6 +451,7 @@ import VvSeoMetaTags from "./VvSeoMetaTags";
 import VvSlug from "./VvSlug";
 import VvTags from "./VvTags";
 import VvText from "./VvText";
+import VvSelect from "./VvSelect";
 import VvTextarea from "./VvTextarea";
 import VvTime from "./VvTime";
 import VvTitle from "./VvTitle";
@@ -504,6 +513,10 @@ export default {
             type: Array,
             default: null
         },
+        meta:{
+            type: Array,
+            default: null
+        },
 
     },
     components:{
@@ -511,7 +524,7 @@ export default {
         VvEditor, VvCKEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
-        VvSlug, VvTags, VvText, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
+        VvSlug, VvTags, VvText, VvSelect, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
         VvVisualEditor,VvAutoCompleteUsers
     },
     data()
