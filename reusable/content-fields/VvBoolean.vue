@@ -18,7 +18,7 @@
     export default {
         props:{
             content: {
-                type: Number,
+                type: Number|String,
                 default: function () {
                     return null
                 }
@@ -63,6 +63,9 @@
 
         },
         watch: {
+            content: function (newVal, oldVal) {
+                this.switch_value = newVal;
+            }
         },
         mounted() {
             //----------------------------------------------------

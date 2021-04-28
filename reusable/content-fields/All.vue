@@ -514,7 +514,7 @@ export default {
             default: null
         },
         meta:{
-            type: Array,
+            type: Array|Object,
             default: null
         },
 

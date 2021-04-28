@@ -78,6 +78,7 @@
         },
         watch: {
             content: function (newVal, oldVal) {
+                this.content_value = newVal;
                 if(newVal)
                 {
                     newVal.toString();

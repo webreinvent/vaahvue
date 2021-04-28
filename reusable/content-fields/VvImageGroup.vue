@@ -201,7 +201,13 @@
 
         },
         watch: {
-
+            content(newVal, oldVal) {
+                if(newVal){
+                    this.uploaded_files = newVal;
+                }else{
+                    this.uploaded_files = [];
+                }
+            },
         },
         methods: {
 

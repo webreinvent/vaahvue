@@ -115,6 +115,59 @@
 
         },
         watch: {
+            content(newVal, oldVal) {
+
+                if(!newVal){
+                    this.list = {
+                        "address_line_1": {
+                            name: "Address Line 1",
+                            type: 'text',
+                            maxlength: 50,
+                            content: null
+                        },
+                        "address_line_2":{
+                            name: "Address Line 2",
+                            type: 'text',
+                            maxlength: 50,
+                            content: null
+                        },
+                        "landmark":{
+                            name: "Landmark",
+                            type: 'text',
+                            maxlength: 50,
+                            content: null
+                        },
+                        "city":{
+                            name: "City",
+                            type: 'text',
+                            maxlength: 50,
+                            content: null
+                        },
+                        "state":{
+                            name: "State",
+                            type: 'text',
+                            maxlength: 50,
+                            content: null
+                        },
+                        "country":{
+                            name: "Country",
+                            type: 'text',
+                            maxlength: 20,
+                            content: null
+                        },
+                        "zip_code": {
+                            name: "Zip Code",
+                            type: 'text',
+                            maxlength: 20,
+                            content: null
+                        }
+
+                    };
+                }else{
+                    this.list = newVal;
+                }
+
+            },
         },
         mounted() {
             //----------------------------------------------------

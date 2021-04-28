@@ -73,6 +73,8 @@
                 if(newVal)
                 {
                     this.json = newVal;
+                }else{
+                    this.json = {};
                 }
             }
         },

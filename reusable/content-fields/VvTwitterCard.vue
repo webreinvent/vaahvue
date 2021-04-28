@@ -99,6 +99,44 @@
 
         },
         watch: {
+            content(newVal, oldVal) {
+
+                if(!newVal){
+                    this.list = {
+                        "twitter_site":{
+                            name: "twitter:site",
+                            message: "@username of website. Either twitter:site or twitter:site:id is required.",
+                            maxlength: 70,
+                            type: 'text',
+                            content: null
+                        },
+                        "twitter_title":{
+                            name: "twitter:title",
+                            type: 'text',
+                            message: "Title of content (max 70 characters).",
+                            maxlength: 70,
+                            content: null
+                        },
+                        "twitter_description":{
+                            name: "twitter:description",
+                            type: 'textarea',
+                            message: "Description of content (maximum 200 characters)",
+                            maxlength: 200,
+                            content: null
+                        },
+                        "twitter_image":{
+                            name: "twitter:image",
+                            type: 'text',
+                            message: "URL of image to use in the card. Images must be less than 5MB in size. JPG, PNG, WEBP and GIF formats are supported.",
+                            maxlength: 200,
+                            content: null
+                        }
+                    };
+                }else{
+                    this.list = newVal;
+                }
+
+            },
         },
         mounted() {
             //----------------------------------------------------
