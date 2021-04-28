@@ -68,6 +68,9 @@
 
         },
         watch: {
+            content: function (newVal, oldVal) {
+                this.content_value = newVal;
+            }
         },
         mounted() {
             //----------------------------------------------------

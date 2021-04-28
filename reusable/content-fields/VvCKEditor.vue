@@ -203,12 +203,10 @@ export default {
         content: {
             immediate: true,
             handler(newValue) {
-                if(!newValue)
-                {
-                    //this.editor.clearContent();
-                } else {
-                    this.setEditorContent(newValue);
+                if(!newValue){
+                    newValue = "";
                 }
+                this.editorData = newValue;
             },
         },
 
@@ -218,7 +216,7 @@ export default {
         this.editor = this.setupEditor();
         this.setEditorContent(this.content);
         //----------------------------------------------------
-    },       
+    },
     methods: {
         //----------------------------------------------------
         setupEditor: function()

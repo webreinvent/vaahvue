@@ -195,7 +195,17 @@
 
         },
         watch: {
-
+            content(newVal, oldVal) {
+               if(newVal){
+                   this.full_url = newVal;
+                   this.full_url_name = Vaah.fileNameFromUrl(newVal);
+                   this.full_url_ext = Vaah.fileExtensionFromUrl(newVal);
+               }else{
+                   this.full_url = '';
+                   this.full_url_name = '';
+                   this.full_url_ext = '';
+               }
+            },
         },
         methods: {
 
