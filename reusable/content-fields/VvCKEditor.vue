@@ -165,8 +165,8 @@ export default {
         let obj = {
             editor: ClassicEditor,
             editorData: "",
-
             editorConfig: {
+                mediaEmbed: {previewsInData: true},
                 //plugins: [ SimpleUploadAdapter ],
                 extraPlugins: [ MyCustomUploadAdapterPlugin ],
                 simpleUpload: {
@@ -180,7 +180,8 @@ export default {
                     headers: {
                         'X-CSRF-TOKEN': 'CSRF-Token',
                         Authorization: 'Bearer <JSON Web Token>'
-                    }
+                    },
+
                 }
             }
         };
@@ -203,10 +204,12 @@ export default {
         content: {
             immediate: true,
             handler(newValue) {
-                if(!newValue){
-                    newValue = "";
+                if(!newValue)
+                {
+                    //this.editor.clearContent();
+                } else {
+                    this.setEditorContent(newValue);
                 }
-                this.editorData = newValue;
             },
         },
 
