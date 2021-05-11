@@ -70,7 +70,47 @@
 
         <template v-else-if="field_slug === 'editor'">
 
-            <vv-c-k-editor :content="value"
+            <div class="card-header">
+
+                <div class="card-header-title">
+                    <span></span>
+                </div>
+
+
+                <div class="card-header-buttons">
+                <div class="field has-addons is-pulled-right">
+                    <p  class="control">
+                        <b-button type="is-light"
+                                  @click="is_disable = false"
+                                  :disabled="!is_disable">
+                            Editor
+                        </b-button>
+                    </p>
+                    <p  class="control">
+                        <b-button type="is-light"
+                                  @click="is_disable = true"
+                                  :disabled="is_disable">
+                            Code Editor
+                        </b-button>
+                    </p>
+                </div>
+            </div>
+            </div>
+
+            <vv-code-mirror v-if="is_disable" :content="value"
+                       :size="size"
+                       :class="custom_class"
+                       :label="label"
+                       :labelPosition="labelPosition"
+                       :placeholder="placeholder"
+                       :ref="field_slug"
+                       @input="emitOnInput"
+                       @onChange="emitOnChange"
+                       @onBlur="emitOnBlur"
+                       @onFocus="emitOnFocus" >
+            </vv-code-mirror>
+
+            <vv-c-k-editor v-else :content="value"
                        :size="size"
                        :class="custom_class"
                        :label="label"
@@ -458,6 +498,8 @@ import VvTitle from "./VvTitle";
 import VvTwitterCard from "./VvTwitterCard";
 import VvUuid from "./VvUuid";
 import VvVisualEditor from "./VvVisualEditor";
+import VvCodeMirror from "./VvCodeMirror";
+
 
 
 
@@ -525,13 +567,12 @@ export default {
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
         VvSlug, VvTags, VvText, VvSelect, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
-        VvVisualEditor,VvAutoCompleteUsers
+        VvVisualEditor,VvAutoCompleteUsers,VvCodeMirror
     },
     data()
     {
         let obj = {
-
-
+            is_disable:false,
 
         };
 
@@ -550,7 +591,6 @@ export default {
     methods: {
         //----------------------------------------------------
         emitOnInput: function (data) {
-            console.log('emitted data--->', data);
             this.$emit('input', data);
         },
         //----------------------------------------------------
