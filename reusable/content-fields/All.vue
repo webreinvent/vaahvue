@@ -70,34 +70,7 @@
 
         <template v-else-if="field_slug === 'editor'">
 
-            <div class="card-header">
-
-                <div class="card-header-title">
-                    <span></span>
-                </div>
-
-
-                <div class="card-header-buttons">
-                <div class="field has-addons is-pulled-right">
-                    <p  class="control">
-                        <b-button type="is-light"
-                                  @click="is_disable = false"
-                                  :disabled="!is_disable">
-                            Editor
-                        </b-button>
-                    </p>
-                    <p  class="control">
-                        <b-button type="is-light"
-                                  @click="is_disable = true"
-                                  :disabled="is_disable">
-                            Code Editor
-                        </b-button>
-                    </p>
-                </div>
-            </div>
-            </div>
-
-            <vv-code-mirror v-if="is_disable" :content="value"
+            <vv-jodit-editor :content="value"
                        :size="size"
                        :class="custom_class"
                        :label="label"
@@ -108,20 +81,7 @@
                        @onChange="emitOnChange"
                        @onBlur="emitOnBlur"
                        @onFocus="emitOnFocus" >
-            </vv-code-mirror>
-
-            <vv-c-k-editor v-else :content="value"
-                       :size="size"
-                       :class="custom_class"
-                       :label="label"
-                       :labelPosition="labelPosition"
-                       :placeholder="placeholder"
-                       :ref="field_slug"
-                       @input="emitOnInput"
-                       @onChange="emitOnChange"
-                       @onBlur="emitOnBlur"
-                       @onFocus="emitOnFocus" >
-            </vv-c-k-editor>
+            </vv-jodit-editor>
 
         </template>
 
@@ -474,7 +434,7 @@ import VvCurrencyCode from "./VvCurrencyCode";
 import VvDate from "./VvDate";
 import VvDateTime from "./VvDateTime";
 import VvEditor from "./VvEditor";
-import VvCKEditor from "./VvCKEditor";
+import VvJoditEditor from "./VvJoditEditor";
 import VvEmail from "./VvEmail";
 import VvFacebookCard from "./VvFacebookCard";
 import VvImage from './VvImage';
@@ -563,7 +523,7 @@ export default {
     },
     components:{
         VvAddress, VvBoolean, VvCurrencyCode, VvDate, VvDateTime,
-        VvEditor, VvCKEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
+        VvEditor, VvJoditEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
         VvSlug, VvTags, VvText, VvSelect, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
@@ -572,7 +532,6 @@ export default {
     data()
     {
         let obj = {
-            is_disable:false,
 
         };
 
