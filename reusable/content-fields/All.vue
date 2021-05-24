@@ -352,6 +352,9 @@
                      :labelPosition="labelPosition"
                      :placeholder="placeholder"
                      :ref="field_slug"
+                     :ajax_url="ajax_url"
+                     :display_column="display_column"
+                     :unique_column="unique_column"
                      @input="emitOnInput"
                      @onChange="emitOnChange"
                      @onBlur="emitOnBlur"
@@ -519,6 +522,18 @@ export default {
             type: Array|Object,
             default: null
         },
+        ajax_url:{
+            type: String,
+            default: null
+        },
+        display_column:{
+            type: String,
+            default: 'name'
+        },
+        unique_column:{
+            type: String,
+            default: 'email'
+        }
 
     },
     components:{
