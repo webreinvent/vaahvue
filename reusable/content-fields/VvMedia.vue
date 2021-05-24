@@ -68,7 +68,7 @@
 
 <script>
 
-    let base_url = document.getElementsByTagName('base')[0].href;
+    let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 
     import {VaahHelper as Vaah} from "../../../vaahvue/helpers/VaahHelper";
 
