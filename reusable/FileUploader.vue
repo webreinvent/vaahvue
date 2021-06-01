@@ -88,7 +88,7 @@
     export default {
         name: "VvImageGroup",
         props: {
-            content: {
+            value: {
                 type: Array,
                 default: function () {
                     return null
@@ -209,7 +209,9 @@
 
         },
         watch: {
-            content(newVal, oldVal) {
+            value(newVal, oldVal) {
+
+                console.log(oldVal,'--->test',newVal);
                 if(newVal){
                     this.uploaded_files = newVal;
                 }else{
