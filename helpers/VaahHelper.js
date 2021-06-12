@@ -89,7 +89,7 @@ const VaahHelper = {
     },
 
     //---------------------------------------------------------------------
-    async ajax(url, params, callback, query )
+    async ajax(url, params, callback, query, headers=null )
     {
 
         //To make axios request as ajax request
@@ -101,7 +101,15 @@ const VaahHelper = {
             params: query
         };
 
-        let data = await Vue.axios.post(url, params, q)
+        if(headers)
+        {
+            q.headers = headers;
+        }
+
+        console.log('--->', params);
+
+
+        let data = await axios.post(url, params, q)
             .then(response => {
                 this.processResponse(response);
                 if(callback)
