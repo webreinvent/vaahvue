@@ -1,11 +1,12 @@
-import Vue from "vue";
+import Vue from 'vue/dist/vue';
+import axios from "axios";
 import moment from 'moment/moment';
 import copy from 'copy-to-clipboard';
 
 import {store} from './../../store/store';
 import {ToastProgrammatic as Toast} from "buefy";
 import {SnackbarProgrammatic as Snackbar} from "buefy";
-import axios from "axios";
+
 
 var debug = document.getElementById('debug').getAttribute('content');
 
@@ -109,7 +110,7 @@ const VaahHelper = {
         console.log('--->', params);
 
 
-        let data = await axios.post(url, params, q)
+        let data = await Vue.axios.post(url, params, q)
             .then(response => {
                 this.processResponse(response);
                 if(callback)
