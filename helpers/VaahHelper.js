@@ -1,4 +1,4 @@
-import Vue from 'vue/dist/vue';
+import Vue from 'vue';
 import axios from "axios";
 import moment from 'moment/moment';
 import copy from 'copy-to-clipboard';
