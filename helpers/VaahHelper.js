@@ -563,6 +563,21 @@ const VaahHelper = {
     },
 
     //---------------------------------------------------------------------
+    ago: function (value) {
+
+        if(!value)
+        {
+            return null;
+        }
+        let dt = store.getters['root/state'].assets.server_date_time;
+
+        let server = moment(dt);
+        let time = moment(value);
+
+        //return server.from(time);
+        return time.from(server);
+    },
+    //---------------------------------------------------------------------
     currentDate: function () {
         return moment().format('YYYY-MM-DD')
     },
