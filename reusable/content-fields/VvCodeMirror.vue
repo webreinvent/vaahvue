@@ -2,6 +2,7 @@
 
     <b-field :label="label"
              :labelPosition="labelPosition">
+
         <codemirror
                 ref="cmEditor" :value="content"
                 @input="emitOnInput"
@@ -18,6 +19,10 @@
 
     // language
     import 'codemirror/mode/xml/xml.js'
+    import 'codemirror/mode/css/css.js'
+    import 'codemirror/mode/javascript/javascript.js'
+    import 'codemirror/mode/php/php.js'
+
     // theme css
     import 'codemirror/lib/codemirror.css'
     import 'codemirror/theme/monokai.css'
@@ -37,6 +42,10 @@
             type: {
                 type: String,
                 default: null,
+            },
+            mode: {
+                type: String,
+                default: 'text/html',
             },
             size: {
                 type: String,
@@ -71,8 +80,8 @@
                     lineNumbers: true,
                     lineWrapping: true,
                     autoCloseTags: true,
-                    line: true,
                     mode: 'text/html',
+                    line: true,
                     theme: 'monokai'
                     // more CodeMirror options...
                 }
@@ -88,6 +97,10 @@
         },
         mounted() {
             //----------------------------------------------------
+            this.cm_options.mode = this.mode;
+
+            console.log('--->', this.cm_options);
+
             //----------------------------------------------------
         },
         methods: {
