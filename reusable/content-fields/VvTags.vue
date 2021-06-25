@@ -120,9 +120,7 @@
                     this.data = [];
                     return
                 }
-
-                this.$emit('input', null);
-
+                
                 let self = this;
                 this.data = [];
                 this.isFetching = true;
