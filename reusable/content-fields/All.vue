@@ -85,6 +85,22 @@
 
         </template>
 
+
+        <template v-else-if="field_slug === 'code-mirror'">
+
+            <vv-code-mirror :content="value"
+                       :mode="type"
+                       :label="label"
+                       :labelPosition="labelPosition"
+                       :ref="field_slug"
+                       @input="emitOnInput"
+                       @onChange="emitOnChange"
+                       @onBlur="emitOnBlur"
+                       @onFocus="emitOnFocus" >
+            </vv-code-mirror>
+
+        </template>
+
         <template v-else-if="field_slug === 'select' && meta">
 
             <vv-select :content="value"
