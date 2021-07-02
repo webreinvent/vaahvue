@@ -97,3 +97,9 @@
     }
 </script>
 
+<style>
+    .vue-codemirror {
+        max-width: 450px;
+    }
+</style>
+
