@@ -99,7 +99,13 @@
 
 <style>
     .vue-codemirror {
-        max-width: 450px;
+        position: relative;
+        display: grid;
+    }
+
+    .CodeMirror {
+        min-height: 250px;
+        resize: vertical;
     }
 </style>
 
