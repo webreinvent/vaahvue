@@ -1,16 +1,12 @@
 <template>
-
     <b-field :label="label"
              :labelPosition="labelPosition">
-
         <codemirror
-                ref="cmEditor" :value="content"
+                ref="cmEditor" :value="code"
                 @input="emitOnInput"
                 :options="cm_options"
         />
     </b-field>
-
-
 </template>
 
 <script>
@@ -58,6 +54,7 @@
         data()
         {
             let obj = {
+                code: null,
                 cm_options: {
                     tabSize: 4,
                     styleActiveLine: true,
@@ -78,9 +75,18 @@
 
         },
         watch: {
+            content: function (newVal, oldVal) {
+                if(newVal)
+                {
+                    this.code = newVal;
+                } else{
+                    this.code = "";
+                }
+            }
         },
         mounted() {
             //----------------------------------------------------
+            this.code = this.content;
             this.cm_options.mode = this.mode;
 
             console.log('--->', this.cm_options);
