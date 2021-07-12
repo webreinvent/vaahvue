@@ -956,7 +956,13 @@ const VaahHelper = {
     getNonReactiveObject: function (obj) {
         return JSON.parse(JSON.stringify(obj));
     },
-
+    //---------------------------------------------------------------------
+    pluck: function (array, key)
+    {
+        return array.map(function(obj) {
+            return obj[key];
+        });
+    },
     //---------------------------------------------------------------------
 
 
