@@ -61,7 +61,7 @@ export default {
         },
         is_simple: {
             type: Boolean,
-            default: true,
+            default: false,
         },
     },
     components: {
