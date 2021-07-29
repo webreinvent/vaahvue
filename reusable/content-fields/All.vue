@@ -74,6 +74,7 @@
                        :size="size"
                        :class="custom_class"
                        :label="label"
+                       :is_simple="is_simple"
                        :labelPosition="labelPosition"
                        :placeholder="placeholder"
                        :ref="field_slug"
@@ -549,6 +550,10 @@ export default {
         unique_column:{
             type: String,
             default: 'email'
+        },
+        is_simple: {
+            type: Boolean,
+            default: false,
         }
 
     },
