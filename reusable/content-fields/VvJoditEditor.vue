@@ -4,7 +4,14 @@
              :labelPosition="labelPosition" >
 
         <div class="content" >
-            <jodit-editor v-model="editorData"
+            <jodit-editor v-if="is_simple"
+                          v-model="editorData"
+                          :config="editorConfig"
+                          :buttons="buttons"
+                          @input="emitOnInput" />
+
+            <jodit-editor v-else
+                          v-model="editorData"
                           :config="editorConfig"
                           @input="emitOnInput" />
         </div>
@@ -16,6 +23,7 @@
 <script>
 
 let base_url = document.getElementsByTagName("base")[0].getAttribute('href');
+import $ from 'jquery'
 
 let media_upload_url = base_url+"/backend/cms/media/upload";
 
@@ -51,6 +59,10 @@ export default {
             type: String,
             default: null,
         },
+        is_simple: {
+            type: Boolean,
+            default: true,
+        },
     },
     components: {
 
@@ -59,6 +71,7 @@ export default {
     {
         let obj = {
             editorData: "",
+            buttons: ['source', 'image', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph'],
             editorConfig: {
                 uploader: {
                     url: media_upload_url+"?_token="+$('meta[name="csrf-token"]').attr('content'),  //your upload api url
