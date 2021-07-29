@@ -74,7 +74,7 @@
                        :size="size"
                        :class="custom_class"
                        :label="label"
-                       :is_simple="is_simple_editor"
+                       :is_simple="is_simple"
                        :labelPosition="labelPosition"
                        :placeholder="placeholder"
                        :ref="field_slug"
@@ -551,7 +551,7 @@ export default {
             type: String,
             default: 'email'
         },
-        is_simple_editor: {
+        is_simple: {
             type: Boolean,
             default: false,
         }
