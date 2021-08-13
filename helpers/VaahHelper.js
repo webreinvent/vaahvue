@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import axios from "axios";
-import moment from 'moment/moment';
+let moment = require('moment-timezone');
 import copy from 'copy-to-clipboard';
 
 import {store} from './../../store/store';
@@ -576,6 +576,7 @@ const VaahHelper = {
             let timezone = store.getters['root/state'].assets.timezone;
             moment.tz.setDefault(timezone);
         }
+
 
         let dt = store.getters['root/state'].assets.server_date_time;
 
