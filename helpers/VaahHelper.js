@@ -569,6 +569,14 @@ const VaahHelper = {
         {
             return null;
         }
+
+        let timezone = store.getters['root/state'].assets.timezone;
+
+        if(timezone)
+        {
+            moment.tz.setDefault(timezone);
+        }
+
         let dt = store.getters['root/state'].assets.server_date_time;
 
         let server = moment(dt);
