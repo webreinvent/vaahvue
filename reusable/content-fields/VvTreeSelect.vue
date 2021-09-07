@@ -10,6 +10,7 @@
                      :clearable="is_clearable"
                      :multiple="is_multiple"
                      :show-count="show_count"
+                     :flat="true"
                      :normalizer="normalizer"
                      :options="type_options" >
 
@@ -98,7 +99,11 @@
         mounted() {
 
             this.type_options = this.options;
-            this.value = this.content;
+
+            if(this.is_multiple
+                && (typeof this.content === 'string' || typeof this.content === 'number')){
+                this.value = [this.content];
+            }
 
             //----------------------------------------------------
             if(this.ajax_url && this.taxonomy_type){

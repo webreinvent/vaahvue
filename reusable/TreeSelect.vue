@@ -10,6 +10,7 @@
                      :clearable="is_clearable"
                      :multiple="is_multiple"
                      :show-count="show_count"
+                     :flat="true"
                      :normalizer="normalizer"
                      :options="type_options" >
 
@@ -80,6 +81,7 @@
         components:{
             TreeSelect
         },
+
         data()
         {
             let obj = {
@@ -94,6 +96,13 @@
 
         },
         watch: {
+            options: function (newValue, oldValue) {
+                if(newValue){
+                    this.type_options = newValue;
+                }
+
+
+            },
         },
         mounted() {
             //----------------------------------------------------
