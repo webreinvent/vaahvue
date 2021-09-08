@@ -1,8 +1,9 @@
 <template>
 
-    <b-field :label="label"
+    <b-field v-if="display_column" :label="label"
              :labelPosition="labelPosition">
-        <tree-select v-model="value"
+        <tree-select ref="vv_tree_select"
+                     v-model="value"
                      :placeholder="placeholder"
                      :class="custom_class"
                      @select="emitOnSelect"
@@ -10,11 +11,22 @@
                      :clearable="is_clearable"
                      :multiple="is_multiple"
                      :show-count="show_count"
-                     :flat="true"
+                     :flat="is_multiple"
                      :normalizer="normalizer"
                      :options="type_options" >
 
         </tree-select>
+
+        <p>
+            <b-tooltip v-if="add_url" label="Add" type="is-dark">
+                <b-button tag="a"
+                          target="_blank"
+                          :href="add_url"
+                          icon-left="external-link-alt">
+                </b-button>
+            </b-tooltip>
+        </p>
+
     </b-field>
 
 
@@ -41,12 +53,14 @@
                     return []
                 }
             },
+            meta: {
+                type: Array|Object,
+                default: function () {
+                    return []
+                }
+            },
             ajax_url: {
                 type: String,
-                default: null,
-            },
-            taxonomy_type: {
-                type: String|Number,
                 default: null,
             },
             custom_class: {
@@ -85,6 +99,8 @@
         {
             let obj = {
                 value:null,
+                display_column: null,
+                add_url: null,
                 type_options:[]
             };
 
@@ -100,32 +116,41 @@
 
             this.type_options = this.options;
 
+            this.value = this.content;
+
             if(this.is_multiple
                 && (typeof this.content === 'string' || typeof this.content === 'number')){
                 this.value = [this.content];
             }
 
             //----------------------------------------------------
-            if(this.ajax_url && this.taxonomy_type){
-                this.getOptions(this.taxonomy_type);
+            if(this.ajax_url && this.meta){
+                this.getOptions(this.meta);
             }
 
             //----------------------------------------------------
         },
         methods: {
             //----------------------------------------------------
-            getOptions: function (q) {
+            getOptions: function (query) {
                 let url = this.ajax_url;
-                let params = {
-                    q: q
-                };
+                let params = query;
 
                 console.log('--->', params);
 
                 this.axios.post(url, params).then((response) => {
-                    this.type_options = response.data;
+                    if(response.data || response.data.status === 'success'){
 
-                    console.log('--->', response);
+                        this.type_options = response.data.data.list;
+                        this.display_column = response.data.data.display_column;
+                        this.add_url = response.data.data.add_url;
+                    }
+
+                    if(!this.display_column){
+                        this.display_column = 'name';
+                    }
+
+                    console.log('--->', response.data);
                 });
             },
             //----------------------------------------------------
@@ -138,8 +163,10 @@
             //---------------------------------------------------------------------
             normalizer: function (node) {
 
+                console.log(this.display_column);
+
                 let data = {
-                    label: node.name,
+                    label: node[this.display_column]
                 };
 
                 if(node.children && node.children.length === 0){

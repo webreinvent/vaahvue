@@ -352,7 +352,7 @@
                             :size="size"
                             :ajax_url="app_url"
                             :is_multiple="meta.is_multiple"
-                            :taxonomy_type="meta.taxonomy_type"
+                            :meta="meta"
                             :class="custom_class"
                             :label="label"
                             :labelPosition="labelPosition"

@@ -10,7 +10,7 @@
                      :clearable="is_clearable"
                      :multiple="is_multiple"
                      :show-count="show_count"
-                     :flat="true"
+                     :flat="is_multiple"
                      :normalizer="normalizer"
                      :options="type_options" >
 
