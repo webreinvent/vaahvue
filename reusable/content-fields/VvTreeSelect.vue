@@ -99,7 +99,7 @@
         {
             let obj = {
                 value:null,
-                display_column: null,
+                display_column: 'name',
                 add_url: null,
                 type_options:[]
             };
@@ -142,6 +142,8 @@
                     if(response.data || response.data.status === 'success'){
 
                         this.type_options = response.data.data.list;
+                        this.display_column = null;
+
                         this.display_column = response.data.data.display_column;
                         this.add_url = response.data.data.add_url;
                     }
