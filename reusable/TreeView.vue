@@ -75,9 +75,7 @@
             }
         },
         mounted() {
-            // this.getList();
-
-            console.log('221',this.options);
+            this.getList();
 
             if(this.options) {
                 this.data = new Tree(
