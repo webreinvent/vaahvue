@@ -111,6 +111,18 @@
 
         },
         watch: {
+            content: function (newValue, oldValue) {
+                this.value = newValue;
+
+            },
+            value: function (newValue, oldValue) {
+
+                console.log(newValue);
+                if(!newValue){
+                    this.$emit('input', null);
+                }
+
+            },
         },
         mounted() {
 
@@ -136,8 +148,6 @@
                 let url = this.ajax_url;
                 let params = query;
 
-                console.log('--->', params);
-
                 this.axios.post(url, params).then((response) => {
                     if(response.data || response.data.status === 'success'){
 
@@ -151,8 +161,6 @@
                     if(!this.display_column){
                         this.display_column = 'name';
                     }
-
-                    console.log('--->', response.data);
                 });
             },
             //----------------------------------------------------
@@ -164,8 +172,6 @@
 
             //---------------------------------------------------------------------
             normalizer: function (node) {
-
-                console.log(this.display_column);
 
                 let data = {
                     label: node[this.display_column]
