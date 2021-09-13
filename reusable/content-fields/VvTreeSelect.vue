@@ -112,12 +112,11 @@
         },
         watch: {
             content: function (newValue, oldValue) {
-                this.value = newValue;
+                this.checkValueType(newValue);
 
             },
             value: function (newValue, oldValue) {
 
-                console.log(newValue);
                 if(!newValue){
                     this.$emit('input', null);
                 }
@@ -128,12 +127,7 @@
 
             this.type_options = this.options;
 
-            this.value = this.content;
-
-            if(this.is_multiple
-                && (typeof this.content === 'string' || typeof this.content === 'number')){
-                this.value = [this.content];
-            }
+            this.checkValueType(this.content);
 
             //----------------------------------------------------
             if(this.ajax_url && this.meta){
@@ -182,6 +176,17 @@
                 }
 
                 return data;
+            },
+
+            //---------------------------------------------------------------------
+            checkValueType: function (value) {
+
+                this.value = value;
+
+                if(this.is_multiple
+                    && (typeof value === 'string' || typeof value === 'number')){
+                    this.value = [value];
+                }
             },
             //----------------------------------------------------
         },
