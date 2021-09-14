@@ -347,18 +347,22 @@
 
 
         <template v-else-if="field_slug === 'relation'">
-            <vv-relation :content="value"
-                     :size="size"
-                     :class="custom_class"
-                     :label="label"
-                     :labelPosition="labelPosition"
-                     :placeholder="placeholder"
-                     :ref="field_slug"
-                     @input="emitOnInput"
-                     @onChange="emitOnChange"
-                     @onBlur="emitOnBlur"
-                     @onFocus="emitOnFocus" >
-            </vv-relation>
+            <vv-tree-select :content="value"
+                            :type="type"
+                            :size="size"
+                            :ajax_url="app_url"
+                            :is_multiple="meta.is_multiple"
+                            :meta="meta"
+                            :class="custom_class"
+                            :label="label"
+                            :labelPosition="labelPosition"
+                            :placeholder="placeholder"
+                            :ref="field_slug"
+                            @input="emitOnInput"
+                            @onChange="emitOnChange"
+                            @onBlur="emitOnBlur"
+                            @onFocus="emitOnFocus" >
+            </vv-tree-select>
         </template>
 
         <template v-else-if="field_slug === 'tags'">
@@ -472,6 +476,7 @@ import VvSlug from "./VvSlug";
 import VvTags from "./VvTags";
 import VvText from "./VvText";
 import VvSelect from "./VvSelect";
+import VvTreeSelect from "./VvTreeSelect";
 import VvTextarea from "./VvTextarea";
 import VvTime from "./VvTime";
 import VvTitle from "./VvTitle";
@@ -562,7 +567,7 @@ export default {
         VvEditor, VvJoditEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
-        VvSlug, VvTags, VvText, VvSelect, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
+        VvSlug, VvTags, VvText, VvSelect, VvTreeSelect, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
         VvVisualEditor,VvAutoCompleteUsers,VvCodeMirror
     },
     data()

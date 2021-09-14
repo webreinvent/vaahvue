@@ -43,6 +43,12 @@
                 type: String,
                 required: true
             },
+            options: {
+                type: Array|Object,
+                default: function () {
+                    return []
+                }
+            },
             ajax_delete_url: {
                 type: String,
                 required: true
@@ -52,6 +58,15 @@
             VueTreeList
         },
         watch: {
+            options: function (newValue, oldValue) {
+                if(newValue){
+                    this.data = new Tree(
+                        newValue
+                    );
+                }
+
+
+            },
         },
         data() {
             return {
@@ -61,6 +76,16 @@
         },
         mounted() {
             this.getList();
+
+            if(this.options) {
+                this.data = new Tree(
+                    this.options
+                );
+            }
+
+
+
+            // $("span[title]").css("display", "none");
         },
         methods: {
             getList() {
