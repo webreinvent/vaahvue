@@ -55,7 +55,7 @@
         computed: {
         },
         watch: {
-            value: function (newVal, oldVal) {
+            selected_value: function (newVal, oldVal) {
                 if(newVal)
                 {
                     newVal.toString();
