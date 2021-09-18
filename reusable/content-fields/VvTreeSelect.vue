@@ -160,7 +160,9 @@
             //----------------------------------------------------
             emitOnSelect: function (data) {
 
-                this.$emit('input', this.value);
+                this.$nextTick(function () {
+                    this.$emit('input', this.value);
+                });
 
             },
 

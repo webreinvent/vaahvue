@@ -103,6 +103,14 @@
 
 
             },
+
+            content: function (newValue, oldValue) {
+
+                if(!newValue){
+                    this.$emit('input', null);
+                }
+
+            },
         },
         mounted() {
             //----------------------------------------------------
@@ -134,7 +142,9 @@
             //----------------------------------------------------
             emitOnSelect: function (data) {
 
-                this.$emit('input', this.content);
+                this.$nextTick(function () {
+                    this.$emit('input', this.content);
+                });
 
             },
 
