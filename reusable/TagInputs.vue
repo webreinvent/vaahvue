@@ -16,7 +16,8 @@
                 size="is-small"
                 @add="emitTags"
                 @remove="emitTags"
-                @typing="getFilteredTags">
+                @typing="getFilteredTags"
+                :before-adding="doesItemExist">
 
                 <template slot-scope="props">
                     <div class="media">
@@ -73,7 +74,7 @@
                 default: false
             },
             selected_value: {
-                type: Array,
+                type: Array|Object,
                 default: function () {
                     return []
                 }
@@ -127,6 +128,9 @@
                 {
                     let fuse = new Fuse(this.options, config);
                     list_filtered = fuse.search(text);
+                    list_filtered = Object.keys(list_filtered).map(function(key) {
+                        return list_filtered[key]['item'];
+                    }) ;
                 } else
                 {
                     list_filtered = this.options;
@@ -139,6 +143,27 @@
             emitTags: function () {
                 this.$emit('onTagChange', this.tags);
                 this.$emit('onSelect', this.tags);
+            },
+
+            doesItemExist(item) {
+
+                if (!this.tags) return true;
+
+                let self = this;
+
+                console.log('-->tag',this.tags);
+
+                let add = this.tags.find( function (el) {
+
+                    return el[self.field_name] === item[self.field_name];
+
+                });
+
+                console.log('-->add',add);
+
+                if(!add){
+                    return true;
+                }
             },
         }
     }
