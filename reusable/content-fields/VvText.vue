@@ -19,7 +19,7 @@
     export default {
         props:{
             content: {
-                type: String,
+                type: String|Number,
                 default: function () {
                     return null
                 }
