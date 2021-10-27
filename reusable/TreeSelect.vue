@@ -10,7 +10,8 @@
                      :clearable="is_clearable"
                      :multiple="is_multiple"
                      :show-count="show_count"
-                     :flat="is_multiple"
+                     :flat="is_flat"
+                     :value-consists-of="priority"
                      :normalizer="normalizer"
                      :options="type_options" >
 
@@ -69,6 +70,10 @@
                 type: Boolean,
                 default: false,
             },
+             is_flat: {
+                type: Boolean,
+                default: true,
+            },
             is_clearable: {
                 type: Boolean,
                 default: false,
@@ -76,6 +81,10 @@
             show_count: {
                 type: Boolean,
                 default: true,
+            },
+            priority: {
+                type: String,
+                default: 'ALL',
             },
         },
         components:{
@@ -86,7 +95,7 @@
         {
             let obj = {
                 content:null,
-                type_options:[]
+                type_options:[],
             };
 
             return obj;

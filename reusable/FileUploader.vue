@@ -84,6 +84,9 @@
     let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
 
     import {VaahHelper as Vaah} from "../../vaahvue/helpers/VaahHelper";
+    import vueFilePond from "vue-filepond";
+
+    const FilePond = vueFilePond();
 
     export default {
         name: "VvImageGroup",
@@ -169,7 +172,7 @@
         computed:{
         },
         components:{
-
+            FilePond
         },
         data()
         {

@@ -141,8 +141,24 @@
                 this.filteredTags = list_filtered;
             },
             emitTags: function () {
+                const tags = [];
+                let self = this;
+
+                if(this.allow_new) {
+                    this.tags.forEach(tag => {
+                        const item = tag instanceof Object ?
+                            { is_new: false, name: tag[self.field_name] } :
+                            { is_new: true,name: tag };
+                        tags.push(item);
+                    })
+
+                    this.tags = tags;
+                }
+
                 this.$emit('onTagChange', this.tags);
                 this.$emit('onSelect', this.tags);
+
+
             },
 
             doesItemExist(item) {
@@ -155,7 +171,10 @@
 
                 let add = this.tags.find( function (el) {
 
-                    return el[self.field_name] === item[self.field_name];
+                    if(item instanceof Object)
+                         return el[self.field_name] === item[self.field_name];
+
+                    return el[self.field_name] === item;
 
                 });
 
