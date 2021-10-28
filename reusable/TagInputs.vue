@@ -147,8 +147,8 @@
                 if(this.allow_new) {
                     this.tags.forEach(tag => {
                         const item = tag instanceof Object ?
-                            { is_new: false, name: tag[self.field_name] } :
-                            { is_new: true,name: tag };
+                            { is_new: false, [self.field_name]: tag[self.field_name] } :
+                            { is_new: true,  [self.field_name]: tag };
                         tags.push(item);
                     })
 

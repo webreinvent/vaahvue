@@ -10,9 +10,10 @@
                      :clearable="is_clearable"
                      :multiple="is_multiple"
                      :show-count="show_count"
-                     :flat="is_flat"
+                     :flat="flat_when_multiple"
                      :value-consists-of="priority"
                      :normalizer="normalizer"
+                     :disable-branch-nodes="disable_branch_nodes"
                      :options="type_options" >
 
         </tree-select>
@@ -71,7 +72,11 @@
                 default: false,
             },
              is_flat: {
-                type: Boolean,
+
+                // Whenever a branch node gets checked, all its children will be checked too
+                // Whenever a branch node has all children checked, the branch node itself will be checked too
+
+                 type: Boolean,
                 default: true,
             },
             is_clearable: {
@@ -83,9 +88,23 @@
                 default: true,
             },
             priority: {
+
+                // "ALL" - Any node that is checked will be included in the value array
+                // "BRANCH_PRIORITY" (default) - If a branch node is checked, all its descendants will be excluded in the value array
+                // "LEAF_PRIORITY" - If a branch node is checked, this node itself and its branch descendants will be excluded from the value array but its leaf descendants will be included
+                // "ALL_WITH_INDETERMINATE" - Any node that is checked will be included in the value array, plus indeterminate nodes
+
                 type: String,
                 default: 'ALL',
             },
+            disable_branch_nodes: {
+
+                // Set disableBranchNodes: true to make branch nodes uncheckable and treat them as collapsible folders only.
+
+                type: Boolean,
+                default: false,
+            },
+
         },
         components:{
             TreeSelect
@@ -132,6 +151,12 @@
             }
 
             //----------------------------------------------------
+        },
+        computed: {
+            flat_when_multiple: function() {
+                return this.is_multiple === false ? false : this.is_flat;
+            }
+
         },
         methods: {
             getOptions: function (q) {

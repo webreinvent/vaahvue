@@ -56,28 +56,22 @@ export default {
     methods: {
         //---------------------------------------------------------------------
         showModal: function () {
+
+            let content_body = this.is_image ?
+                `<p class="image"><img src="` + this.value + `"></p>` :
+                `<pre class="is-size-6">` + JSON.stringify(this.value, null, 2) + `</pre>`;
+
+            let content = `<div class="card">
+                                 <div class="card-content">
+                                    ${content_body}
+                                 </div>
+                           </div>`;
+
             let props = {
                 scroll: 'keep',
                 width: 640,
+                content: `${content}`
             };
-            if (this.is_image) {
-
-                props['content'] = `<div class="card">
-                                    <div class="card-content">
-                                     <p class="image">
-                                        <img src="` + this.value + `">
-                                     </p>
-                                    </div>
-                                    </div>`
-
-            } else {
-
-                props['content'] = `<div class="card">
-                                    <div class="card-content">
-                                    <pre class="is-size-6">` + JSON.stringify(this.value, null, 2) + `</pre>
-                                    </div>
-                                    </div>`
-            }
 
             Modal.open(props);
         },

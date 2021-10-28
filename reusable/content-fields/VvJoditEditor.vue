@@ -24,8 +24,7 @@
 
 let base_url = document.getElementsByTagName("base")[0].getAttribute('href');
 import $ from 'jquery'
-import 'jodit/build/jodit.min.css'
-import {JoditEditor} from 'jodit-vue'
+
 
 let media_upload_url = base_url + "/backend/cms/media/upload";
 
@@ -67,7 +66,6 @@ export default {
         },
     },
     components: {
-        JoditEditor
     },
     data() {
         let obj = {
