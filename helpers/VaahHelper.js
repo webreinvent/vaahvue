@@ -910,7 +910,7 @@ const VaahHelper = {
     //---------------------------------------------------------------------
 
     //---------------------------------------------------------------------
-    strToSlug: function (title) {
+    strToSlug: function (title,delimiter = '-') {
         let slug = "";
         // Change to lower case
         let titleLower = title.toLowerCase();
@@ -927,7 +927,7 @@ const VaahHelper = {
         // Trim the last whitespace
         slug = slug.replace(/\s*$/g, '');
         // Change whitespace to "-"
-        slug = slug.replace(/\s+/g, '-');
+        slug = slug.replace(/\s+/g, delimiter);
 
         return slug;
     },
