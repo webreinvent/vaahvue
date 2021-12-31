@@ -1,11 +1,12 @@
 # vaahvue
-Vue Component For Laravel to fasten your development
+Buefy Based Vue Component to fasten your development
 
-
+Docs Reusable Components: https://docs.vaah.dev/vaahcms/vaahvue/reusable/
+Docs Helper Methods: https://docs.vaah.dev/vaahcms/vaahvue/helpers.html#vaah-helper
 
 ## Support us
 
-[WebReinvent](https://www.webreinvent.com) is a web agency based in Delhi, India. You'll find an overview of all our open source projects [on github](https://github.com/webreinvent).
+[WebReinvent](https://webreinvent.com) is a web agency based in Delhi, India. You'll find an overview of all our open source projects [on github](https://github.com/webreinvent).
 
 ## License
 
