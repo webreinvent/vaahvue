@@ -979,6 +979,65 @@ const VaahHelper = {
         });
     },
     //---------------------------------------------------------------------
+    pusherAuth(pusher_auth_url, pusher_key, pusher_cluster, params=null){
+
+        if(debug === true) {
+            console.log('params--->', params);
+        }
+
+        return  new Pusher(pusher_key, {
+            authEndpoint: pusher_auth_url,
+            cluster: pusher_cluster ,
+            auth: {
+                headers: {
+                    'X-CSRF-Token': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                },
+                params: params,
+            }
+        });
+    },
+    //---------------------------------------------------------------------
+    pusherSubscribe: function (pusher_instance, channel_name, callback=null)
+    {
+        channel_name = "presence-"+channel_name;
+
+        let channel_instance =  pusher_instance.subscribe(channel_name);
+
+
+        channel_instance.bind('pusher:subscription_succeeded', function(members)
+        {
+            if(debug === true) {
+                console.log('SubscribedToChannel -->', channel_name);
+                console.log('LiveMembers -->', members);
+            }
+
+            if(callback)
+            {
+                callback(members);
+            }
+
+        });
+
+        return channel_instance;
+
+    },
+    //---------------------------------------------------------------------
+    pusherListenEvent: function (channel_instance, event_name, callback=null)
+    {
+        channel_instance.bind(event_name, function(data)
+        {
+            if(debug === true) {
+                console.log('ReceivedFromPusher | Event--> '+event_name+' | Data --->', data);
+            }
+
+            if(callback)
+            {
+                callback(data);
+            }
+        });
+
+    },
+    //---------------------------------------------------------------------
 
 
 };
