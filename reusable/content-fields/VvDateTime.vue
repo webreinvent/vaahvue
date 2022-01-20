@@ -77,11 +77,12 @@
 
         },
         watch: {
-            value: function (newVal, oldVal) {
+            content: function (newVal, oldVal) {
+                this.content_value = newVal;
                 if(newVal)
                 {
                     newVal.toString();
-                    this.selected = new Date(Date.parse(newVal));
+                    this.content_value = new Date(Date.parse(newVal));
                 }
             }
         },

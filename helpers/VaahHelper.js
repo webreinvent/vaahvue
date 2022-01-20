@@ -1,11 +1,12 @@
-import Vue from "vue";
-import moment from 'moment/moment';
+import Vue from 'vue';
+import axios from "axios";
+let moment = require('moment-timezone');
 import copy from 'copy-to-clipboard';
 
 import {store} from './../../store/store';
 import {ToastProgrammatic as Toast} from "buefy";
 import {SnackbarProgrammatic as Snackbar} from "buefy";
-import axios from "axios";
+
 
 var debug = document.getElementById('debug').getAttribute('content');
 
@@ -89,7 +90,7 @@ const VaahHelper = {
     },
 
     //---------------------------------------------------------------------
-    async ajax(url, params, callback, query )
+    async ajax(url, params, callback, query, headers=null )
     {
 
         //To make axios request as ajax request
@@ -100,6 +101,14 @@ const VaahHelper = {
         let q = {
             params: query
         };
+
+        if(headers)
+        {
+            q.headers = headers;
+        }
+
+        console.log('--->', params);
+
 
         let data = await Vue.axios.post(url, params, q)
             .then(response => {
@@ -550,9 +559,39 @@ const VaahHelper = {
             return null;
         }
 
+        if(store.getters['root/state'].assets.timezone)
+        {
+            let timezone = store.getters['root/state'].assets.timezone;
+            moment.tz.setDefault(timezone);
+        }
+
         return moment(value).fromNow();
     },
 
+    //---------------------------------------------------------------------
+    ago: function (value) {
+
+        if(!value)
+        {
+            return null;
+        }
+
+
+        if(store.getters['root/state'].assets.timezone)
+        {
+            let timezone = store.getters['root/state'].assets.timezone;
+            moment.tz.setDefault(timezone);
+        }
+
+
+        let dt = store.getters['root/state'].assets.server_date_time;
+
+        let server = moment(dt);
+        let time = moment(value);
+
+        //return server.from(time);
+        return time.from(server);
+    },
     //---------------------------------------------------------------------
     currentDate: function () {
         return moment().format('YYYY-MM-DD')
@@ -871,7 +910,7 @@ const VaahHelper = {
     //---------------------------------------------------------------------
 
     //---------------------------------------------------------------------
-    strToSlug: function (title) {
+    strToSlug: function (title,delimiter = '-') {
         let slug = "";
         // Change to lower case
         let titleLower = title.toLowerCase();
@@ -888,7 +927,7 @@ const VaahHelper = {
         // Trim the last whitespace
         slug = slug.replace(/\s*$/g, '');
         // Change whitespace to "-"
-        slug = slug.replace(/\s+/g, '-');
+        slug = slug.replace(/\s+/g, delimiter);
 
         return slug;
     },
@@ -932,7 +971,72 @@ const VaahHelper = {
     getNonReactiveObject: function (obj) {
         return JSON.parse(JSON.stringify(obj));
     },
+    //---------------------------------------------------------------------
+    pluck: function (array, key)
+    {
+        return array.map(function(obj) {
+            return obj[key];
+        });
+    },
+    //---------------------------------------------------------------------
+    pusherAuth(pusher_auth_url, pusher_key, pusher_cluster, params=null){
 
+        if(debug === true) {
+            console.log('params--->', params);
+        }
+
+        return  new Pusher(pusher_key, {
+            authEndpoint: pusher_auth_url,
+            cluster: pusher_cluster ,
+            auth: {
+                headers: {
+                    'X-CSRF-Token': document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                },
+                params: params,
+            }
+        });
+    },
+    //---------------------------------------------------------------------
+    pusherSubscribe: function (pusher_instance, channel_name, callback=null)
+    {
+        channel_name = "presence-"+channel_name;
+
+        let channel_instance =  pusher_instance.subscribe(channel_name);
+
+
+        channel_instance.bind('pusher:subscription_succeeded', function(members)
+        {
+            if(debug === true) {
+                console.log('SubscribedToChannel -->', channel_name);
+                console.log('LiveMembers -->', members);
+            }
+
+            if(callback)
+            {
+                callback(members);
+            }
+
+        });
+
+        return channel_instance;
+
+    },
+    //---------------------------------------------------------------------
+    pusherListenEvent: function (channel_instance, event_name, callback=null)
+    {
+        channel_instance.bind(event_name, function(data)
+        {
+            if(debug === true) {
+                console.log('ReceivedFromPusher | Event--> '+event_name+' | Data --->', data);
+            }
+
+            if(callback)
+            {
+                callback(data);
+            }
+        });
+
+    },
     //---------------------------------------------------------------------
 
 

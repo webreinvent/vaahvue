@@ -69,8 +69,46 @@
 
 
         <template v-else-if="field_slug === 'editor'">
-<!--            <vv-editor :content="value"
+
+            <vv-jodit-editor :content="value"
+                       :size="size"
+                       :class="custom_class"
+                       :label="label"
+                       :is_simple="is_simple"
+                       :labelPosition="labelPosition"
+                       :placeholder="placeholder"
+                       :ref="field_slug"
+                       @input="emitOnInput"
+                       @onChange="emitOnChange"
+                       @onBlur="emitOnBlur"
+                       @onFocus="emitOnFocus" >
+            </vv-jodit-editor>
+
+        </template>
+
+
+        <template v-else-if="field_slug === 'code-mirror'">
+
+            <vv-code-mirror :content="value"
+                       :mode="type"
+                       :label="label"
+                       :labelPosition="labelPosition"
+                       :ref="field_slug"
+                       @input="emitOnInput"
+                       @onChange="emitOnChange"
+                       @onBlur="emitOnBlur"
+                       @onFocus="emitOnFocus" >
+            </vv-code-mirror>
+
+        </template>
+
+        <template v-else-if="field_slug === 'select' && meta">
+
+            <vv-select :content="value"
+                     :type="type"
                      :size="size"
+                     :options="meta.option"
+                     :is_multiple="meta.is_multiple"
                      :class="custom_class"
                      :label="label"
                      :labelPosition="labelPosition"
@@ -80,20 +118,7 @@
                      @onChange="emitOnChange"
                      @onBlur="emitOnBlur"
                      @onFocus="emitOnFocus" >
-            </vv-editor>-->
-
-            <vv-c-k-editor :content="value"
-                       :size="size"
-                       :class="custom_class"
-                       :label="label"
-                       :labelPosition="labelPosition"
-                       :placeholder="placeholder"
-                       :ref="field_slug"
-                       @input="emitOnInput"
-                       @onChange="emitOnChange"
-                       @onBlur="emitOnBlur"
-                       @onFocus="emitOnFocus" >
-            </vv-c-k-editor>
+            </vv-select>
 
         </template>
 
@@ -322,18 +347,22 @@
 
 
         <template v-else-if="field_slug === 'relation'">
-            <vv-relation :content="value"
-                     :size="size"
-                     :class="custom_class"
-                     :label="label"
-                     :labelPosition="labelPosition"
-                     :placeholder="placeholder"
-                     :ref="field_slug"
-                     @input="emitOnInput"
-                     @onChange="emitOnChange"
-                     @onBlur="emitOnBlur"
-                     @onFocus="emitOnFocus" >
-            </vv-relation>
+            <vv-tree-select :content="value"
+                            :type="type"
+                            :size="size"
+                            :ajax_url="app_url"
+                            :is_multiple="meta.is_multiple"
+                            :meta="meta"
+                            :class="custom_class"
+                            :label="label"
+                            :labelPosition="labelPosition"
+                            :placeholder="placeholder"
+                            :ref="field_slug"
+                            @input="emitOnInput"
+                            @onChange="emitOnChange"
+                            @onBlur="emitOnBlur"
+                            @onFocus="emitOnFocus" >
+            </vv-tree-select>
         </template>
 
         <template v-else-if="field_slug === 'tags'">
@@ -344,6 +373,9 @@
                      :labelPosition="labelPosition"
                      :placeholder="placeholder"
                      :ref="field_slug"
+                     :ajax_url="ajax_url"
+                     :display_column="display_column"
+                     :unique_column="unique_column"
                      @input="emitOnInput"
                      @onChange="emitOnChange"
                      @onBlur="emitOnBlur"
@@ -426,7 +458,7 @@ import VvCurrencyCode from "./VvCurrencyCode";
 import VvDate from "./VvDate";
 import VvDateTime from "./VvDateTime";
 import VvEditor from "./VvEditor";
-import VvCKEditor from "./VvCKEditor";
+import VvJoditEditor from "./VvJoditEditor";
 import VvEmail from "./VvEmail";
 import VvFacebookCard from "./VvFacebookCard";
 import VvImage from './VvImage';
@@ -443,12 +475,16 @@ import VvSeoMetaTags from "./VvSeoMetaTags";
 import VvSlug from "./VvSlug";
 import VvTags from "./VvTags";
 import VvText from "./VvText";
+import VvSelect from "./VvSelect";
+import VvTreeSelect from "./VvTreeSelect";
 import VvTextarea from "./VvTextarea";
 import VvTime from "./VvTime";
 import VvTitle from "./VvTitle";
 import VvTwitterCard from "./VvTwitterCard";
 import VvUuid from "./VvUuid";
 import VvVisualEditor from "./VvVisualEditor";
+import VvCodeMirror from "./VvCodeMirror";
+
 
 
 
@@ -504,21 +540,39 @@ export default {
             type: Array,
             default: null
         },
+        meta:{
+            type: Array|Object,
+            default: null
+        },
+        ajax_url:{
+            type: String,
+            default: null
+        },
+        display_column:{
+            type: String,
+            default: 'name'
+        },
+        unique_column:{
+            type: String,
+            default: 'email'
+        },
+        is_simple: {
+            type: Boolean,
+            default: false,
+        }
 
     },
     components:{
         VvAddress, VvBoolean, VvCurrencyCode, VvDate, VvDateTime,
-        VvEditor, VvCKEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
+        VvEditor, VvJoditEditor, VvEmail, VvFacebookCard, VvImage, VvImageGroup,
         VvJson, VvList, VvMarkdown, VvMedia, VvNumber, VvPassword, VvPhoneNumber,
         VvRelation, VvSeoMetaTags,
-        VvSlug, VvTags, VvText, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
-        VvVisualEditor,VvAutoCompleteUsers
+        VvSlug, VvTags, VvText, VvSelect, VvTreeSelect, VvTextarea, VvTime, VvTitle, VvTwitterCard, VvUuid,
+        VvVisualEditor,VvAutoCompleteUsers,VvCodeMirror
     },
     data()
     {
         let obj = {
-
-
 
         };
 
@@ -537,7 +591,6 @@ export default {
     methods: {
         //----------------------------------------------------
         emitOnInput: function (data) {
-            console.log('emitted data--->', data);
             this.$emit('input', data);
         },
         //----------------------------------------------------

@@ -88,6 +88,13 @@
 
         },
         watch: {
+            content(newVal, oldVal) {
+                if(newVal){
+                    this.contents = newVal;
+                }else{
+                    this.contents=[];
+                }
+            },
         },
         mounted() {
             //----------------------------------------------------

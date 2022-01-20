@@ -74,12 +74,12 @@
 
         },
         watch: {
-            value: function (newVal, oldVal) {
+            content: function (newVal, oldVal) {
+                this.content_value = newVal;
                 if(newVal)
                 {
                     newVal = '2020-11-04 '+newVal;
-
-                    this.selected = new Date(Date.parse(newVal));
+                    this.content_value = new Date(Date.parse(newVal));
                 }
             }
         },

@@ -5,6 +5,8 @@
             v-model="selected"
             :placeholder="placeholder"
             :icon="icon"
+            :disabled="disabled"
+            :min-date="min_date"
             @input="onSelect"
             :date-formatter="dateFormat"
             editable>
@@ -31,6 +33,13 @@
                 type: String,
                 default: "Type or select a date..."
             },
+            disabled: {
+                type: Boolean,
+                default: false
+            },
+            min_date: {
+                type: Date
+            },
         },
         components:{
 
@@ -55,11 +64,13 @@
         computed: {
         },
         watch: {
-            value: function (newVal, oldVal) {
+            selected_value: function (newVal, oldVal) {
                 if(newVal)
                 {
                     newVal.toString();
                     this.selected = new Date(Date.parse(newVal));
+                } else {
+                    this.selected = null;
                 }
             }
         },

@@ -90,6 +90,35 @@
 
         },
         watch: {
+            content(newVal, oldVal) {
+
+                if(!newVal){
+                    this.list = {
+                        "seo_title":{
+                            name: "SEO Title",
+                            type: 'text',
+                            maxlength: 70,
+                            content: null
+                        },
+                        "seo_description":{
+                            name: "SEO Meta Description",
+                            type: 'textarea',
+                            message: "Description of content (maximum 200 characters)",
+                            maxlength: 200,
+                            content: null
+                        },
+                        "seo_keywords":{
+                            name: "SEO Meta Keywords",
+                            type: 'textarea',
+                            maxlength: 200,
+                            content: null
+                        }
+                    };
+                }else{
+                    this.list = newVal;
+                }
+
+            },
         },
         mounted() {
             //----------------------------------------------------
