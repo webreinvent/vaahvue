@@ -142,7 +142,7 @@
             },
             allowed_types: {
                 type: String,
-                default: 'image/jpeg, image/png, image/gif'
+                default: 'image/jpeg, image/png, image/gif, image/webp'
             },
             max_size: {
                 type: String,
@@ -318,4 +318,3 @@
         }
     }
 </script>
-

@@ -1,19 +1,19 @@
 <template>
 
     <b-field :label="label"
-             :labelPosition="labelPosition" >
+             :labelPosition="labelPosition">
 
-        <div class="content" >
+        <div class="content">
             <jodit-editor v-if="is_simple"
                           v-model="editorData"
                           :config="editorConfig"
                           :buttons="buttons"
-                          @input="emitOnInput" />
+                          @input="emitOnInput"/>
 
             <jodit-editor v-else
                           v-model="editorData"
                           :config="editorConfig"
-                          @input="emitOnInput" />
+                          @input="emitOnInput"/>
         </div>
     </b-field>
 
@@ -25,10 +25,11 @@
 let base_url = document.getElementsByTagName("base")[0].getAttribute('href');
 import $ from 'jquery'
 
-let media_upload_url = base_url+"/backend/cms/media/upload";
+
+let media_upload_url = base_url + "/backend/cms/media/upload";
 
 export default {
-    props:{
+    props: {
         content: {
             type: String,
             default: function () {
@@ -65,16 +66,14 @@ export default {
         },
     },
     components: {
-
     },
-    data()
-    {
+    data() {
         let obj = {
             editorData: "",
             buttons: ['source', 'image', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph'],
             editorConfig: {
                 uploader: {
-                    url: media_upload_url+"?_token="+$('meta[name="csrf-token"]').attr('content'),  //your upload api url
+                    url: media_upload_url + "?_token=" + $('meta[name="csrf-token"]').attr('content'),  //your upload api url
                     insertImageAsBase64URI: false,
                     imagesExtensions: ['jpg', 'png', 'jpeg', 'gif'],
                     //headers: {"token":`${db.token}`},
@@ -107,9 +106,8 @@ export default {
 
     },
     watch: {
-        '$route' (to, from) {
-            if(this.editor)
-            {
+        '$route'(to, from) {
+            if (this.editor) {
                 this.editor.destroy();
                 this.editor = this.setupEditor();
                 this.setEditorContent();
@@ -118,8 +116,7 @@ export default {
         content: {
             immediate: true,
             handler(newValue) {
-                if(!newValue)
-                {
+                if (!newValue) {
                     //this.editor.clearContent();
                 } else {
                     this.setEditorContent(newValue);
@@ -136,14 +133,12 @@ export default {
     },
     methods: {
         //----------------------------------------------------
-        setupEditor: function()
-        {
+        setupEditor: function () {
 
         },
         //---------------------------------------------------------------------
         setEditorContent: function (content) {
-            if(content)
-            {
+            if (content) {
                 this.editorData = content;
             }
         },
