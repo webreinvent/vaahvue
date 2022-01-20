@@ -7,10 +7,11 @@
             <jodit-editor v-if="is_simple"
                           v-model="editorData"
                           :config="editorConfig"
-                          :buttons="buttons"
+                          :buttons="['source', 'image', 'link', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph']"
                           @input="emitOnInput"/>
 
             <jodit-editor v-else
+                          :buttons="['source', 'image', 'link', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph']      "
                           v-model="editorData"
                           :config="editorConfig"
                           @input="emitOnInput"/>
@@ -63,14 +64,13 @@ export default {
         is_simple: {
             type: Boolean,
             default: false,
-        },
+        }
     },
-    components: {
-    },
+    components: {},
     data() {
         let obj = {
             editorData: "",
-            buttons: ['source', 'image', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph'],
+            buttons: ['source', 'image', 'link', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph'],
             editorConfig: {
                 uploader: {
                     url: media_upload_url + "?_token=" + $('meta[name="csrf-token"]').attr('content'),  //your upload api url
@@ -117,7 +117,7 @@ export default {
             immediate: true,
             handler(newValue) {
                 if (!newValue) {
-                    //this.editor.clearContent();
+                    this.editorData = '';
                 } else {
                     this.setEditorContent(newValue);
                 }

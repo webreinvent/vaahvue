@@ -7,7 +7,7 @@
                 Yes
             </b-tag>
 
-            <b-tag v-else>No</b-tag>
+            <b-tag  type="is-danger" v-else>No</b-tag>
 
         </td>
     </tr>

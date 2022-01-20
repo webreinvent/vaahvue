@@ -134,6 +134,7 @@
             selected_value: function (newValue)
             {
                 console.log('--->', newValue);
+                this.q= newValue;
                 this.$refs.autocomplete.setSelected(newValue);
             }
 
