@@ -6,6 +6,16 @@
                   :style="{'width': width, 'height':height}" >
             <gmap-polyline v-bind:path.sync="points" v-bind:options="{ strokeColor:line_color}">
             </gmap-polyline>
+
+            <!--Flag Markers-->
+            <GmapMarker
+                v-for="(marker, index) in markers"
+                :key="index"
+                :position="marker.position"
+                :icon="image_url+'/'+marker_icon"
+            />
+            <!--/Flag Markers-->
+
         </gmap-map>
 
         <b-button @click="addPoints">Add Points</b-button>
@@ -40,10 +50,21 @@
                 type: String,
                 default: '400px'
             },
-
+            image_url:{
+                type: String,
+                default: null
+            },
+            marker_icon:{
+                type: String,
+                default: null
+            },
             line_color:{
                 type: String,
                 default: '#f00'
+            },
+            initial_markers:{
+                type: Array,
+                default: null
             },
             initial_points:{
                 type: Array,
@@ -62,8 +83,9 @@
         //------------------------------------------------------
         data() {
             return {
-                map_center: {lat: 18.984738, lng: 72.820000},
+                map_center: {lat: 18.984738, lng: 72.820001},
                 points: [],
+                markers: [],
                 add_point: null,
 
             }
@@ -74,11 +96,7 @@
             {
                 if(newVal)
                 {
-                    console.log('new point--->', newVal);
                     this.points.push(newVal);
-
-                    console.log('this.points--->', this.points);
-
                 }
             },
             center: function (newVal, oldVal)
@@ -88,9 +106,19 @@
                     this.map_center = newVal;
                 }
             },
+
         },
         //------------------------------------------------------
         mounted() {
+
+            console.log('this.initial_markers--->', this.initial_markers);
+
+            if(this.initial_markers)
+            {
+
+                this.markers = this.initial_markers;
+            }
+
             if(this.initial_points)
             {
                 this.points = this.initial_points;
@@ -100,8 +128,6 @@
             {
                 this.map_center = this.center;
             }
-
-            console.log('--->', this.map_center);
 
             this.onLoad();
         },
@@ -113,19 +139,10 @@
             //-----------------------------------------------------------------------------
             addPoints: function ()
             {
-
                 let lat = parseFloat("55.93"+Math.floor(Math.random() * 100000) + 1);
                 let lng = parseFloat("-4.77"+Math.floor(Math.random() * 100000) + 1);
-
                 let point = {lat: lat, lng: lng };
-
-                console.log('point--->', point);
-
                 this.path.push(point);
-
-                console.log('--->', this.path);
-
-
             },
             //-----------------------------------------------------------------------------
             //-----------------------------------------------------------------------------
