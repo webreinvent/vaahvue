@@ -4,6 +4,7 @@
                   :map-type-id='map_type_id'
                   v-bind:zoom="zoom"
                   :style="{'width': width, 'height':height}" >
+
             <gmap-polyline v-bind:path.sync="points" v-bind:options="{ strokeColor:line_color}">
             </gmap-polyline>
 
@@ -18,7 +19,6 @@
 
         </gmap-map>
 
-        <b-button @click="addPoints">Add Points</b-button>
 
     </div>
 </template>
@@ -91,26 +91,9 @@
             }
         },
         //------------------------------------------------------
-        watch:{
-            new_point: function (newVal, oldVal)
-            {
-                if(newVal)
-                {
-                    this.points.push(newVal);
-                }
-            },
-            center: function (newVal, oldVal)
-            {
-                if(newVal)
-                {
-                    this.map_center = newVal;
-                }
-            },
-
-        },
-        //------------------------------------------------------
         mounted() {
 
+            console.log('this.center--->', this.center);
             console.log('this.initial_markers--->', this.initial_markers);
 
             if(this.initial_markers)
@@ -131,6 +114,26 @@
 
             this.onLoad();
         },
+        //------------------------------------------------------
+        watch:{
+            new_point: function (newVal, oldVal)
+            {
+                if(newVal)
+                {
+                    this.points.push(newVal);
+                }
+            },
+            center: function (newVal, oldVal)
+            {
+                if(newVal)
+                {
+                    this.map_center = newVal;
+                }
+            },
+
+        },
+        //------------------------------------------------------
+
         //------------------------------------------------------
         methods: {
             //-----------------------------------------------------------------------------
