@@ -61,7 +61,7 @@
                         </p>
 
                         <p class="control">
-                            <b-button size="is-small" type="is-info" icon-left="plus" @click="addPointer(props.row.name)">
+                            <b-button size="is-small" type="is-info" icon-left="plus" @click="addPointerForMarker(props.row)">
                                 Add Pointer
                             </b-button >
                         </p>
@@ -156,10 +156,8 @@
                 :clickable="is_marker_mode"
                 :draggable="is_marker_mode"
                 :icon="image_url+'/'+pointer_icon"
-                @click="markerClicked(m,index)"
-                @dragend="markerDragged($event, m)"
+                @dragend="pointerDragged($event, m)"
             />
-            <!--Map Pointers-->
 
 
         </GmapMap>
@@ -181,15 +179,15 @@
         props: {
             map_key: Number,
             latitude: {
-                type: String|Number,
+                type: String | Number,
                 default: 0
             },
             longitude: {
-                type: String|Number,
+                type: String | Number,
                 default: 0
             },
             zoom: {
-                type: String|Number,
+                type: String | Number,
                 default: 16
             },
             custom_style: {
@@ -201,57 +199,57 @@
                 type: String,
                 default: 'satellite'
             },
-            show_controls:{
+            show_controls: {
                 type: Boolean,
                 default: true,
             },
-            is_rotatable:{
+            is_rotatable: {
                 type: Boolean,
                 default: true,
             },
-            image_url:{
+            image_url: {
                 type: String,
                 default: null
             },
-            marker_icon:{
+            marker_icon: {
                 type: String,
                 default: null
             },
-            pointer_icon:{
+            pointer_icon: {
                 type: String,
                 default: null
             },
-            rotate_left_icon:{
+            rotate_left_icon: {
                 type: String,
                 default: null
             },
-            rotate_right_icon:{
+            rotate_right_icon: {
                 type: String,
                 default: null
             },
-            heading:{
-                type: String|Number,
+            heading: {
+                type: String | Number,
                 default: '0'
             },
-            tilt:{
-                type: String|Number,
+            tilt: {
+                type: String | Number,
                 default: '0'
             },
-            is_edit_ready:{ // sets add marker default to true and changes its switch label
+            is_edit_ready: { // sets add marker default to true and changes its switch label
                 type: Boolean,
                 default: false
             },
-            show_map_pointers:{
+            show_map_pointers: {
                 type: Boolean,
                 default: false
             }
         },
         computed: {
-            google : gmapApi,
-            is_marker_mode(){
+            google: gmapApi,
+            is_marker_mode() {
                 return this.is_add_marker || this.is_remove_marker;
             },
-            center(){
+            center() {
                 return {
                     lat: parseFloat(this.latitude),
                     lng: parseFloat(this.longitude)
@@ -273,9 +271,9 @@
             }
         },
         inject: ['markers'],
-        watch:{
-            set_map_center(new_val){
-                if(new_val){
+        watch: {
+            set_map_center(new_val) {
+                if (new_val) {
                     this.hide_labels = false;
                     this.is_add_marker = false;
                     this.is_remove_marker = false;
@@ -288,7 +286,7 @@
         },
         methods: {
             //-----------------------------------------------------------------------------
-            onLoad(){
+            onLoad() {
                 this.setRotateControls();
             },
             //-----------------------------------------------------------------------------
@@ -310,9 +308,9 @@
 
                         controlUI.classList.add("ui-button");
                         if (`${text}` === 'Rotate Left') {
-                            controlUI.innerHTML = `<img src='`+self.image_url+`/`+self.rotate_left_icon+`' width='40px'/>`;
+                            controlUI.innerHTML = `<img src='` + self.image_url + `/` + self.rotate_left_icon + `' width='40px'/>`;
                         } else {
-                            controlUI.innerHTML = `<img src='`+self.image_url+`/`+self.rotate_right_icon+`' width='40px'/>`;
+                            controlUI.innerHTML = `<img src='` + self.image_url + `/` + self.rotate_right_icon + `' width='40px'/>`;
                         }
 
 
@@ -329,11 +327,14 @@
 
 
             //-----------------------------------------------------------------------------
-            mapClicked(e){
-                if(!this.set_map_center){
-                    this.addMarker(e)
-                }
-                else{
+            mapClicked(e) {
+                if (!this.set_map_center) {
+                    if(this.active_marker){
+                        this.addPointer(e);
+                    }else{
+                        this.addMarker(e);
+                    }
+                } else {
 
                     let pos = {
                         lat: e.latLng.lat(),
@@ -344,7 +345,7 @@
                     this.$refs.map.$mapPromise.then((map) => {
                         map.panTo(pos);
                         map.setZoom(self.zoom);
-                        self.$emit('centerChanged',pos);
+                        self.$emit('centerChanged', pos);
                     });
 
                 }
@@ -353,8 +354,8 @@
 
 
             //-----------------------------------------------------------------------------
-            addMarker(e){
-                if(!this.is_add_marker) return;
+            addMarker(e) {
+                if (!this.is_add_marker) return;
 
                 this.$buefy.dialog.prompt({
                     message: `Please enter marker name`,
@@ -383,10 +384,10 @@
                 });
             },
             //-----------------------------------------------------------------------------
-            markerClicked(marker, index){
-                if(!this.is_marker_mode) return;
+            markerClicked(marker, index) {
+                if (!this.is_marker_mode) return;
 
-                if(this.is_remove_marker){
+                if (this.is_remove_marker) {
                     this.removeMarker(index);
                     return;
                 }
@@ -407,25 +408,29 @@
             //-----------------------------------------------------------------------------
 
             //-----------------------------------------------------------------------------
-            markerDragged(e, marker){
+            markerDragged(e, marker) {
                 //if(!this.is_marker_mode) return;
 
                 marker.position = e.latLng;
             },
             //-----------------------------------------------------------------------------
+            pointerDragged(e, pointer){
+                pointer.position = e.latLng;
+            },
+            //-----------------------------------------------------------------------------
 
 
             //-----------------------------------------------------------------------------
-            removeMarker(index){
+            removeMarker(index) {
                 this.markers.splice(index, 1);
             },
             //-----------------------------------------------------------------------------
 
 
             //-----------------------------------------------------------------------------
-            rotateMap(amount){
+            rotateMap(amount) {
                 let map = this.$refs.map.$mapObject;
-                let heading = map.heading?map.heading + amount : amount;
+                let heading = map.heading ? map.heading + amount : amount;
 
 
                 map.setHeading(heading);
@@ -437,7 +442,11 @@
 
 
             //-----------------------------------------------------------------------------
-            addPointer(e){
+            addPointerForMarker(marker) {
+                this.active_marker = marker;
+            },
+            //-----------------------------------------------------------------------------
+            addPointer(e) {
                 const position = {
                     lat: e.latLng.lat(),
                     lng: e.latLng.lng(),
@@ -446,11 +455,13 @@
                     name: this.active_marker.name,
                     position: position
                 });
-            }
+
+                this.active_marker = null;
+            },
             //-----------------------------------------------------------------------------
 
-        },
-    };
+        }
+    }
 </script>
 
 <style scoped>
