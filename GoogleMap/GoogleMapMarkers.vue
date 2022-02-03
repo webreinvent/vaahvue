@@ -53,15 +53,29 @@
                 </b-table-column>
 
                 <b-table-column field="actions" label="Actions" v-slot="props">
-                    <b-field v-if="props.index == 1">
-                        <b-button size="is-small" type="is-info" icon-left="eye" @click="is_pointer_modal_open=true">
-                            View Pointer
-                        </b-button >
-                        <b-button size="is-small" icon-right="times" type="is-danger"/>
+                    <b-field >
+                        <p class="control">
+                            <b-button size="is-small" type="is-info" icon-left="eye" >
+                                View Marker
+                            </b-button >
+                        </p>
+
+                        <p class="control">
+                            <b-button size="is-small" type="is-info" icon-left="plus" @click="addPointer(props.row.name)">
+                                Add Pointer
+                            </b-button >
+                        </p>
+
+                        <p class="control">
+                            <b-button size="is-small" type="is-info" icon-left="eye" @click="is_pointer_modal_open=true">
+                                View Pointer
+                            </b-button >
+                        </p>
+                        <p class="control">
+                            <b-button size="is-small" icon-right="times" type="is-danger"/>
+                        </p>
                     </b-field>
-                    <b-button v-else  type="is-success" size="is-small">
-                        Add Pointer
-                    </b-button>
+
 
                 </b-table-column>
 
