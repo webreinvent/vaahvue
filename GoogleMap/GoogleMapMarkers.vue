@@ -39,6 +39,68 @@
         </div>
 
 
+        <div class="pointers-list has-margin-bottom-20">
+            <b-table :data="markers"
+                     bordered
+                     striped
+                     narrowed
+            >
+                <b-table-column field="index" label="#" v-slot="props" width="40">
+                    {{ props.index + 1 }}
+                </b-table-column>
+                <b-table-column field="name" label="Marker Name" v-slot="props">
+                    {{ props.row.name }}
+                </b-table-column>
+
+                <b-table-column field="actions" label="Actions" v-slot="props">
+                    <b-field v-if="props.index == 1">
+                        <b-button size="is-small" type="is-info" icon-left="eye" @click="is_pointer_modal_open=true">
+                            View Pointer
+                        </b-button >
+                        <b-button size="is-small" icon-right="times" type="is-danger"/>
+                    </b-field>
+                    <b-button v-else  type="is-success" size="is-small">
+                        Add Pointer
+                    </b-button>
+
+                </b-table-column>
+
+            </b-table>
+        </div>
+
+
+        <b-modal
+            v-model="is_pointer_modal_open"
+            >
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">200m Marker's Pointer</div>
+                </div>
+
+                <div >
+                    <table class="table is-bordered">
+                        <tr>
+                            <th>
+                                Pointer Latitude
+                            </th>
+                            <th>
+                                Pointer Longitude
+                            </th>
+                        </tr>
+
+
+                        <tr>
+                            <td>20.3223</td>
+                            <td>90.5462</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+            </div>
+        </b-modal>
+
+
         <GmapMap
             ref="map"
             :key="map_key"
@@ -89,10 +151,10 @@
         </GmapMap>
 
 
-        <div id="floating-panel">
+       <!-- <div id="floating-panel">
             <input id="add-pointer" type="button" value="Add Pointer" @click="addPointer()" />
             <input id="remove-pointer" type="button" value="Remove Pointer" />
-        </div>
+        </div>-->
 
     </div>
 </template>
@@ -193,6 +255,7 @@
                 pointers: [], //@todo make this inject value
                 show_floating_panel: false,
                 active_marker: null,
+                is_pointer_modal_open: false,
             }
         },
         inject: ['markers'],
@@ -254,11 +317,7 @@
             //-----------------------------------------------------------------------------
             mapClicked(e){
                 if(!this.set_map_center){
-                    if(this.active_marker){
-                        this.addPointer(e);
-                    }else{
-                        this.addMarker(e)
-                    }
+                    this.addMarker(e)
                 }
                 else{
 
