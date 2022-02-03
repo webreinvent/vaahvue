@@ -67,7 +67,7 @@
                         </p>
 
                         <p class="control">
-                            <b-button size="is-small" type="is-info" icon-left="eye" @click="is_pointer_modal_open=true">
+                            <b-button size="is-small" type="is-info" icon-left="eye" @click="viewPointer(props.row)">
                                 View Pointer
                             </b-button >
                         </p>
@@ -92,7 +92,7 @@
                 </div>
 
                 <div >
-                    <table class="table is-bordered">
+                    <table class="table is-bordered" v-if="active_pointer">
                         <tr>
                             <th>
                                 Pointer Latitude
@@ -104,8 +104,8 @@
 
 
                         <tr>
-                            <td>20.3223</td>
-                            <td>90.5462</td>
+                            <td>{{active_pointer.position.lat}}</td>
+                            <td>{{active_pointer.position.lng}}</td>
                         </tr>
 
 
@@ -267,6 +267,7 @@
                 pointers: [], //@todo make this inject value
                 show_floating_panel: false,
                 active_marker: null,
+                active_pointer: null,
                 is_pointer_modal_open: false,
             }
         },
@@ -457,6 +458,23 @@
                 });
 
                 this.active_marker = null;
+            },
+            //-----------------------------------------------------------------------------
+
+            //-----------------------------------------------------------------------------
+            viewPointer(marker){
+                let list = this.pointers.filter(item=>{
+                   return item.name === marker.name;
+                });
+
+                if(list.length<1) {
+                    this.$vaah.toastErrors(['No pointers found']);
+                    return null;
+                }
+
+                this.active_pointer = list[0];
+                this.is_pointer_modal_open = true;
+
             },
             //-----------------------------------------------------------------------------
 
