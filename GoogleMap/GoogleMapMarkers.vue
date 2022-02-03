@@ -72,18 +72,28 @@
             <!--/Flag Markers-->
 
 
-            <!--Horse Position-->
-            <!--<GmapMarker
+            <!--Map Pointers-->
+            <GmapMarker
                 :key="index"
-                :position="horse_position"
-                :icon="image_url+'/'+marker_icon"
-            />-->
-            <!--Horse Position-->
-
-
+                v-for="(m, index) in pointers"
+                :position="m.position"
+                :clickable="is_marker_mode"
+                :draggable="is_marker_mode"
+                :icon="image_url+'/'+pointer_icon"
+                @click="markerClicked(m,index)"
+                @dragend="markerDragged($event, m)"
+            />
+            <!--Map Pointers-->
 
 
         </GmapMap>
+
+
+        <div id="floating-panel">
+            <input id="add-pointer" type="button" value="Add Pointer" @click="addPointer()" />
+            <input id="remove-pointer" type="button" value="Remove Pointer" />
+        </div>
+
     </div>
 </template>
 
@@ -131,6 +141,10 @@
                 type: String,
                 default: null
             },
+            pointer_icon:{
+                type: String,
+                default: null
+            },
             rotate_left_icon:{
                 type: String,
                 default: null
@@ -148,6 +162,10 @@
                 default: '0'
             },
             is_edit_ready:{ // sets add marker default to true and changes its switch label
+                type: Boolean,
+                default: false
+            },
+            show_map_pointers:{
                 type: Boolean,
                 default: false
             }
@@ -172,6 +190,9 @@
                 hide_labels: true,
                 is_add_marker: this.is_edit_ready,
                 is_remove_marker: false,
+                pointers: [], //@todo make this inject value
+                show_floating_panel: false,
+                active_marker: null,
             }
         },
         inject: ['markers'],
@@ -233,7 +254,11 @@
             //-----------------------------------------------------------------------------
             mapClicked(e){
                 if(!this.set_map_center){
-                    this.addMarker(e)
+                    if(this.active_marker){
+                        this.addPointer(e);
+                    }else{
+                        this.addMarker(e)
+                    }
                 }
                 else{
 
@@ -266,16 +291,21 @@
                     },
                     trapFocus: true,
                     onConfirm: (name) => {
-                        const marker = {
+                        const position = {
                             lat: e.latLng.lat(),
                             lng: e.latLng.lng(),
                         };
-                        this.markers.push({
+                        let marker = {
                             name: name,
-                            position: marker
-                        });
+                            position: position
+                        };
+                        this.markers.push(marker);
 
-                        //this.$emit('markerAdded',this.markers);
+
+                        this.show_floating_panel = true;
+                        this.active_marker = marker;
+
+
                     }
                 });
             },
@@ -322,7 +352,6 @@
             //-----------------------------------------------------------------------------
             rotateMap(amount){
                 let map = this.$refs.map.$mapObject;
-                console.log('>>',this.$refs.map);
                 let heading = map.heading?map.heading + amount : amount;
 
 
@@ -330,6 +359,20 @@
                 map.heading = heading;
                 map.panTo(this.center);
 
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            addPointer(e){
+                const position = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng(),
+                };
+                this.pointers.push({
+                    name: this.active_marker.name,
+                    position: position
+                });
             }
             //-----------------------------------------------------------------------------
 
@@ -347,4 +390,5 @@
     label{
         margin-left: 5px;
     }
+
 </style>

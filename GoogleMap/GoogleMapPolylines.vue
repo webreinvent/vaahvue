@@ -8,6 +8,13 @@
             <gmap-polyline v-bind:path.sync="points" v-bind:options="{ strokeColor:line_color}">
             </gmap-polyline>
 
+
+            <!--Horse Position-->
+            <GmapMarker
+                :position="map_center"
+            />
+            <!--/Horse Position-->
+
             <!--Flag Markers-->
             <GmapMarker
                 v-for="(marker, index) in markers"
