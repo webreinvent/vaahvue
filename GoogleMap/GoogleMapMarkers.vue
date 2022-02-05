@@ -39,7 +39,7 @@
         </div>
 
 
-        <div class="pointers-list has-margin-bottom-20">
+        <div class="pointers-list has-margin-bottom-20" v-if="markers.length">
             <b-table :data="markers"
                      bordered
                      striped
@@ -55,7 +55,7 @@
                 <b-table-column field="actions" label="Actions" v-slot="props">
                     <b-field >
                         <p class="control">
-                            <b-button size="is-small" type="is-info" icon-left="eye" >
+                            <b-button size="is-small" type="is-info" icon-left="eye" @click="viewMarker(props.row)" >
                                 View Marker
                             </b-button >
                         </p>
@@ -85,14 +85,15 @@
 
         <b-modal
             v-model="is_pointer_modal_open"
+            v-if="active_pointer"
             >
-            <div class="card">
+            <div class="card" >
                 <div class="card-header">
-                    <div class="card-header-title">200m Marker's Pointer</div>
+                    <div class="card-header-title">{{active_pointer.name}} Marker's Pointer</div>
                 </div>
 
                 <div >
-                    <table class="table is-bordered" v-if="active_pointer">
+                    <table class="table is-bordered" >
                         <tr>
                             <th>
                                 Pointer Latitude
@@ -106,6 +107,39 @@
                         <tr>
                             <td>{{active_pointer.position.lat}}</td>
                             <td>{{active_pointer.position.lng}}</td>
+                        </tr>
+
+
+                    </table>
+                </div>
+            </div>
+        </b-modal>
+
+
+        <b-modal
+            v-model="is_marker_modal_open"
+            v-if="active_marker"
+        >
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-header-title">{{active_marker.name}} Marker</div>
+                </div>
+
+                <div >
+                    <table class="table is-bordered">
+                        <tr>
+                            <th>
+                                Marker Latitude
+                            </th>
+                            <th>
+                                Marker Longitude
+                            </th>
+                        </tr>
+
+
+                        <tr>
+                            <td>{{active_marker.position.lat}}</td>
+                            <td>{{active_marker.position.lng}}</td>
                         </tr>
 
 
@@ -269,6 +303,7 @@
                 active_marker: null,
                 active_pointer: null,
                 is_pointer_modal_open: false,
+                is_marker_modal_open: false,
             }
         },
         inject: ['markers'],
@@ -476,6 +511,23 @@
                 this.is_pointer_modal_open = true;
 
             },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            viewMarker(marker){
+                let list = this.markers.filter(item=>{
+                    return item.name === marker.name;
+                });
+
+                if(list.length<1) {
+                    this.$vaah.toastErrors(['No markers found']);
+                    return null;
+                }
+
+                this.active_marker = list[0];
+                this.is_marker_modal_open = true;
+            }
             //-----------------------------------------------------------------------------
 
         }
