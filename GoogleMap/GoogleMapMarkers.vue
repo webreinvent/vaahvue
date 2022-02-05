@@ -60,13 +60,19 @@
                             </b-button >
                         </p>
 
-                        <p class="control">
-                            <b-button size="is-small" type="is-info" icon-left="plus" @click="addPointerForMarker(props.row)">
+                        <p class="control" v-if="!hasPointer(props.row)">
+                            <b-button
+                                size="is-small"
+                                type="is-info"
+                                icon-left="plus"
+                                @click="addPointerForMarker(props.row)"
+                                :disabled="is_adding_pointer"
+                            >
                                 Add Pointer
                             </b-button >
                         </p>
 
-                        <p class="control">
+                        <p class="control" v-else>
                             <b-button size="is-small" type="is-info" icon-left="eye" @click="viewPointer(props.row)">
                                 View Pointer
                             </b-button >
@@ -304,6 +310,7 @@
                 active_pointer: null,
                 is_pointer_modal_open: false,
                 is_marker_modal_open: false,
+                is_adding_pointer: false,
             }
         },
         inject: ['markers'],
@@ -365,7 +372,7 @@
             //-----------------------------------------------------------------------------
             mapClicked(e) {
                 if (!this.set_map_center) {
-                    if(this.active_marker){
+                    if(this.is_adding_pointer){
                         this.addPointer(e);
                     }else{
                         this.addMarker(e);
@@ -480,6 +487,7 @@
             //-----------------------------------------------------------------------------
             addPointerForMarker(marker) {
                 this.active_marker = marker;
+                this.is_adding_pointer = true;
             },
             //-----------------------------------------------------------------------------
             addPointer(e) {
@@ -493,6 +501,7 @@
                 });
 
                 this.active_marker = null;
+                this.is_adding_pointer = true;
             },
             //-----------------------------------------------------------------------------
 
@@ -527,6 +536,17 @@
 
                 this.active_marker = list[0];
                 this.is_marker_modal_open = true;
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            hasPointer(marker){
+                let list = this.pointers.filter(item=>{
+                    return item.name === marker.name;
+                });
+
+                return list.length>0;
             }
             //-----------------------------------------------------------------------------
 
