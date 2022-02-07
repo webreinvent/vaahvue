@@ -28,16 +28,6 @@
             </b-field>
         </div>
 
-        <div class="has-margin-10">
-            <b-message size="is-small" type="is-info" v-if="set_map_center">
-                Drag map and click to set map center
-            </b-message>
-            <b-message  size="is-small" type="is-info" v-if="is_marker_mode">
-                <span v-if="!is_remove_marker">Now, you can click on map to add markers</span>
-                <span v-else>Click on any marker to remove it</span>
-            </b-message>
-        </div>
-
 
         <div class="pointers-list has-margin-bottom-20" v-if="markers.length">
             <b-table :data="markers"
@@ -175,6 +165,21 @@
         <!--/Marker modal-->
 
 
+        <div class="has-margin-10">
+            <b-message size="is-small" type="is-info" v-if="set_map_center">
+                Drag map and click to set map center
+            </b-message>
+            <b-message  size="is-small" type="is-info" v-if="is_marker_mode && !is_adding_pointer">
+                <span v-if="!is_remove_marker">Now, you can click on map to add markers</span>
+                <span v-else>Click on any marker to remove it</span>
+            </b-message>
+
+            <b-message size="is-small" type="is-info" v-if="is_adding_pointer">
+                Please click on the map to add pointer
+            </b-message>
+        </div>
+
+
         <GmapMap
             ref="map"
             :key="map_key"
@@ -199,8 +204,8 @@
                 :key="index"
                 v-for="(m, index) in markers"
                 :position="m.position"
-                :clickable="is_marker_mode"
-                :draggable="is_marker_mode"
+                :clickable="is_marker_mode && !is_adding_pointer"
+                :draggable="is_marker_mode && !is_adding_pointer"
                 :icon="image_url+'/'+marker_icon"
                 @click="markerClicked(m,index)"
                 @dragend="markerDragged($event, m)"
@@ -449,6 +454,7 @@
             //-----------------------------------------------------------------------------
             markerClicked(marker, index) {
                 if (!this.is_marker_mode) return;
+                if (this.is_adding_pointer) return;
 
                 if (this.is_remove_marker) {
                     this.removeMarker(index);
@@ -521,7 +527,7 @@
                 });
 
                 this.active_marker = null;
-                this.is_adding_pointer = true;
+                this.is_adding_pointer = false;
             },
             //-----------------------------------------------------------------------------
 
