@@ -43,33 +43,42 @@
                 </b-table-column>
 
                 <b-table-column field="actions" label="Actions" v-slot="props">
-                    <b-field >
-                        <p class="control">
-                            <b-button size="is-small" type="is-info" icon-left="eye" @click="viewMarker(props.row)" >
-                                View Marker
-                            </b-button >
-                        </p>
+                    <b-field  grouped>
+                        <b-field>
+                            <p class="control">
+                                <b-button size="is-small" type="is-info" icon-left="eye" @click="viewMarker(props.row)" >
+                                    View Marker
+                                </b-button >
+                            </p>
+                        </b-field>
 
-                        <p class="control" v-if="!hasPointer(props.row)">
-                            <b-button
-                                size="is-small"
-                                type="is-info"
-                                icon-left="plus"
-                                @click="addPointerForMarker(props.row)"
-                                :disabled="is_adding_pointer"
-                            >
-                                Add Pointer
-                            </b-button >
-                        </p>
 
-                        <p class="control" v-else>
-                            <b-button size="is-small" type="is-info" icon-left="eye" @click="viewPointer(props.row)">
-                                View Pointer
-                            </b-button >
-                        </p>
-                        <p class="control">
-                            <b-button size="is-small" icon-right="times" type="is-danger" @click="removePointer(props.row)"/>
-                        </p>
+                        <b-field v-if="hasPointer(props.row)">
+                            <p class="control">
+                                <b-button size="is-small" type="is-info" icon-left="eye" @click="viewPointer(props.row)">
+                                    View Pointer
+                                </b-button >
+                            </p>
+                            <p class="control">
+                                <b-button size="is-small" icon-right="times" type="is-danger" @click="removePointer(props.row)"/>
+                            </p>
+                        </b-field>
+
+                        <b-field v-else>
+                            <p class="control">
+                                <b-button
+                                    size="is-small"
+                                    type="is-success"
+                                    icon-left="plus"
+                                    @click="addPointerForMarker(props.row)"
+                                    :disabled="is_adding_pointer"
+                                >
+                                    Add Pointer
+                                </b-button >
+                            </p>
+                        </b-field>
+
+
                     </b-field>
 
 
@@ -433,6 +442,11 @@
                     },
                     trapFocus: true,
                     onConfirm: (name) => {
+                        if(this.markerExists(name)){
+                            this.$vaah.toastErrors(['Marker with same name already exists']);
+                            return;
+                        }
+
                         const position = {
                             lat: e.latLng.lat(),
                             lng: e.latLng.lng(),
@@ -451,6 +465,17 @@
                     }
                 });
             },
+            //-----------------------------------------------------------------------------
+            markerExists(name){
+                let list = this.markers.filter(item=>{
+                    return item.name === name;
+                });
+
+                return list.length>0;
+            },
+            //-----------------------------------------------------------------------------
+
+
             //-----------------------------------------------------------------------------
             markerClicked(marker, index) {
                 if (!this.is_marker_mode) return;
