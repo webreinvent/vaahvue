@@ -68,7 +68,7 @@
                             </b-button >
                         </p>
                         <p class="control">
-                            <b-button size="is-small" icon-right="times" type="is-danger"/>
+                            <b-button size="is-small" icon-right="times" type="is-danger" @click="removePointer(props.row)"/>
                         </p>
                     </b-field>
 
@@ -87,7 +87,7 @@
                 <div class="modal-content">
                     <div class="modal-card modal-card-marign has-width-350">
                         <header class="modal-card-head">
-                            <h6 class="modal-card-title">-->{{active_pointer.name}} Marker's Pointer</h6>
+                            <h6 class="modal-card-title">{{active_pointer.name}} Marker's Pointer</h6>
                             <button
                                 dusk="sku-modal-close-btn"
                                 class="delete modal-close"
@@ -573,6 +573,27 @@
                 });
 
                 return list.length>0;
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            removePointer(marker){
+                this.removeByAttr(this.pointers, 'name', marker.name);
+            },
+            //-----------------------------------------------------------------------------
+            removeByAttr(arr, attr, value){
+                let i = arr.length;
+                while(i--){
+                    if( arr[i]
+                        && arr[i].hasOwnProperty(attr)
+                        && (arguments.length > 2 && arr[i][attr] === value ) ){
+
+                        arr.splice(i,1);
+
+                    }
+                }
+                return arr;
             }
             //-----------------------------------------------------------------------------
 
