@@ -52,21 +52,10 @@
                             </p>
                         </b-field>
 
-
-                        <b-field v-if="hasPointer(props.row)">
-                            <p class="control">
-                                <b-button size="is-small" type="is-info" icon-left="eye" @click="viewPointer(props.row)">
-                                    View Pointer
-                                </b-button >
-                            </p>
-                            <p class="control">
-                                <b-button size="is-small" icon-right="times" type="is-danger" @click="removePointer(props.row)"/>
-                            </p>
-                        </b-field>
-
-                        <b-field v-else>
-                            <p class="control">
+                        <b-field>
+                            <p class="control" >
                                 <b-button
+                                    v-if="!hasPointer(props.row)"
                                     size="is-small"
                                     type="is-success"
                                     icon-left="plus"
@@ -76,6 +65,25 @@
                                     Add Pointer
                                 </b-button >
                             </p>
+                            <p class="control">
+                                <b-button
+                                    v-if="hasPointer(props.row)"
+                                    size="is-small"
+                                    type="is-info"
+                                    icon-left="eye"
+                                    @click="viewPointer(props.row)">
+                                    View Pointer
+                                </b-button >
+                            </p>
+                            <p class="control">
+                                <b-button
+                                    v-if="hasPointer(props.row)"
+                                    size="is-small"
+                                    icon-right="times"
+                                    type="is-danger"
+                                    @click="removePointer(props.row)"/>
+                            </p>
+
                         </b-field>
 
 
