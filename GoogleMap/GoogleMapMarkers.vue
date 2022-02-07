@@ -3,6 +3,7 @@
         <div class="switches-section is-clearfix" v-if="show_controls">
             <b-field class="is-pulled-right" grouped>
                 <b-switch v-model="set_map_center"
+                          v-if="!is_add_marker"
                           type="is-success">
                     Set Map Center
                 </b-switch>
@@ -20,16 +21,16 @@
                     <span v-else>Add/Edit Markers</span>
                 </b-switch>
 
-                <b-switch v-model="is_remove_marker"
+                <!--<b-switch v-model="is_remove_marker"
                           :disabled="set_map_center"
                           type="is-success">
                     Remove Markers
-                </b-switch>
+                </b-switch>-->
             </b-field>
         </div>
 
 
-        <div class="pointers-list has-margin-bottom-20" v-if="markers.length">
+        <div class="pointers-list has-margin-bottom-20 has-margin-top-10" v-if="markers.length && show_map_pointers">
             <b-table :data="markers"
                      bordered
                      striped
@@ -49,6 +50,14 @@
                                 <b-button size="is-small" type="is-info" icon-left="eye" @click="viewMarker(props.row)" >
                                     View Marker
                                 </b-button >
+
+                            </p>
+                            <p class="control">
+                                <b-button
+                                    size="is-small"
+                                    icon-right="times"
+                                    type="is-danger"
+                                    @click="removeMarker(props.row)"/>
                             </p>
                         </b-field>
 
@@ -232,6 +241,7 @@
 
             <!--Map Pointers-->
             <GmapMarker
+                v-if="show_map_pointers"
                 :key="index"
                 v-for="(m, index) in pointers"
                 :position="m.position"
@@ -346,7 +356,6 @@
                 hide_labels: true,
                 is_add_marker: this.is_edit_ready,
                 is_remove_marker: false,
-                pointers: [], //@todo make this inject value
                 show_floating_panel: false,
                 active_marker: null,
                 active_pointer: null,
@@ -355,7 +364,7 @@
                 is_adding_pointer: false,
             }
         },
-        inject: ['markers'],
+        inject: ['markers','pointers'],
         watch: {
             set_map_center(new_val) {
                 if (new_val) {
@@ -489,10 +498,10 @@
                 if (!this.is_marker_mode) return;
                 if (this.is_adding_pointer) return;
 
-                if (this.is_remove_marker) {
+                /*if (this.is_remove_marker) {
                     this.removeMarker(index);
                     return;
-                }
+                }*/
 
                 this.$buefy.dialog.prompt({
                     message: `Rename marker: `,
@@ -523,8 +532,10 @@
 
 
             //-----------------------------------------------------------------------------
-            removeMarker(index) {
-                this.markers.splice(index, 1);
+            removeMarker(marker) {
+                //this.markers.splice(index, 1);
+                this.removeByAttr(this.markers, 'name', marker.name);
+                this.removePointer(marker);
             },
             //-----------------------------------------------------------------------------
 
