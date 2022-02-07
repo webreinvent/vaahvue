@@ -89,70 +89,90 @@
         </div>
 
 
-        <b-modal
-            v-model="is_pointer_modal_open"
-            v-if="active_pointer"
-            >
-            <div class="card" >
-                <div class="card-header">
-                    <div class="card-header-title">{{active_pointer.name}} Marker's Pointer</div>
-                </div>
 
-                <div >
-                    <table class="table is-bordered" >
-                        <tr>
-                            <th>
-                                Pointer Latitude
-                            </th>
-                            <th>
-                                Pointer Longitude
-                            </th>
-                        </tr>
-
-
-                        <tr>
-                            <td>{{active_pointer.position.lat}}</td>
-                            <td>{{active_pointer.position.lng}}</td>
-                        </tr>
-
-
-                    </table>
-                </div>
-            </div>
-        </b-modal>
+        <!--Pointer modal-->
+        <div class="modal-table-main sky-popup authorization-modal" v-if="active_pointer">
+            <div class="modal" :class="{ 'is-active': is_pointer_modal_open }">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="modal-card modal-card-marign has-width-350">
+                        <header class="modal-card-head">
+                            <h6 class="modal-card-title">-->{{active_pointer.name}} Marker's Pointer</h6>
+                            <button
+                                dusk="sku-modal-close-btn"
+                                class="delete modal-close"
+                                @click="is_pointer_modal_open = false"
+                                aria-label="close">
+                            </button>
+                        </header>
+                        <div class="modal-table-start b-table has-background-white">
+                            <table class="table is-bordered" >
+                                <tr>
+                                    <th>
+                                        Pointer Latitude
+                                    </th>
+                                    <th>
+                                        Pointer Longitude
+                                    </th>
+                                </tr>
 
 
-        <b-modal
-            v-model="is_marker_modal_open"
-            v-if="active_marker"
-        >
-            <div class="card">
-                <div class="card-header">
-                    <div class="card-header-title">{{active_marker.name}} Marker</div>
-                </div>
-
-                <div >
-                    <table class="table is-bordered">
-                        <tr>
-                            <th>
-                                Marker Latitude
-                            </th>
-                            <th>
-                                Marker Longitude
-                            </th>
-                        </tr>
+                                <tr>
+                                    <td>{{active_pointer.position.lat}}</td>
+                                    <td>{{active_pointer.position.lng}}</td>
+                                </tr>
 
 
-                        <tr>
-                            <td>{{active_marker.position.lat}}</td>
-                            <td>{{active_marker.position.lng}}</td>
-                        </tr>
-
-
-                    </table>
+                            </table>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </b-modal>
+        </div>
+        <!--/Pointer modal-->
+
+
+
+        <!--Marker modal-->
+        <div class="modal-table-main sky-popup authorization-modal" v-if="active_marker">
+            <div class="modal" :class="{ 'is-active': is_marker_modal_open }">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="modal-card modal-card-marign has-width-350">
+                        <header class="modal-card-head">
+                            <h6 class="modal-card-title">{{active_marker.name}} Marker</h6>
+                            <button
+                                dusk="sku-modal-close-btn"
+                                class="delete modal-close"
+                                @click="is_marker_modal_open = false"
+                                aria-label="close">
+                            </button>
+                        </header>
+                        <div class="modal-table-start has-background-white">
+                            <table class="table is-bordered">
+                                <tr>
+                                    <th>
+                                        Marker Latitude
+                                    </th>
+                                    <th>
+                                        Marker Longitude
+                                    </th>
+                                </tr>
+
+
+                                <tr>
+                                    <td>{{active_marker.position.lat}}</td>
+                                    <td>{{active_marker.position.lng}}</td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/Marker modal-->
 
 
         <GmapMap
