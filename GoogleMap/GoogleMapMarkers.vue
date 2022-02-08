@@ -3,6 +3,7 @@
         <div class="switches-section is-clearfix" v-if="show_controls">
             <b-field class="is-pulled-right" grouped>
                 <b-switch v-model="set_map_center"
+                          v-if="!is_add_marker"
                           type="is-success">
                     Set Map Center
                 </b-switch>
@@ -20,21 +21,187 @@
                     <span v-else>Add/Edit Markers</span>
                 </b-switch>
 
-                <b-switch v-model="is_remove_marker"
+                <!--<b-switch v-model="is_remove_marker"
                           :disabled="set_map_center"
                           type="is-success">
                     Remove Markers
-                </b-switch>
+                </b-switch>-->
             </b-field>
         </div>
+
+
+        <div class="pointers-list has-margin-bottom-20 has-margin-top-10" v-if="markers.length && show_map_pointers">
+            <b-table :data="markers"
+                     bordered
+                     striped
+                     narrowed
+            >
+                <b-table-column field="index" label="#" v-slot="props" width="40">
+                    {{ props.index + 1 }}
+                </b-table-column>
+                <b-table-column field="name" label="Marker Name" v-slot="props">
+                    {{ props.row.name }}
+                </b-table-column>
+
+                <b-table-column field="actions" label="Actions" v-slot="props">
+                    <b-field  grouped>
+                        <b-field>
+                            <p class="control">
+                                <b-button size="is-small" type="is-info" icon-left="eye" @click="viewMarker(props.row)" >
+                                    View Marker
+                                </b-button >
+
+                            </p>
+                            <p class="control">
+                                <b-button
+                                    size="is-small"
+                                    icon-right="times"
+                                    type="is-danger"
+                                    @click="removeMarker(props.row)"/>
+                            </p>
+                        </b-field>
+
+                        <b-field>
+                            <p class="control" >
+                                <b-button
+                                    v-if="!hasPointer(props.row)"
+                                    size="is-small"
+                                    type="is-success"
+                                    icon-left="plus"
+                                    @click="addPointerForMarker(props.row)"
+                                    :disabled="is_adding_pointer"
+                                >
+                                    Add Pointer
+                                </b-button >
+                            </p>
+                            <p class="control">
+                                <b-button
+                                    v-if="hasPointer(props.row)"
+                                    size="is-small"
+                                    type="is-info"
+                                    icon-left="eye"
+                                    @click="viewPointer(props.row)">
+                                    View Pointer
+                                </b-button >
+                            </p>
+                            <p class="control">
+                                <b-button
+                                    v-if="hasPointer(props.row)"
+                                    size="is-small"
+                                    icon-right="times"
+                                    type="is-danger"
+                                    @click="removePointer(props.row)"/>
+                            </p>
+
+                        </b-field>
+
+
+                    </b-field>
+
+
+                </b-table-column>
+
+            </b-table>
+        </div>
+
+
+
+        <!--Pointer modal-->
+        <div class="modal-table-main sky-popup authorization-modal" v-if="active_pointer">
+            <div class="modal" :class="{ 'is-active': is_pointer_modal_open }">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="modal-card modal-card-marign has-width-350">
+                        <header class="modal-card-head">
+                            <h6 class="modal-card-title">{{active_pointer.name}} Marker's Pointer</h6>
+                            <button
+                                dusk="sku-modal-close-btn"
+                                class="delete modal-close"
+                                @click="is_pointer_modal_open = false"
+                                aria-label="close">
+                            </button>
+                        </header>
+                        <div class="modal-table-start b-table has-background-white">
+                            <table class="table is-bordered" >
+                                <tr>
+                                    <th>
+                                        Pointer Latitude
+                                    </th>
+                                    <th>
+                                        Pointer Longitude
+                                    </th>
+                                </tr>
+
+
+                                <tr>
+                                    <td>{{active_pointer.position.lat}}</td>
+                                    <td>{{active_pointer.position.lng}}</td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/Pointer modal-->
+
+
+
+        <!--Marker modal-->
+        <div class="modal-table-main sky-popup authorization-modal" v-if="active_marker">
+            <div class="modal" :class="{ 'is-active': is_marker_modal_open }">
+                <div class="modal-background"></div>
+                <div class="modal-content">
+                    <div class="modal-card modal-card-marign has-width-350">
+                        <header class="modal-card-head">
+                            <h6 class="modal-card-title">{{active_marker.name}} Marker</h6>
+                            <button
+                                dusk="sku-modal-close-btn"
+                                class="delete modal-close"
+                                @click="is_marker_modal_open = false"
+                                aria-label="close">
+                            </button>
+                        </header>
+                        <div class="modal-table-start has-background-white">
+                            <table class="table is-bordered">
+                                <tr>
+                                    <th>
+                                        Marker Latitude
+                                    </th>
+                                    <th>
+                                        Marker Longitude
+                                    </th>
+                                </tr>
+
+
+                                <tr>
+                                    <td>{{active_marker.position.lat}}</td>
+                                    <td>{{active_marker.position.lng}}</td>
+                                </tr>
+
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--/Marker modal-->
+
 
         <div class="has-margin-10">
             <b-message size="is-small" type="is-info" v-if="set_map_center">
                 Drag map and click to set map center
             </b-message>
-            <b-message  size="is-small" type="is-info" v-if="is_marker_mode">
+            <b-message  size="is-small" type="is-info" v-if="is_marker_mode && !is_adding_pointer">
                 <span v-if="!is_remove_marker">Now, you can click on map to add markers</span>
                 <span v-else>Click on any marker to remove it</span>
+            </b-message>
+
+            <b-message size="is-small" type="is-info" v-if="is_adding_pointer">
+                Please click on the map to add pointer
             </b-message>
         </div>
 
@@ -59,12 +226,11 @@
 
             <!--Flag Markers-->
             <GmapMarker
-                v-if="!set_map_center"
                 :key="index"
                 v-for="(m, index) in markers"
                 :position="m.position"
-                :clickable="is_marker_mode"
-                :draggable="is_marker_mode"
+                :clickable="is_marker_mode && !is_adding_pointer"
+                :draggable="is_marker_mode && !is_adding_pointer"
                 :icon="image_url+'/'+marker_icon"
                 @click="markerClicked(m,index)"
                 @dragend="markerDragged($event, m)"
@@ -72,18 +238,27 @@
             <!--/Flag Markers-->
 
 
-            <!--Horse Position-->
-            <!--<GmapMarker
-                :key="index"
-                :position="horse_position"
-                :icon="image_url+'/'+marker_icon"
-            />-->
-            <!--Horse Position-->
-
-
-
+            <!--Map Pointers-->
+            <GmapMarker
+                v-if="show_map_pointers"
+                :key="index+100"
+                v-for="(m, index) in pointers"
+                :position="m.position"
+                :clickable="is_marker_mode"
+                :draggable="is_marker_mode"
+                :icon="image_url+'/'+pointer_icon"
+                @dragend="pointerDragged($event, m)"
+            />
+            <!--/Map Pointers-->
 
         </GmapMap>
+
+
+       <!-- <div id="floating-panel">
+            <input id="add-pointer" type="button" value="Add Pointer" @click="addPointer()" />
+            <input id="remove-pointer" type="button" value="Remove Pointer" />
+        </div>-->
+
     </div>
 </template>
 
@@ -95,15 +270,15 @@
         props: {
             map_key: Number,
             latitude: {
-                type: String|Number,
+                type: String | Number,
                 default: 0
             },
             longitude: {
-                type: String|Number,
+                type: String | Number,
                 default: 0
             },
             zoom: {
-                type: String|Number,
+                type: String | Number,
                 default: 16
             },
             custom_style: {
@@ -115,49 +290,57 @@
                 type: String,
                 default: 'satellite'
             },
-            show_controls:{
+            show_controls: {
                 type: Boolean,
                 default: true,
             },
-            is_rotatable:{
+            is_rotatable: {
                 type: Boolean,
                 default: true,
             },
-            image_url:{
+            image_url: {
                 type: String,
                 default: null
             },
-            marker_icon:{
+            marker_icon: {
                 type: String,
                 default: null
             },
-            rotate_left_icon:{
+            pointer_icon: {
                 type: String,
                 default: null
             },
-            rotate_right_icon:{
+            rotate_left_icon: {
                 type: String,
                 default: null
             },
-            heading:{
-                type: String|Number,
+            rotate_right_icon: {
+                type: String,
+                default: null
+            },
+            heading: {
+                type: String | Number,
                 default: '0'
             },
-            tilt:{
-                type: String|Number,
+            tilt: {
+                type: String | Number,
                 default: '0'
             },
-            is_edit_ready:{ // sets add marker default to true and changes its switch label
+            is_edit_ready: { // sets add marker default to true and changes its switch label
+                type: Boolean,
+                default: false
+            },
+            show_map_pointers: {
                 type: Boolean,
                 default: false
             }
         },
         computed: {
-            google : gmapApi,
-            is_marker_mode(){
+            google: gmapApi,
+            is_marker_mode() {
                 return this.is_add_marker || this.is_remove_marker;
             },
-            center(){
+            center() {
                 return {
                     lat: parseFloat(this.latitude),
                     lng: parseFloat(this.longitude)
@@ -172,12 +355,18 @@
                 hide_labels: true,
                 is_add_marker: this.is_edit_ready,
                 is_remove_marker: false,
+                show_floating_panel: false,
+                active_marker: null,
+                active_pointer: null,
+                is_pointer_modal_open: false,
+                is_marker_modal_open: false,
+                is_adding_pointer: false,
             }
         },
-        inject: ['markers'],
-        watch:{
-            set_map_center(new_val){
-                if(new_val){
+        inject: ['markers','pointers'],
+        watch: {
+            set_map_center(new_val) {
+                if (new_val) {
                     this.hide_labels = false;
                     this.is_add_marker = false;
                     this.is_remove_marker = false;
@@ -190,7 +379,7 @@
         },
         methods: {
             //-----------------------------------------------------------------------------
-            onLoad(){
+            onLoad() {
                 this.setRotateControls();
             },
             //-----------------------------------------------------------------------------
@@ -212,9 +401,9 @@
 
                         controlUI.classList.add("ui-button");
                         if (`${text}` === 'Rotate Left') {
-                            controlUI.innerHTML = `<img src='`+self.image_url+`/`+self.rotate_left_icon+`' width='40px'/>`;
+                            controlUI.innerHTML = `<img src='` + self.image_url + `/` + self.rotate_left_icon + `' width='40px'/>`;
                         } else {
-                            controlUI.innerHTML = `<img src='`+self.image_url+`/`+self.rotate_right_icon+`' width='40px'/>`;
+                            controlUI.innerHTML = `<img src='` + self.image_url + `/` + self.rotate_right_icon + `' width='40px'/>`;
                         }
 
 
@@ -231,11 +420,14 @@
 
 
             //-----------------------------------------------------------------------------
-            mapClicked(e){
-                if(!this.set_map_center){
-                    this.addMarker(e)
-                }
-                else{
+            mapClicked(e) {
+                if (!this.set_map_center) {
+                    if(this.is_adding_pointer){
+                        this.addPointer(e);
+                    }else{
+                        this.addMarker(e);
+                    }
+                } else {
 
                     let pos = {
                         lat: e.latLng.lat(),
@@ -246,7 +438,7 @@
                     this.$refs.map.$mapPromise.then((map) => {
                         map.panTo(pos);
                         map.setZoom(self.zoom);
-                        self.$emit('centerChanged',pos);
+                        self.$emit('centerChanged', pos);
                     });
 
                 }
@@ -255,8 +447,8 @@
 
 
             //-----------------------------------------------------------------------------
-            addMarker(e){
-                if(!this.is_add_marker) return;
+            addMarker(e) {
+                if (!this.is_add_marker) return;
 
                 this.$buefy.dialog.prompt({
                     message: `Please enter marker name`,
@@ -266,27 +458,49 @@
                     },
                     trapFocus: true,
                     onConfirm: (name) => {
-                        const marker = {
+                        if(this.markerExists(name)){
+                            this.$vaah.toastErrors(['Marker with same name already exists']);
+                            return;
+                        }
+
+                        const position = {
                             lat: e.latLng.lat(),
                             lng: e.latLng.lng(),
                         };
-                        this.markers.push({
+                        let marker = {
                             name: name,
-                            position: marker
-                        });
+                            position: position
+                        };
+                        this.markers.push(marker);
 
-                        //this.$emit('markerAdded',this.markers);
+
+                        this.show_floating_panel = true;
+                        this.active_marker = marker;
+
+
                     }
                 });
             },
             //-----------------------------------------------------------------------------
-            markerClicked(marker, index){
-                if(!this.is_marker_mode) return;
+            markerExists(name){
+                let list = this.markers.filter(item=>{
+                    return item.name === name;
+                });
 
-                if(this.is_remove_marker){
+                return list.length>0;
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            markerClicked(marker, index) {
+                if (!this.is_marker_mode) return;
+                if (this.is_adding_pointer) return;
+
+                /*if (this.is_remove_marker) {
                     this.removeMarker(index);
                     return;
-                }
+                }*/
 
                 this.$buefy.dialog.prompt({
                     message: `Rename marker: `,
@@ -304,37 +518,130 @@
             //-----------------------------------------------------------------------------
 
             //-----------------------------------------------------------------------------
-            markerDragged(e, marker){
+            markerDragged(e, marker) {
                 //if(!this.is_marker_mode) return;
 
                 marker.position = e.latLng;
             },
             //-----------------------------------------------------------------------------
-
-
-            //-----------------------------------------------------------------------------
-            removeMarker(index){
-                this.markers.splice(index, 1);
+            pointerDragged(e, pointer){
+                pointer.position = e.latLng;
             },
             //-----------------------------------------------------------------------------
 
 
             //-----------------------------------------------------------------------------
-            rotateMap(amount){
+            removeMarker(marker) {
+                //this.markers.splice(index, 1);
+                this.removeByAttr(this.markers, 'name', marker.name);
+                this.removePointer(marker);
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            rotateMap(amount) {
                 let map = this.$refs.map.$mapObject;
-                console.log('>>',this.$refs.map);
-                let heading = map.heading?map.heading + amount : amount;
+                let heading = map.heading ? map.heading + amount : amount;
 
 
                 map.setHeading(heading);
                 map.heading = heading;
                 map.panTo(this.center);
 
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            addPointerForMarker(marker) {
+                this.active_marker = marker;
+                this.is_adding_pointer = true;
+            },
+            //-----------------------------------------------------------------------------
+            addPointer(e) {
+                const position = {
+                    lat: e.latLng.lat(),
+                    lng: e.latLng.lng(),
+                };
+                this.pointers.push({
+                    name: this.active_marker.name,
+                    position: position
+                });
+
+                this.active_marker = null;
+                this.is_adding_pointer = false;
+            },
+            //-----------------------------------------------------------------------------
+
+            //-----------------------------------------------------------------------------
+            viewPointer(marker){
+                let list = this.pointers.filter(item=>{
+                   return item.name === marker.name;
+                });
+
+                if(list.length<1) {
+                    this.$vaah.toastErrors(['No pointers found']);
+                    return null;
+                }
+
+                this.active_pointer = list[0];
+                this.is_pointer_modal_open = true;
+
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            viewMarker(marker){
+                let list = this.markers.filter(item=>{
+                    return item.name === marker.name;
+                });
+
+                if(list.length<1) {
+                    this.$vaah.toastErrors(['No markers found']);
+                    return null;
+                }
+
+                this.active_marker = list[0];
+                this.is_marker_modal_open = true;
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            hasPointer(marker){
+                let list = this.pointers.filter(item=>{
+                    return item.name === marker.name;
+                });
+
+                return list.length>0;
+            },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            removePointer(marker){
+                this.removeByAttr(this.pointers, 'name', marker.name);
+            },
+            //-----------------------------------------------------------------------------
+            removeByAttr(arr, attr, value){
+                let i = arr.length;
+                while(i--){
+                    if( arr[i]
+                        && arr[i].hasOwnProperty(attr)
+                        && (arguments.length > 2 && arr[i][attr] === value ) ){
+
+                        arr.splice(i,1);
+
+                    }
+                }
+                return arr;
             }
             //-----------------------------------------------------------------------------
 
-        },
-    };
+        }
+    }
 </script>
 
 <style scoped>
@@ -347,4 +654,5 @@
     label{
         margin-left: 5px;
     }
+
 </style>
