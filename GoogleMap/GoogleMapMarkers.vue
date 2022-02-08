@@ -241,7 +241,7 @@
             <!--Map Pointers-->
             <GmapMarker
                 v-if="show_map_pointers"
-                :key="index"
+                :key="index+100"
                 v-for="(m, index) in pointers"
                 :position="m.position"
                 :clickable="is_marker_mode"
