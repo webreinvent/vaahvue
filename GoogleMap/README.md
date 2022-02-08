@@ -17,7 +17,7 @@ GoogleMapMarker allows for quick integration of Google Maps and Google Map Marke
     ![Add Map Marker](./images/add_marker_demo.gif)
 
   * ##### Removing Markers
-    Toggle Remove Marker and click on any marker to remove it
+    Remove marker easily from the list
     ![Remove Map Marker](./images/remove_marker_demo.gif)
 
  
@@ -27,6 +27,14 @@ GoogleMapMarker allows for quick integration of Google Maps and Google Map Marke
   * #### Naming/Renaming Markers
     Name/Rename Markers easily
     ![Rename Map Marker](./images/rename_marker_demo.gif)
+    
+  * #### Adding Pointers
+    Add pointer against any marker with ease
+    ![Add Pointer](./images/add_pointer_demo.gif)
+    
+  * #### Removing Pointers
+    Remove pointer with ease
+    ![Add Pointer](./images/remove_pointer_demo.gif)
 
     
   * #### Adding Rotation Controls
