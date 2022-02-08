@@ -226,7 +226,6 @@
 
             <!--Flag Markers-->
             <GmapMarker
-                v-if="!set_map_center"
                 :key="index"
                 v-for="(m, index) in markers"
                 :position="m.position"
@@ -250,7 +249,7 @@
                 :icon="image_url+'/'+pointer_icon"
                 @dragend="pointerDragged($event, m)"
             />
-
+            <!--/Map Pointers-->
 
         </GmapMap>
 
