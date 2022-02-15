@@ -105,6 +105,8 @@
             }, 1000),
             //----------------------------------------------------
             onSelect: function (option) {
+                if(!option) return;
+
                 this.selected = option;
                 this.selected_string = option[this.display_column];
                 this.$emit('onSelect', option);
