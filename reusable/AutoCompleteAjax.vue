@@ -8,6 +8,8 @@
         :field="display_column"
         :loading="isFetching"
         @typing="getAsyncData"
+        :icon="icon"
+        :autofocus="autofocus"
         @select="option => onSelect(option)">
 
         <template slot-scope="props">
@@ -57,6 +59,14 @@
             unique_column:{
                 type: String,
                 default: 'id'
+            },
+            icon:{
+                type: String,
+                default: null,
+            },
+            autofocus: {
+                type: Boolean,
+                default: false
             }
         },
         computed:{
