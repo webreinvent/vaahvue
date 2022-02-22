@@ -2,6 +2,7 @@
 Buefy Based Vue Component to fasten your development
 
 Docs Reusable Components: https://docs.vaah.dev/vaahcms/vaahvue/reusable/
+
 Docs Helper Methods: https://docs.vaah.dev/vaahcms/vaahvue/helpers.html#vaah-helper
 
 ## Support us
