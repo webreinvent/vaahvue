@@ -2,6 +2,8 @@ import Vue from 'vue';
 import axios from "vue-axios";
 import {ToastProgrammatic as Toast} from "buefy";
 import {SnackbarProgrammatic as Snackbar} from "buefy";
+import {store} from "../../store/store";
+import moment from "moment-timezone";
 
 let debug = document.getElementById('debug').getAttribute('content');
 debug = parseInt(debug);
@@ -61,7 +63,6 @@ const VhHelper = {
 
         return ajax;
     },
-    //---------------------------------------------------------------------
 
     //---------------------------------------------------------------------
     processResponse: function(response)
@@ -153,7 +154,32 @@ const VhHelper = {
         }
     },
     //---------------------------------------------------------------------
+    clone(source)
+    {
+        return JSON.parse(JSON.stringify(source));
+    },
     //---------------------------------------------------------------------
+    ago: function (value) {
+
+        if(!value)
+        {
+            return null;
+        }
+
+        if(store.getters['root/state'].assets.timezone)
+        {
+            let timezone = store.getters['root/state'].assets.timezone;
+            moment.tz.setDefault(timezone);
+        }
+
+        let dt = store.getters['root/state'].assets.server_date_time;
+
+        let server = moment(dt);
+        let time = moment(value);
+
+        //return server.from(time);
+        return time.from(server);
+    },
     //---------------------------------------------------------------------
 
 

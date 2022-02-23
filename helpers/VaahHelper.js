@@ -576,13 +576,11 @@ const VaahHelper = {
             return null;
         }
 
-
         if(store.getters['root/state'].assets.timezone)
         {
             let timezone = store.getters['root/state'].assets.timezone;
             moment.tz.setDefault(timezone);
         }
-
 
         let dt = store.getters['root/state'].assets.server_date_time;
 
