@@ -40,16 +40,28 @@ const VhHelper = {
             q.headers = headers;
         }
 
+        if(method === 'get')
+        {
+            let query = {
+                params: params
+            };
+            params = query;
+            q = null;
+        }
+
         let ajax = await Vue.axios[method](url, params, q)
             .then(function (response){
                 self.processResponse(response);
                 if(callback)
                 {
-                    if(response.data && !response.data.data)
+                    if(response.data && response.data.data)
                     {
-                        response.data.data = false;
+                        callback(response.data.data, response);
+
+                    } else{
+                        self.log(response, 'response-->');
+                        callback(false, response);
                     }
-                    callback(response.data.data, response);
                 }
                 return response;
             }).catch(function (error){
@@ -180,6 +192,14 @@ const VhHelper = {
         //return server.from(time);
         return time.from(server);
     },
+    //---------------------------------------------------------------------
+    log(data, label=null)
+    {
+        if(debug)
+        {
+            console.log(label, data);
+        }
+    }
     //---------------------------------------------------------------------
 
 
