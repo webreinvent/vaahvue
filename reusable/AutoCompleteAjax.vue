@@ -115,7 +115,10 @@
             }, 1000),
             //----------------------------------------------------
             onSelect: function (option) {
-                if(!option) return;
+                if(!option) {
+                    this.$emit('onSelect', null);
+                    return;
+                };
 
                 this.selected = option;
                 this.selected_string = option[this.display_column];
