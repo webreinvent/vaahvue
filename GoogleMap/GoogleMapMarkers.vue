@@ -724,6 +724,9 @@
         margin-left: 5px;
     }
 
+    .map-controls{
+        margin-bottom: 5px;
+    }
 
 
 </style>
