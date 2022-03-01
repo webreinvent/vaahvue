@@ -1,34 +1,5 @@
 <template>
     <div>
-        <div class="switches-section is-clearfix" v-if="show_controls">
-            <b-field class="is-pulled-right" grouped>
-                <b-switch v-model="set_map_center"
-                          v-if="!is_add_marker"
-                          type="is-success">
-                    Set Map Center
-                </b-switch>
-
-                <!--<b-switch v-model="hide_labels"
-                          :disabled="set_map_center"
-                          type="is-success">
-                    Hide Labels
-                </b-switch>-->
-
-                <b-switch v-model="is_add_marker"
-                          :disabled="set_map_center || is_remove_marker"
-                          type="is-success">
-                    <span v-if="!this.is_edit_ready">Add Markers</span>
-                    <span v-else>Add/Edit Markers</span>
-                </b-switch>
-
-                <!--<b-switch v-model="is_remove_marker"
-                          :disabled="set_map_center"
-                          type="is-success">
-                    Remove Markers
-                </b-switch>-->
-            </b-field>
-        </div>
-
 
         <div class="pointers-list has-margin-bottom-20 has-margin-top-10" v-if="markers.length && show_map_pointers">
             <b-table :data="markers"
@@ -206,52 +177,83 @@
         </div>
 
 
-        <GmapMap
-            ref="map"
-            :key="map_key"
-            :center='center'
-            :zoom='zoom'
-            :style='custom_style'
-            :map-type-id='map_type_id'
-            :option="{
-                rotateControl: true,
-                streetViewControl: false,
-            }"
-            @click="mapClicked"
-        >
-            <!--@NOTE
-            To add marker labels add the following attributes
-            :label="!hide_labels?{text: m.name, color: '#fff', fontWeight: '900', y:'100px'}:null"
-            -->
+        <div id="map">
+            <div class="map-controls level has-margin-bottom-5 has-background-white">
+                <div class="level-left">
+                    <b-button @click="makeFullScreen()" v-if="!is_map_fullscreen">Full Screen</b-button>
+                    <b-button @click="removeFullScreen()" v-else>Remove Full Screen</b-button>
+                </div>
 
-            <!--Flag Markers-->
-            <GmapMarker
-                :key="index"
-                v-for="(m, index) in markers"
-                :position="m.position"
-                :clickable="is_marker_mode && !is_adding_pointer"
-                :draggable="is_marker_mode && !is_adding_pointer"
-                :icon="image_url+'/'+marker_icon"
-                @click="markerClicked(m,index)"
-                @dragend="markerDragged($event, m)"
-            />
-            <!--/Flag Markers-->
+                <div class="switches-section is-clearfix level-right" v-if="show_controls">
+                    <b-field class="is-pulled-right" grouped>
+                        <b-switch v-model="set_map_center"
+                                  v-if="!is_add_marker"
+                                  type="is-success">
+                            Set Map Center
+                        </b-switch>
+
+                        <b-switch v-model="is_add_marker"
+                                  :disabled="set_map_center || is_remove_marker"
+                                  type="is-success">
+                            <span v-if="!this.is_edit_ready">Add Markers</span>
+                            <span v-else>Add/Edit Markers</span>
+                        </b-switch>
+
+                    </b-field>
+                </div>
+            </div>
+
+            <GmapMap
+                ref="map"
+                :key="map_key"
+                :center='center'
+                :zoom='zoom'
+                :style='map_style'
+                :map-type-id='map_type_id'
+                :options="{
+                    rotateControl: true,
+                    streetViewControl: false,
+                    fullscreenControl: false
+                }"
+                @click="mapClicked"
+            >
+                <!--@NOTE
+                To add marker labels add the following attributes
+                :label="!hide_labels?{text: m.name, color: '#fff', fontWeight: '900', y:'100px'}:null"
+                -->
+
+                <!--Flag Markers-->
+                <GmapMarker
+                    :key="index"
+                    v-for="(m, index) in markers"
+                    :position="m.position"
+                    :clickable="is_marker_mode && !is_adding_pointer"
+                    :draggable="is_marker_mode && !is_adding_pointer"
+                    :icon="image_url+'/'+marker_icon"
+                    @click="markerClicked(m,index)"
+                    @dragend="markerDragged($event, m)"
+                />
+                <!--/Flag Markers-->
 
 
-            <!--Map Pointers-->
-            <GmapMarker
-                v-if="show_map_pointers"
-                :key="index+100"
-                v-for="(m, index) in pointers"
-                :position="m.position"
-                :clickable="is_marker_mode"
-                :draggable="is_marker_mode"
-                :icon="image_url+'/'+pointer_icon"
-                @dragend="pointerDragged($event, m)"
-            />
-            <!--/Map Pointers-->
+                <!--Map Pointers-->
+                <GmapMarker
+                    v-if="show_map_pointers"
+                    :key="index+100"
+                    v-for="(m, index) in pointers"
+                    :position="m.position"
+                    :clickable="is_marker_mode"
+                    :draggable="is_marker_mode"
+                    :icon="image_url+'/'+pointer_icon"
+                    @dragend="pointerDragged($event, m)"
+                />
+                <!--/Map Pointers-->
 
-        </GmapMap>
+            </GmapMap>
+
+        </div>
+
+
 
 
        <!-- <div id="floating-panel">
@@ -361,6 +363,8 @@
                 is_pointer_modal_open: false,
                 is_marker_modal_open: false,
                 is_adding_pointer: false,
+                is_map_fullscreen: false,
+                map_style: this.map_style,
             }
         },
         inject: ['markers','pointers'],
@@ -380,6 +384,7 @@
         methods: {
             //-----------------------------------------------------------------------------
             onLoad() {
+                this.map_style = this.custom_style;
                 this.setRotateControls();
             },
             //-----------------------------------------------------------------------------
@@ -450,7 +455,7 @@
             addMarker(e) {
                 if (!this.is_add_marker) return;
 
-                this.$buefy.dialog.prompt({
+                let dialog = this.$buefy.dialog.prompt({
                     message: `Please enter marker name`,
                     inputAttrs: {
                         placeholder: 'e.g. Marker 1',
@@ -480,6 +485,15 @@
 
                     }
                 });
+
+
+                let map = this.$refs.map.$mapObject; // get map object
+                let element = dialog.$el; // get element
+
+
+                console.log('>>',dialog);
+                //map.controls[this.google.maps.ControlPosition.BOTTOM_CENTER].push(element);
+
             },
             //-----------------------------------------------------------------------------
             markerExists(name){
@@ -637,7 +651,26 @@
                     }
                 }
                 return arr;
-            }
+            },
+            //-----------------------------------------------------------------------------
+            makeFullScreen: function () {
+                let map = document.getElementById('map');
+                map.setAttribute("class", "full-screen");
+
+                this.map_style = 'width:100%;height:97vh';
+
+                this.is_map_fullscreen = true;
+            },
+            //-----------------------------------------------------------------------------
+            removeFullScreen: function () {
+
+                let map = document.getElementById('map');
+                map.setAttribute("class", "");
+
+                this.map_style = this.custom_style;
+
+                this.is_map_fullscreen = false;
+            },
             //-----------------------------------------------------------------------------
 
         }
@@ -653,6 +686,16 @@
     }
     label{
         margin-left: 5px;
+    }
+
+    .full-screen{
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background: rgba(51,51,51,0.7);
+        z-index: 10000000;
     }
 
 </style>
