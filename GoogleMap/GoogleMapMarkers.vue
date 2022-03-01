@@ -161,7 +161,7 @@
         </div>
         <!--/Marker modal-->
 
-
+        <!--Messages-->
         <div class="has-margin-10">
             <b-message size="is-small" type="is-info" v-if="set_map_center">
                 Drag map and click to set map center
@@ -175,16 +175,13 @@
                 Please click on the map to add pointer
             </b-message>
         </div>
+        <!--/Messages-->
 
 
         <div id="map">
-            <div class="map-controls level has-margin-bottom-5 has-background-white">
-                <div class="level-left">
-                    <b-button @click="makeFullScreen()" v-if="!is_map_fullscreen">Full Screen</b-button>
-                    <b-button @click="removeFullScreen()" v-else>Remove Full Screen</b-button>
-                </div>
-
-                <div class="switches-section is-clearfix level-right" v-if="show_controls">
+            <!--Controls-->
+            <div class="map-controls has-margin-bottom-5 has-background-white">
+                <div class="switches-section is-clearfix" v-if="show_controls">
                     <b-field class="is-pulled-right" grouped>
                         <b-switch v-model="set_map_center"
                                   v-if="!is_add_marker"
@@ -202,7 +199,18 @@
                     </b-field>
                 </div>
             </div>
+            <!--/Controls-->
 
+            <div class="buttons">
+                <b-button v-if="!is_map_fullscreen"
+                          @click="makeFullScreen()"
+                          icon-right="expand"
+                />
+                <b-button v-else
+                          @click="removeFullScreen()"
+                          icon-right="compress"
+                />
+            </div>
             <GmapMap
                 ref="map"
                 :key="map_key"
@@ -677,7 +685,34 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    #map{
+        position: relative;
+        .buttons{
+            position: absolute;
+            top: 37px;
+            right: 10px;
+            z-index: 9;
+            .button{
+                border-radius: 0;
+            }
+        }
+        &.full-screen{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            background: rgba(51,51,51,0.7);
+            z-index: 40;
+            .map-controls{
+                padding: 10px;
+            }
+            .buttons{
+                top: 50px;
+            }
+        }
+    }
     .switches-section{
         margin: 0;
     }
@@ -688,14 +723,6 @@
         margin-left: 5px;
     }
 
-    .full-screen{
-        position: fixed;
-        width: 100%;
-        height: 100%;
-        left: 0;
-        top: 0;
-        background: rgba(51,51,51,0.7);
-        z-index: 10000000;
-    }
+
 
 </style>
