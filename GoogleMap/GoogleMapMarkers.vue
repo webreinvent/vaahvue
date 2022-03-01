@@ -180,7 +180,7 @@
 
         <div id="map">
             <!--Controls-->
-            <div class="map-controls has-margin-bottom-5 has-background-white">
+            <div class="map-controls has-background-white">
                 <div class="switches-section is-clearfix" v-if="show_controls">
                     <b-field class="is-pulled-right" grouped>
                         <b-switch v-model="set_map_center"
@@ -665,7 +665,7 @@
                 let map = document.getElementById('map');
                 map.setAttribute("class", "full-screen");
 
-                this.map_style = 'width:100%;height:97vh';
+                this.map_style = 'width:100%;height:94vh';
 
                 this.is_map_fullscreen = true;
             },
@@ -706,6 +706,7 @@
             background: rgba(51,51,51,0.7);
             z-index: 40;
             .map-controls{
+                margin-bottom: 0;
                 padding: 10px;
             }
             .buttons{
