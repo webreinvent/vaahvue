@@ -328,7 +328,7 @@
                 type: String,
                 default: null
             },
-            heading: {
+            rotation: {
                 type: String | Number,
                 default: '0'
             },
@@ -394,6 +394,7 @@
             onLoad() {
                 this.map_style = this.custom_style;
                 this.setRotateControls();
+                this.setInitialRotation();
             },
             //-----------------------------------------------------------------------------
 
@@ -414,8 +415,10 @@
 
                         controlUI.classList.add("ui-button");
                         if (`${text}` === 'Rotate Left') {
+                            controlUI.classList.add('rotate-left');
                             controlUI.innerHTML = `<img src='` + self.image_url + `/` + self.rotate_left_icon + `' width='40px'/>`;
                         } else {
+                            controlUI.classList.add('rotate-right');
                             controlUI.innerHTML = `<img src='` + self.image_url + `/` + self.rotate_right_icon + `' width='40px'/>`;
                         }
 
@@ -425,6 +428,19 @@
                         });
                         controlDiv.appendChild(controlUI);
                         map.controls[position].push(controlDiv);
+                    });
+                });
+
+            },
+            //-----------------------------------------------------------------------------
+            setInitialRotation(){
+                let self = this;
+
+                this.$nextTick(() => {
+                    self.$refs.map.$mapPromise.then((map) => {
+                        self.google.maps.event.addListenerOnce(map, 'tilesloaded', function() {
+                            self.rotateMap(self.rotation);
+                        });
                     });
                 });
 
@@ -494,14 +510,6 @@
                     }
                 });
 
-
-                let map = this.$refs.map.$mapObject; // get map object
-                let element = dialog.$el; // get element
-
-
-                console.log('>>',dialog);
-                //map.controls[this.google.maps.ControlPosition.BOTTOM_CENTER].push(element);
-
             },
             //-----------------------------------------------------------------------------
             markerExists(name){
@@ -563,14 +571,17 @@
 
             //-----------------------------------------------------------------------------
             rotateMap(amount) {
+                // convert to number if string
+                amount = (amount instanceof Number)?amount:+amount;
+
                 let map = this.$refs.map.$mapObject;
                 let heading = map.heading ? map.heading + amount : amount;
-
 
                 map.setHeading(heading);
                 map.heading = heading;
                 map.panTo(this.center);
 
+                this.rotationChanged(heading);
             },
             //-----------------------------------------------------------------------------
 
@@ -679,6 +690,27 @@
 
                 this.is_map_fullscreen = false;
             },
+            //-----------------------------------------------------------------------------
+
+
+            //-----------------------------------------------------------------------------
+            emitConfigChangeEvent: function () {
+                let map = this.$refs.map.$mapObject;
+                let config = {
+                    zoom: map.zoom,
+                    rotation: map.heading
+                };
+
+                this.$emit('configChanged', config)
+            },
+            //-----------------------------------------------------------------------------
+            zoomChanged: function (zoom) {
+                this.emitConfigChangeEvent()
+            },
+            //-----------------------------------------------------------------------------
+            rotationChanged: function (rotation) {
+                this.emitConfigChangeEvent()
+            }
             //-----------------------------------------------------------------------------
 
         }
