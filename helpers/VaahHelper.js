@@ -587,8 +587,11 @@ const VaahHelper = {
         let server = moment(dt);
         let time = moment(value);
 
-        //return server.from(time);
-        return time.from(server);
+        if(time.isAfter(server)){
+            return server.from(time);
+        }
+        return time.fromNow();
+
     },
     //---------------------------------------------------------------------
     currentDate: function () {

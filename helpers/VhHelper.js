@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import axios from "vue-axios";
+import qs from 'qs';
 import {ToastProgrammatic as Toast} from "buefy";
 import {SnackbarProgrammatic as Snackbar} from "buefy";
 import {store} from "../../store/store";
@@ -47,6 +48,28 @@ const VhHelper = {
             };
             params = query;
             q = null;
+            Vue.axios.interceptors.request.use(
+                function (config) {
+                    config.paramsSerializer = function (params) {
+                        return qs.stringify(params, {
+                            arrayFormat: 'brackets',
+                            encode: false,
+                            skipNulls: true
+                        })
+                    }
+                    return config;
+                },
+                function (error) {
+                    return Promise.reject(error)
+                }
+            );
+        }
+
+        if(method === 'delete')
+        {
+            params = {
+                data: params
+            };
         }
 
         let ajax = await Vue.axios[method](url, params, q)
@@ -59,7 +82,7 @@ const VhHelper = {
                         callback(response.data.data, response);
 
                     } else{
-                        self.log(response, 'response-->');
+                        self.log(response, 'response--->');
                         callback(false, response);
                     }
                 }
@@ -188,9 +211,10 @@ const VhHelper = {
 
         let server = moment(dt);
         let time = moment(value);
-
-        //return server.from(time);
-        return time.from(server);
+        if(time.isAfter(server)){
+            return server.from(time);
+        }
+        return time.fromNow();
     },
     //---------------------------------------------------------------------
     log(data, label=null)
