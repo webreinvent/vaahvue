@@ -9,7 +9,7 @@
         :loading="isFetching"
         @typing="getAsyncData"
         :icon="icon"
-        :autofocus="autofocus"
+        :open-on-focus="open_on_focus"
         @select="option => onSelect(option)">
 
         <template slot-scope="props">
@@ -40,6 +40,10 @@
 
     export default {
         props: {
+            options: {
+                type: Array|Object,
+                required: true
+            },
             selected_value:{
                 type: String,
                 default: null
@@ -64,12 +68,19 @@
                 type: String,
                 default: null,
             },
-            autofocus: {
+            open_on_focus: {
                 type: Boolean,
-                default: false
+                default: true
             }
         },
         computed:{
+        },
+        mounted() {
+            if(this.options)
+            {
+                this.data = this.options;
+            }
+            this.selected_string = this.selected_value;
         },
         data() {
             return {
@@ -79,11 +90,7 @@
                 isFetching: false,
             }
         },
-        mounted() {
 
-            this.selected_string = this.selected_value;
-
-        },
         methods: {
             // You have to install and import debounce to use it,
             // it's not mandatory though.
