@@ -42,7 +42,7 @@
         props: {
             options: {
                 type: Array|Object,
-                required: true
+                default: null
             },
             selected_value:{
                 type: String,
