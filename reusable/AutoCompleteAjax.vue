@@ -108,14 +108,19 @@
                     q: q
                 };
 
-                console.log('--->', params);
+                let list;
 
-                this.axios.post(url, params).then((response) => {
+                this.axios.get(url, params).then((response) => {
                     this.data = [];
 
-                    console.log('--->', response);
+                    list = response.data;
 
-                    response.data.forEach((item) => this.data.push(item));
+                    if(list.data && list.data.current_page)
+                    {
+                        list = list.data.data
+                    }
+
+                    list.forEach((item) => this.data.push(item));
                     self.isFetching = false;
                 });
 
