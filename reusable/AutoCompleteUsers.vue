@@ -44,7 +44,7 @@ let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
             selected_value: String|Number,
         },
         computed:{
-            root_state() {return this.$store.getters['root/state']},
+            
         },
         data() {
             return {
