@@ -35,6 +35,8 @@
 </template>
 <script>
 
+let base_url = document.getElementsByTagName('base')[0].getAttribute("href");
+
     import debounce from 'lodash/debounce'
 
     export default {
@@ -95,7 +97,7 @@
                 this.data = [];
                 this.isFetching = true;
 
-                let url = this.root_state.ajax_url+'/json/users/';
+                let url = base_url+'/backend/json/users/';
                 url += name;
 
                 this.axios.get(url).then((response) => {
