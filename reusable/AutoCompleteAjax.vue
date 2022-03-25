@@ -103,14 +103,11 @@
                 this.data = [];
                 this.isFetching = true;
 
-                let url = this.ajax_url;
-                let params = {
-                    q: q
-                };
+                let url = this.ajax_url+"?q="+q;
 
                 let list;
 
-                this.axios.get(url, params).then((response) => {
+                this.axios.get(url).then((response) => {
                     this.data = [];
 
                     list = response.data;
