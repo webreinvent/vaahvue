@@ -789,6 +789,12 @@ const VaahHelper = {
         return seconds;
     },
     //---------------------------------------------------------------------
+    timeDifferenceInSecondsUTC: function (started_at,ended_at) {
+        let ms = moment(ended_at).diff(moment(started_at));
+        let seconds = ms/1000;
+        return seconds;
+    },
+    //---------------------------------------------------------------------
     secondsToHoursMinutsSeconds: function (seconds) {
 
         let ms = seconds*1000;
