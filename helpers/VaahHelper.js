@@ -544,6 +544,22 @@ const VaahHelper = {
         return moment(value).format(format);
     },
     //---------------------------------------------------------------------
+    formatTimeUTC: function (value, format='HH:mm') {
+        if(!value)
+        {
+            return "";
+        }
+        return moment.utc(value).format(format);
+    },
+    //---------------------------------------------------------------------
+    formatDateTimeUTC: function (value) {
+        if(!value)
+        {
+            return "";
+        }
+        return moment.utc(value).format('YYYY-MM-DD HH:mm:ss')
+    },
+    //---------------------------------------------------------------------
     formatDateTime: function (value) {
         if(!value)
         {
