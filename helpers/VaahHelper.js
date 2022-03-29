@@ -544,6 +544,14 @@ const VaahHelper = {
         return moment(value).format(format);
     },
     //---------------------------------------------------------------------
+    formatTimeUnix: function (value, format='HH:mm:ss') {
+        if(!value)
+        {
+            return "";
+        }
+        return moment.unix(value).format(format);
+    },
+    //---------------------------------------------------------------------
     formatTimeUTC: function (value, format='HH:mm') {
         if(!value)
         {
@@ -801,6 +809,20 @@ const VaahHelper = {
     //---------------------------------------------------------------------
     timeDifferenceInSeconds: function (started_at,ended_at) {
         let ms = moment(ended_at,"YYYY-MM-DD HH:mm:ss").diff(moment(started_at, "YYYY-MM-DD HH:mm:ss"));
+        let seconds = ms/1000;
+        return seconds;
+    },
+    //---------------------------------------------------------------------
+    timeDifferenceInSecondsUnix: function (started_at,ended_at=null) {
+        started_at = moment.unix(started_at);
+
+        if(ended_at){
+            ended_at = moment(ended_at).unix();
+        }else{
+            ended_at = moment().unix(); // current epoch time
+        }
+
+        let ms = ended_at.diff(started_at);
         let seconds = ms/1000;
         return seconds;
     },
