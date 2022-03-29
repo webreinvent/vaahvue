@@ -3,7 +3,7 @@
 
 
     <tr v-if="label == 'created_at' || label == 'updated_at' || label == 'deleted_at'">
-        <th width="130" align="right">{{toLabel(label)}}</th>
+        <th :width="set_width" align="right">{{toLabel(label)}}</th>
         <td colspan="2">
             <span v-if="value">
                 {{value}}
@@ -37,7 +37,7 @@
 
     export default {
         name: "TableTrView",
-        props: ['value', 'label', 'is_copiable', 'is_upper_case'],
+        props: ['value', 'label', 'is_copiable', 'is_upper_case', 'width'],
         computed:{
 
         },
@@ -46,8 +46,7 @@
         data()
         {
             let obj = {
-                new_item: {
-                }
+                set_width: 130
             };
 
             return obj;
@@ -56,6 +55,15 @@
 
         },
         watch: {
+
+        },
+        mounted() {
+
+            if(this.width)
+            {
+                this.set_width = this.width;
+            }
+
 
         },
         methods: {
