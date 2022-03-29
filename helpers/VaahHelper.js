@@ -817,9 +817,9 @@ const VaahHelper = {
         started_at = moment.unix(started_at);
 
         if(ended_at){
-            ended_at = moment(ended_at).unix();
+            ended_at = moment.unix(ended_at);
         }else{
-            ended_at = moment().unix(); // current epoch time
+            ended_at = moment(); // current time
         }
 
         let ms = ended_at.diff(started_at);
