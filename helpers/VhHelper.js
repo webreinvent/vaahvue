@@ -139,18 +139,12 @@ const VhHelper = {
         let list_html = "";
         let duration = 1000;
 
-        if(Object.keys(messages).length > 1)
+        if(Object.keys(messages).length > 0)
         {
             for(let k in messages)
             {
                 list_html += i+") "+messages[k]+"<br/>";
                 i++;
-            }
-        } else
-        {
-            if(messages[0])
-            {
-                list_html += messages[0];
             }
         }
 
