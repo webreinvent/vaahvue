@@ -571,12 +571,12 @@ const VaahHelper = {
         return moment.utc(value).format('YYYY-MM-DD HH:mm:ss')
     },
     //---------------------------------------------------------------------
-    formatDateTime: function (value) {
+    formatDateTime: function (value, format='YYYY-MM-DD HH:mm:ss') {
         if(!value)
         {
             return "";
         }
-        return moment(value).format('YYYY-MM-DD HH:mm')
+        return moment(value).format(format)
     },
     //---------------------------------------------------------------------
     fromNow: function (value) {
@@ -816,10 +816,16 @@ const VaahHelper = {
         return seconds;
     },
     //---------------------------------------------------------------------
-    formatUnixTime: function (timestamp) {
+    formatUnixTime: function (timestamp, format=null) {
         let time = moment(timestamp)
-        return time.toISOString();
-    },
+        if(!format)
+        {
+            return time.toISOString();
+        } else{
+            return time.format(format);
+        }
+    }
+    ,
     //---------------------------------------------------------------------
     timeDifferenceInMSUnix: function (old_timestamp,new_timestamp=null) {
         let start = moment(old_timestamp*1000);
