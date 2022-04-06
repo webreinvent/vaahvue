@@ -1,6 +1,9 @@
 import Vue from 'vue';
 import axios from "axios";
 let moment = require('moment-timezone');
+let timezone = document.getElementById('app_timezone').getAttribute("content");
+moment.tz.setDefault(timezone);
+
 import copy from 'copy-to-clipboard';
 
 import {store} from './../../store/store';
@@ -568,12 +571,12 @@ const VaahHelper = {
         return moment.utc(value).format('YYYY-MM-DD HH:mm:ss')
     },
     //---------------------------------------------------------------------
-    formatDateTime: function (value) {
+    formatDateTime: function (value, format='YYYY-MM-DD HH:mm:ss') {
         if(!value)
         {
             return "";
         }
-        return moment(value).format('YYYY-MM-DD HH:mm')
+        return moment(value).format(format)
     },
     //---------------------------------------------------------------------
     fromNow: function (value) {
@@ -811,6 +814,26 @@ const VaahHelper = {
         let ms = moment(ended_at,"YYYY-MM-DD HH:mm:ss").diff(moment(started_at, "YYYY-MM-DD HH:mm:ss"));
         let seconds = ms/1000;
         return seconds;
+    },
+    //---------------------------------------------------------------------
+    formatUnixTime: function (timestamp, format=null) {
+        let time = moment(timestamp)
+        if(!format)
+        {
+            return time.toISOString();
+        } else{
+            return time.format(format);
+        }
+    }
+    ,
+    //---------------------------------------------------------------------
+    timeDifferenceInMSUnix: function (old_timestamp,new_timestamp=null) {
+        let start = moment(old_timestamp*1000);
+        let end = moment(new_timestamp*1000);
+
+        let diff = end.diff(start);
+
+        return diff;
     },
     //---------------------------------------------------------------------
     timeDifferenceInSecondsUnix: function (started_at,ended_at=null) {
