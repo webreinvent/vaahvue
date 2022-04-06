@@ -102,14 +102,16 @@ const VhHelper = {
     //---------------------------------------------------------------------
     processResponse: function(response)
     {
-        if(response.data.failed && response.data.messages)
-        {
-            this.toastErrors(response.data.messages);
-        }
-        if(response.data.success && response.data.messages)
+        if(response.data.messages)
         {
             this.toastSuccess(response.data.messages);
         }
+
+        if(response.data.errors)
+        {
+            this.toastErrors(response.data.errors);
+        }
+
     },
 
     //---------------------------------------------------------------------
