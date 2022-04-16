@@ -4,6 +4,7 @@
         expanded
         v-model="selected_string"
         :data="data"
+        :disabled="is_disable"
         :placeholder="label"
         :field="display_column"
         :loading="isFetching"
@@ -71,9 +72,22 @@
             open_on_focus: {
                 type: Boolean,
                 default: true
+            },
+            is_disable: {
+                type: Boolean,
+                default: false
             }
         },
         computed:{
+        },
+        watch: {
+
+            selected_value: function (newValue, oldValue) {
+
+                this.selected_string = newValue;
+
+            },
+
         },
         mounted() {
             if(this.options)
