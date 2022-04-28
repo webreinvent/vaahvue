@@ -928,6 +928,22 @@ const VaahHelper = {
         window.open(url, "_blank");
     },
     //---------------------------------------------------------------------
+    openPopup: function (event, url, width=600, height=500) {
+
+        if(event)
+        {
+            event.preventDefault();
+        }
+
+        window.open(url,'targetWindow', `toolbar=no,
+                                    location=no,
+                                    status=no,
+                                    menubar=no,
+                                    scrollbars=yes,
+                                    resizable=yes,
+                                    width=`+width+`,
+                                    height=`+height+``);
+    },
     //---------------------------------------------------------------------
     //---------------------------------------------------------------------
     remainingCharacters: function (event, min_characters, max_characters, target_show_remaining) {
