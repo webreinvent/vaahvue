@@ -1124,6 +1124,64 @@ const VaahHelper = {
     //---------------------------------------------------------------------
 
 
+    //---------------------------------------------------------------------
+    getNthDayOfMonth: function(moment_ref,month, day, week_no, time){
+        const months = {
+            January: 0,
+            February: 1,
+            March: 2,
+            April: 3,
+            May: 4,
+            June: 5,
+            July: 6,
+            August: 7,
+            September: 8,
+            October: 9,
+            November: 10,
+            December: 11,
+        };
+        const days = {
+            Monday: 1,
+            Tuesday: 2,
+            Wednesday: 3,
+            Thursday: 4,
+            Friday: 5,
+            Saturday: 6,
+            Sunday: 7
+        };
+
+        // set month
+        moment_ref.set('month', months[month]);
+
+        // if last week
+        if(week_no == 0){
+            let m = moment_ref.clone()
+                .endOf('month')                     // go to the end of the month
+                .day(days[day]);
+
+            if (m.month() !== moment_ref.month()) m.subtract(7, 'd');
+            let date = m.add(7 * (week_no - 1), 'd');
+        }
+        else{
+            let m = moment_ref.clone()
+                .startOf('month')                     // go to the beginning of the month
+                .day(days[day]);
+
+            if (m.month() !== moment_ref.month()) m.add(7, 'd');
+            let date = m.add(7 * (week_no - 1), 'd');
+        }
+
+
+        // get time
+        let arr = time.split(':');
+        date.set('hour',arr[0]);
+        date.set('minute',arr[1]);
+
+        return date.toDate();
+    }
+    //---------------------------------------------------------------------
+
+
 };
 
 
