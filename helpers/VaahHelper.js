@@ -1154,25 +1154,28 @@ const VaahHelper = {
         moment_ref.set('month', months[month]);
 
         // if last week
+        let date;
         if(week_no == 0){
             let m = moment_ref.clone()
                 .endOf('month')                     // go to the end of the month
                 .day(days[day]);
 
+
             if (m.month() !== moment_ref.month()) m.subtract(7, 'd');
-            let date = m.add(7 * (week_no - 1), 'd');
+            date = m.add(7 * (week_no - 1), 'd');
         }
         else{
             let m = moment_ref.clone()
                 .startOf('month')                     // go to the beginning of the month
                 .day(days[day]);
 
+
             if (m.month() !== moment_ref.month()) m.add(7, 'd');
-            let date = m.add(7 * (week_no - 1), 'd');
+            date = m.add(7 * (week_no - 1), 'd');
         }
 
 
-        // get time
+        // get shift time
         let arr = time.split(':');
         date.set('hour',arr[0]);
         date.set('minute',arr[1]);
