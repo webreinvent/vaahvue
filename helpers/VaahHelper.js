@@ -1124,8 +1124,12 @@ const VaahHelper = {
     //---------------------------------------------------------------------
 
 
+    /*
+    *  Return Js Date for  specified, month, day, week and time
+    * */
     //---------------------------------------------------------------------
-    getNthDayOfMonth: function(moment_ref,month, day, week_no, time){
+    getNthDayOfMonth: function(month, day, week_no, time){
+        let moment_ref = moment();
         const months = {
             January: 0,
             February: 1,
