@@ -1124,6 +1124,80 @@ const VaahHelper = {
     //---------------------------------------------------------------------
 
 
+    /*
+    *  Return Js Date for  specified, month, day, week and time
+    *  Note: if week_no is 0, we get date from last week
+    *  Examples:
+    *  - To get a date for Second Sunday in March at 2:00, use the following
+    *
+    *    let date = getNthDayOfMonth('March', 'Sunday', 2, '2:00');
+    *
+    *  - To get a date for Last Friday in October at 1:00
+    *
+    *    let date = getNthDayOfMonth('October', 'Friday', 0, '1:00');
+    * */
+    //---------------------------------------------------------------------
+    getNthDayOfMonth: function(month, day, week_no, time){
+        let moment_ref = moment();
+        const months = {
+            January: 0,
+            February: 1,
+            March: 2,
+            April: 3,
+            May: 4,
+            June: 5,
+            July: 6,
+            August: 7,
+            September: 8,
+            October: 9,
+            November: 10,
+            December: 11,
+        };
+        const days = {
+            Monday: 1,
+            Tuesday: 2,
+            Wednesday: 3,
+            Thursday: 4,
+            Friday: 5,
+            Saturday: 6,
+            Sunday: 7
+        };
+
+        // set month
+        moment_ref.set('month', months[month]);
+
+        // if last week
+        let date;
+        if(week_no == 0){
+            let m = moment_ref.clone()
+                .endOf('month')                     // go to the end of the month
+                .day(days[day]);
+
+
+            if (m.month() !== moment_ref.month()) m.subtract(7, 'd');
+            date = m.add(7 * (week_no - 1), 'd');
+        }
+        else{
+            let m = moment_ref.clone()
+                .startOf('month')                     // go to the beginning of the month
+                .day(days[day]);
+
+
+            if (m.month() !== moment_ref.month()) m.add(7, 'd');
+            date = m.add(7 * (week_no - 1), 'd');
+        }
+
+
+        // get shift time
+        let arr = time.split(':');
+        date.set('hour',arr[0]);
+        date.set('minute',arr[1]);
+
+        return date.toDate();
+    }
+    //---------------------------------------------------------------------
+
+
 };
 
 
