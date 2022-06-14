@@ -1126,6 +1126,15 @@ const VaahHelper = {
 
     /*
     *  Return Js Date for  specified, month, day, week and time
+    *  Note: if week_no is 0, we get date from last week
+    *  Examples:
+    *  - To get a date for Second Sunday in March at 2:00, use the following
+    *
+    *    let date = getNthDayOfMonth('March', 'Sunday', 2, '2:00');
+    *
+    *  - To get a date for Last Friday in October at 1:00
+    *
+    *    let date = getNthDayOfMonth('October', 'Friday', 0, '1:00');
     * */
     //---------------------------------------------------------------------
     getNthDayOfMonth: function(month, day, week_no, time){
