@@ -17,12 +17,11 @@
     <tr v-else>
         <th width="130" align="right">{{toLabel(label)}}</th>
         <td>{{value}}</td>
-        <td width="20">
+        <td width="50">
             <span v-if="is_copiable">
-                <vh-copy :data="''+value+''"
-                         confirm_dialog="buefy">
+                <b-button @click="copy(value)" type="is-text">
                 <b-icon icon="copy"></b-icon>
-                </vh-copy>
+                </b-button>
             </span>
 
         </td>
@@ -72,6 +71,49 @@
                 //return str;
             },
             //---------------------------------------------------------------------
+            copy: function (string)
+            {
+                if (!navigator.clipboard) {
+                    this.fallbackCopy(string);
+                    return;
+                }
+
+                let self = this;
+
+                navigator.clipboard.writeText(string).then(function() {
+                    self.$vaah.toastSuccess(['Copied']);
+                }, function(err) {
+                    self.$vaah.toastErrors(['Could not copied | '+err]);
+                });
+
+            },
+            //----------------------------------------------------------
+            fallbackCopy: function (string)
+            {
+                let textArea = document.createElement("textarea");
+                textArea.value = string;
+
+                // Avoid scrolling to bottom
+                textArea.style.top = "0";
+                textArea.style.left = "0";
+                textArea.style.position = "fixed";
+
+                document.body.appendChild(textArea);
+                textArea.focus();
+                textArea.select();
+
+                let self = this;
+
+                try {
+                    let successful = document.execCommand('copy');
+                    let msg = successful ? 'successful' : 'unsuccessful';
+                    self.$vaah.toastSuccess(['Copied']);
+                } catch (err) {
+                    self.$vaah.toastErrors(['Could not copied | '+err]);
+                }
+
+                document.body.removeChild(textArea);
+            },
             //---------------------------------------------------------------------
             //---------------------------------------------------------------------
         },

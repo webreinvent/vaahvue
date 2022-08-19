@@ -13,7 +13,7 @@
             </span>
 
         </td>
-        <td width="20">
+        <td width="50">
             <span v-if="is_copiable">
                 <vh-copy :data="''+value+''"
                          confirm_dialog="buefy">
