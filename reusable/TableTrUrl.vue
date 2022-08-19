@@ -3,7 +3,7 @@
     <tr v-if="value">
         <th width="130" align="right">{{toLabel(label)}}</th>
         <td>{{value}}</td>
-        <td width="20">
+        <td width="50">
             <a :href="value" target="_blank">
                 <b-icon icon="external-link-alt"></b-icon>
             </a>

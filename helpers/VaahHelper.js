@@ -247,6 +247,7 @@ const VaahHelper = {
     confirmCopiedData: function(data)
     {
         Toast.open({
+            container: '#buefy-snackbar',
             message: 'Copied',
             type: 'is-success'
         });
@@ -276,6 +277,7 @@ const VaahHelper = {
         if(list_html != "")
         {
             Toast.open({
+                container: '#buefy-snackbar',
                 message: list_html,
                 type: 'is-success',
                 duration: duration*i
@@ -317,6 +319,7 @@ const VaahHelper = {
         if(list_html != "")
         {
             Snackbar.open({
+                container: '#buefy-snackbar',
                 message: list_html,
                 position: 'is-top',
                 type: 'is-danger',
