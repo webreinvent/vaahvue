@@ -186,7 +186,16 @@ const VaahHelper = {
         if(debug == true)
         {
             console.log('--->error', error);
+
+
+            if(error === 'Error: Request failed with status code 419')
+            {
+                this.toastErrors(['Login after page refresh']);
+                window.location.reload();
+            }
+
             this.toastErrors([error]);
+
         } else
         {
             this.toastErrors(['Something went wrong']);
