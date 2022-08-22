@@ -9,7 +9,7 @@
         :loading="isFetching"
         @typing="getAsyncData"
         :icon="icon"
-        :autofocus="autofocus"
+        :open-on-focus="open_on_focus"
         @select="option => onSelect(option)">
 
         <template slot-scope="props">
@@ -40,6 +40,10 @@
 
     export default {
         props: {
+            options: {
+                type: Array|Object,
+                default: null
+            },
             selected_value:{
                 type: String,
                 default: null
@@ -64,12 +68,19 @@
                 type: String,
                 default: null,
             },
-            autofocus: {
+            open_on_focus: {
                 type: Boolean,
-                default: false
+                default: true
             }
         },
         computed:{
+        },
+        mounted() {
+            if(this.options)
+            {
+                this.data = this.options;
+            }
+            this.selected_string = this.selected_value;
         },
         data() {
             return {
@@ -79,11 +90,7 @@
                 isFetching: false,
             }
         },
-        mounted() {
 
-            this.selected_string = this.selected_value;
-
-        },
         methods: {
             // You have to install and import debounce to use it,
             // it's not mandatory though.
@@ -96,26 +103,31 @@
                 this.data = [];
                 this.isFetching = true;
 
-                let url = this.ajax_url;
-                let params = {
-                    q: q
-                };
+                let url = this.ajax_url+"?q="+q;
 
-                console.log('--->', params);
+                let list;
 
-                this.axios.post(url, params).then((response) => {
+                this.axios.get(url).then((response) => {
                     this.data = [];
 
-                    console.log('--->', response);
+                    list = response.data;
 
-                    response.data.forEach((item) => this.data.push(item));
+                    if(list.data && list.data.current_page)
+                    {
+                        list = list.data.data
+                    }
+
+                    list.forEach((item) => this.data.push(item));
                     self.isFetching = false;
                 });
 
             }, 1000),
             //----------------------------------------------------
             onSelect: function (option) {
-                if(!option) return;
+                if(!option) {
+                    this.$emit('onSelect', null);
+                    return;
+                };
 
                 this.selected = option;
                 this.selected_string = option[this.display_column];

@@ -1,5 +1,3 @@
-
-
 import Loader from './../reusable/Loader'
 import ClickToCopy from './../reusable/ClickToCopy'
 import VueErrors from './../reusable/VueErrors'
