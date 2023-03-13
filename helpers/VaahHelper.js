@@ -266,7 +266,7 @@ const VaahHelper = {
 
         let list_html = "";
         let i = 1;
-        let duration = 1000;
+        let duration = 2000;
         if(messages.length > 1)
         {
             messages.forEach(function (error) {
