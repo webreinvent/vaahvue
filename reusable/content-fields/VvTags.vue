@@ -6,6 +6,7 @@
                 v-model="content_value"
                 :data="data"
                 autocomplete
+                :allow-new="true"
                 :field="display_column"
                 :icon="icon"
                 @add="onSelect"
@@ -110,17 +111,23 @@
         },
         mounted() {
             //----------------------------------------------------
-            this.content_value = this.content;
+            if(typeof this.content == 'array'
+                || typeof this.content == 'object'){
+                this.content_value = this.content;
+            }else{
+                this.content_value = [];
+                this.content_value[0] = this.content;
+            }
             //----------------------------------------------------
         },
         methods: {
             //----------------------------------------------------
             getAsyncData: debounce(function (text) {
-                if (!text.length) {
+                if (!text.length || !this.ajax_url) {
                     this.data = [];
                     return
                 }
-                
+
                 let self = this;
                 this.data = [];
                 this.isFetching = true;
@@ -139,9 +146,18 @@
 
                 if (!this.content_value) return true;
 
-                const add = this.content_value.find(({ id }) => id === item.id) ? false : true;
+                let add = this.content_value.find(function (el) {
 
-                return add;
+                    if (item instanceof Object)
+                        return el[self.field_name] === item[self.field_name];
+
+                    return el[self.field_name] === item;
+
+                });
+
+                if (!add) {
+                    return true;
+                }
 
             },
             //----------------------------------------------------
