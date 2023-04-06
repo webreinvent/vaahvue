@@ -422,6 +422,46 @@ export const vaah = defineStore({
             return capitalized.join(' ')
         },
         //----------------------------------------------------------
+        hasPermission: function (permissions, slug) {
+
+            if(!permissions)
+            {
+                return false;
+            }
+
+            if(permissions.length < 1)
+            {
+                return false;
+            }
+
+            return permissions.indexOf(slug) > -1 ? true : false;
+        },
+        //----------------------------------------------------------
+        existInArray: function(array, element) {
+            const index = array.indexOf(element);
+
+            if(index == -1)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
+        },
+        //----------------------------------------------------------
+        validateEmail(value) {
+            return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+        },
+        //----------------------------------------------------------
+        convertToStr(value) {
+
+            if (!value) {
+                return  null
+            }
+
+            return value.toString();
+        },
+        //----------------------------------------------------------
         //----------------------------------------------------------
         //----------------------------------------------------------
     }
