@@ -13,6 +13,8 @@
                 @remove="onSelect"
                 :placeholder="placeholder"
                 @typing="getAsyncData"
+                @focus="getAsyncData('')"
+                :open-on-focus="open_on_focus"
                 :before-adding="doesItemExist"
         >
             <template slot-scope="props">
@@ -91,6 +93,10 @@
             unique_column:{
                 type: String,
                 default: 'email'
+            },
+            open_on_focus: {
+                type: Boolean,
+                default: true
             }
         },
         data()
@@ -123,7 +129,7 @@
         methods: {
             //----------------------------------------------------
             getAsyncData: debounce(function (text) {
-                if (!text.length || !this.ajax_url) {
+                if (!this.ajax_url) {
                     this.data = [];
                     return
                 }
