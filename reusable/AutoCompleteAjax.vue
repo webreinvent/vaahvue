@@ -8,6 +8,7 @@
         :field="display_column"
         :loading="isFetching"
         @typing="getAsyncData"
+        @focus="getAsyncData('')"
         :icon="icon"
         :open-on-focus="open_on_focus"
         @select="option => onSelect(option)">
@@ -95,7 +96,7 @@
             // You have to install and import debounce to use it,
             // it's not mandatory though.
             getAsyncData: debounce(function (q) {
-                if (!q.length) {
+                if (!this.ajax_url) {
                     this.data = [];
                     return
                 }
