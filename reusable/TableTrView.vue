@@ -2,7 +2,8 @@
 
 
 
-    <tr v-if="label == 'created_at' || label == 'updated_at' || label == 'deleted_at'">
+    <tr v-if="label == 'created_at' || label == 'updated_at' || label == 'deleted_at'
+               || label == 'email_verified_at'">
         <th :width="set_width" align="right">{{toLabel(label)}}</th>
         <td colspan="2">
             <span v-if="value">
