@@ -34,27 +34,14 @@ const VaahHelper = {
 
         let data = await Vue.axios.get(url, q)
             .then(response => {
+
                 if(response.data.status)
                 {
-                    if(response.data.status === 'failed')
-                    {
-                        if(response.data.messages)
-                        {
-                            this.toastErrors(response.data.messages);
-                        }
+                    this.processResponse(response);
+                }
 
-                        if(response.data.errors)
-                        {
-                            this.toastErrors(response.data.errors);
-                        }
-                    }
-                    if(response.data.status === 'success')
-                    {
-                        if(response.data.messages)
-                        {
-                            this.toastSuccess(response.data.messages);
-                        }
-                    }
+                if(response.data.success){
+                    this.processResponseVaahCMSTwo(response);
                 }
 
                 if(callback)
@@ -115,7 +102,16 @@ const VaahHelper = {
 
         let data = await Vue.axios.post(url, params, q)
             .then(response => {
-                this.processResponse(response);
+
+                if(response.data.status)
+                {
+                    this.processResponse(response);
+                }
+
+                if(response.data.success){
+                    this.processResponseVaahCMSTwo(response);
+                }
+
                 if(callback)
                 {
                     if(response.data && response.data.data)
@@ -172,6 +168,44 @@ const VaahHelper = {
                 if(response.data.messages)
                 {
                     this.toastSuccess(response.data.messages);
+                }
+                if(response.data.errors)
+                {
+                    this.toastErrors(response.data.errors);
+                }
+            }
+        }
+
+
+
+        return response;
+    },
+    //---------------------------------------------------------------------
+    processResponseVaahCMSTwo: function(response)
+    {
+        if(response.data.success)
+        {
+            if(response.data.success === true)
+            {
+                if(response.data.messages)
+                {
+                    this.toastErrors(response.data.messages);
+                }
+
+                if(response.data.errors)
+                {
+                    this.toastErrors(response.data.errors);
+                }
+            }
+            if(response.data.success === false)
+            {
+                if(response.data.messages)
+                {
+                    this.toastSuccess(response.data.messages);
+                }
+                if(response.data.errors)
+                {
+                    this.toastErrors(response.data.errors);
                 }
             }
         }
