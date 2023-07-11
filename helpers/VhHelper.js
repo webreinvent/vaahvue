@@ -215,6 +215,15 @@ const VhHelper = {
         return time.fromNow();
     },
     //---------------------------------------------------------------------
+    agoLocalTime: function (value) {
+
+        const utcTime = moment.utc(value);
+
+        const clientTime = utcTime.local();
+
+        return clientTime.fromNow();
+    },
+    //---------------------------------------------------------------------
     log(data, label=null)
     {
         if(debug)
