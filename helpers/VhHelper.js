@@ -224,6 +224,34 @@ const VhHelper = {
         return clientTime.fromNow();
     },
     //---------------------------------------------------------------------
+    localTimeShortFormat: function (value) {
+
+        const utcTime = moment.utc(value);
+
+        const date = utcTime.format('DD');
+
+        const current = moment();
+
+        const currentDate = current.format('DD');
+
+        if(date === currentDate){
+            return utcTime.format('hh:mm A');
+        } else{
+
+            return utcTime.format('MMM DD');
+        }
+
+
+    },
+    //---------------------------------------------------------------------
+    localTime: function (value) {
+
+        const utcTime = moment.utc(value);
+
+        return utcTime.local().format('YYYY-MM-DD hh:mm A');
+
+    },
+    //---------------------------------------------------------------------
     log(data, label=null)
     {
         if(debug)
