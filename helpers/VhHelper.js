@@ -235,10 +235,10 @@ const VhHelper = {
         const currentDate = current.format('DD');
 
         if(date === currentDate){
-            return utcTime.format('hh:mm A');
+            return utcTime.local().format('hh:mm A');
         } else{
 
-            return utcTime.format('MMM DD');
+            return utcTime.local().format('MMM DD');
         }
 
 
