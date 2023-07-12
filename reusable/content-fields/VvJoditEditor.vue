@@ -70,8 +70,17 @@ export default {
     data() {
         let obj = {
             editorData: "",
-            buttons: ['source', 'image', '|', 'bold', 'underline', 'italic', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph'],
+            buttons: [ 'source', 'eraser', '|', 'bold', 'link',  'brush', '|', 'ul', 'ol', '|', 'fontsize', 'paragraph', '|',  'image', 'fullsize'],
             editorConfig: {
+                askBeforePasteFromWord: false,
+                askBeforePasteHTML: true,
+                //defaultActionOnPaste: 'insert_as_html',
+                defaultActionOnPaste: 'insert_clear_html',
+                //defaultActionOnPaste: 'insert_as_text',
+                /*cleanHTML: {
+                    cleanOnPaste: true,
+                    denyTags: 'script,img'
+                },*/
                 uploader: {
                     url: media_upload_url + "?_token=" + $('meta[name="csrf-token"]').attr('content'),  //your upload api url
                     insertImageAsBase64URI: false,
@@ -94,7 +103,7 @@ export default {
                         return void 0 !== e.data.messages && Array.isArray(e.data.messages)
                             ? e.data.messages.join('')
                             : '';
-                    }
+                    },
                 }
             }
         };
