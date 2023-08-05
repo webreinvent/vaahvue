@@ -1,11 +1,93 @@
 <template>
 
+    <div v-if="props.field_slug">
+
+        <template v-if="props.field_slug === 'text' || props.field_slug === 'slug'
+        || props.field_slug === 'title' ">
+            <vv-text :content="props.modelValue"
+                     :type="props.type"
+                     :size="props.size"
+                     :class="props.custom_class"
+                     :label="props.label"
+                     :labelPosition="props.labelPosition"
+                     :placeholder="props.placeholder"
+                     :ref="props.field_slug" >
+            </vv-text>
+        </template>
+    </div>
+
 </template>
 
-<script>
-export default {
-    name: "All.vue"
-}
+<script setup>
+
+import VvText from './VvText.vue'
+
+const props = defineProps({
+    field_type: {
+        type: Object,
+        default: null,
+    },
+    field_slug: {
+        type: String,
+        default: null,
+    },
+    modelValue: {
+        type: String,
+        default: null,
+    },
+    type: {
+        type: String,
+        default: null,
+    },
+    size: {
+        type: String,
+        default: null,
+    },
+    custom_class: {
+        type: String,
+        default: null,
+    },
+    label: {
+        type: String,
+        default: null,
+    },
+    labelPosition: {
+        type: String,
+        default: null,
+    },
+    placeholder: {
+        type: String,
+        default: null,
+    },
+    app_url:{
+        type: String,
+        default: null
+    },
+    upload_url: {
+        type: String,
+        default: null
+    },
+    currency_options:{
+        type: Array,
+        default: null
+    },
+    ajax_url:{
+        type: String,
+        default: null
+    },
+    display_column:{
+        type: String,
+        default: 'name'
+    },
+    unique_column:{
+        type: String,
+        default: 'email'
+    },
+    is_simple: {
+        type: Boolean,
+        default: false,
+    }
+})
 </script>
 
 <style scoped>
