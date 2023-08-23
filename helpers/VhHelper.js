@@ -239,7 +239,7 @@ const VhHelper = {
 
     },
     //---------------------------------------------------------------------
-    localDateTime: function (value) {
+    toLocalDateTime: function (value) {
 
         const utcTime = moment.utc(value);
 
