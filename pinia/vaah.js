@@ -265,14 +265,60 @@ export const vaah = defineStore({
             return JSON.parse(JSON.stringify(source));
         },
         //----------------------------------------------------------
-        ago: function (value) {
-            if(!value)
-            {
-                return null;
-            }
-            let time = moment(value);
-            return time.from();
-        },
+ago: function (value) {
+
+        if(!value)
+        {
+            return null;
+        }
+
+        const utcTime = moment.utc(value);
+
+        const clientTime = utcTime.local();
+
+        return clientTime.fromNow();
+    },
+    //---------------------------------------------------------------------
+    agoLocalTime: function (value) {
+
+        const utcTime = moment.utc(value);
+
+        const clientTime = utcTime.local();
+
+        return clientTime.fromNow();
+    },
+    //---------------------------------------------------------------------
+    localTimeShortFormat: function (value) {
+
+        const utcTime = moment.utc(value);
+
+        const date = utcTime.format('DD');
+        const dateYear = utcTime.format('YYYY');
+
+        const current = moment();
+
+        const currentDate = current.format('DD');
+        const currentYear = current.format('YYYY');
+
+        if(date === currentDate){
+            return utcTime.local().format('hh:mm A');
+        } else if(dateYear === currentYear){
+
+            return utcTime.local().format('MMM DD');
+        } else{
+            return utcTime.local().format('MMM DD YYYY');
+        }
+
+
+    },
+    //---------------------------------------------------------------------
+    localDateTime: function (value) {
+
+        const utcTime = moment.utc(value);
+
+        return utcTime.local().format('YYYY-MM-DD hh:mm A');
+
+    },
         //----------------------------------------------------------
         cleanObject: function (obj)
         {
