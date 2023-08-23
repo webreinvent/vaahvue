@@ -632,13 +632,11 @@ const VaahHelper = {
             return null;
         }
 
-        if(store.getters['root/state'].assets.timezone)
-        {
-            let timezone = store.getters['root/state'].assets.timezone;
-            moment.tz.setDefault(timezone);
-        }
+        const utcTime = moment.utc(value);
 
-        return moment(value).fromNow();
+        const clientTime = utcTime.local();
+
+        return clientTime.fromNow();
     },
 
     //---------------------------------------------------------------------
@@ -649,21 +647,11 @@ const VaahHelper = {
             return null;
         }
 
-        if(store.getters['root/state'].assets.timezone)
-        {
-            let timezone = store.getters['root/state'].assets.timezone;
-            moment.tz.setDefault(timezone);
-        }
+        const utcTime = moment.utc(value);
 
-        let dt = store.getters['root/state'].assets.server_date_time;
+        const clientTime = utcTime.local();
 
-        let server = moment(dt);
-        let time = moment(value);
-
-        if(time.isAfter(server)){
-            return server.from(time);
-        }
-        return time.fromNow();
+        return clientTime.fromNow();
 
     },
     //---------------------------------------------------------------------

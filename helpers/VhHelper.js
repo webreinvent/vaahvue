@@ -199,20 +199,11 @@ const VhHelper = {
             return null;
         }
 
-        if(store.getters['root/state'].assets.timezone)
-        {
-            let timezone = store.getters['root/state'].assets.timezone;
-            moment.tz.setDefault(timezone);
-        }
+        const utcTime = moment.utc(value);
 
-        let dt = store.getters['root/state'].assets.server_date_time;
+        const clientTime = utcTime.local();
 
-        let server = moment(dt);
-        let time = moment(value);
-        if(time.isAfter(server)){
-            return server.from(time);
-        }
-        return time.fromNow();
+        return clientTime.fromNow();
     },
     //---------------------------------------------------------------------
     agoLocalTime: function (value) {
@@ -229,22 +220,26 @@ const VhHelper = {
         const utcTime = moment.utc(value);
 
         const date = utcTime.format('DD');
+        const dateYear = utcTime.format('YYYY');
 
         const current = moment();
 
         const currentDate = current.format('DD');
+        const currentYear = current.format('YYYY');
 
         if(date === currentDate){
             return utcTime.local().format('hh:mm A');
-        } else{
+        } else if(dateYear === currentYear){
 
             return utcTime.local().format('MMM DD');
+        } else{
+            return utcTime.local().format('MMM DD YYYY');
         }
 
 
     },
     //---------------------------------------------------------------------
-    localTime: function (value) {
+    localDateTime: function (value) {
 
         const utcTime = moment.utc(value);
 
