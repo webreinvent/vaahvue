@@ -2,12 +2,14 @@
 
     <div class="flex flex-column gap-2">
         <label>{{props.label}}</label>
-        <InputText type="text" v-model="props.content" :placeholder="props.placeholder" />
+        <InputText type="text" v-model="content_value" :placeholder="props.placeholder" />
     </div>
 
 </template>
 
 <script setup>
+import { computed } from 'vue'
+const emit = defineEmits(["onInput"]);
 const props = defineProps({
     content: {
         type: String,
@@ -40,8 +42,22 @@ const props = defineProps({
         default: null,
     },
 })
+
+const content_value = computed({
+    // getter
+    get() {
+        return props.content;
+    },
+    // setter
+    set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        emit('onInput', newValue)
+    }
+})
 </script>
 
 <style scoped>
+
+
 
 </style>

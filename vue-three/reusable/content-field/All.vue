@@ -11,7 +11,8 @@
                      :label="props.label"
                      :labelPosition="props.labelPosition"
                      :placeholder="props.placeholder"
-                     :ref="props.field_slug" >
+                     :ref="props.field_slug"
+                    @onInput="onInput">
             </vv-text>
         </template>
     </div>
@@ -21,6 +22,8 @@
 <script setup>
 
 import VvText from './VvText.vue'
+
+const emit = defineEmits(["update:modelValue"]);
 
 const props = defineProps({
     field_type: {
@@ -88,6 +91,11 @@ const props = defineProps({
         default: false,
     }
 })
+
+
+const onInput = (value) => {
+    emit('update:modelValue', value)
+}
 </script>
 
 <style scoped>
