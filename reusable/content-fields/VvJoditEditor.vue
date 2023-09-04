@@ -126,7 +126,7 @@ export default {
             immediate: true,
             handler(newValue) {
                 if (!newValue) {
-                    //this.editor.clearContent();
+                    this.clearContent();
                 } else {
                     this.setEditorContent(newValue);
                 }
@@ -150,6 +150,10 @@ export default {
             if (content) {
                 this.editorData = content;
             }
+        },
+        //----------------------------------------------------
+        clearContent: function () {
+            this.editorData = '';
         },
         //----------------------------------------------------
         emitOnInput: function () {
