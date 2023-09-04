@@ -114,6 +114,11 @@
 
         },
         watch: {
+            content: function(newContent) {
+                if (newContent.length < 1) {
+                    this.content_value = null;
+                }
+            }
         },
         mounted() {
             //----------------------------------------------------
