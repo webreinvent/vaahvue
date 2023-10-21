@@ -15,6 +15,19 @@
                     @onInput="onInput">
             </vv-text>
         </template>
+
+        <template v-if="props.field_slug === 'textarea'">
+            <vv-textarea :content="props.modelValue"
+                     :type="props.type"
+                     :size="props.size"
+                     :class="props.custom_class"
+                     :label="props.label"
+                     :labelPosition="props.labelPosition"
+                     :placeholder="props.placeholder"
+                     :ref="props.field_slug"
+                    @onInput="onInput">
+            </vv-textarea>
+        </template>
     </div>
 
 </template>
@@ -22,6 +35,7 @@
 <script setup>
 
 import VvText from './VvText.vue'
+import VvTextarea from './VvTextarea.vue'
 
 const emit = defineEmits(["update:modelValue"]);
 
