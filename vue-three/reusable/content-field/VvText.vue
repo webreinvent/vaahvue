@@ -1,7 +1,6 @@
 <template>
 
-    <div class="flex flex-column gap-2">
-        <label>{{props.label}}</label>
+    <div>
         <InputText type="text" v-model="content_value" :placeholder="props.placeholder" />
     </div>
 

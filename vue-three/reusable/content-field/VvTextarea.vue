@@ -1,7 +1,6 @@
 <template>
 
-    <div class="flex flex-column gap-2">
-        <label>{{props.label}}</label>
+    <div>
         <Textarea v-model="content_value" autoResize rows="5" cols="30" :placeholder="props.placeholder" />
     </div>
 
