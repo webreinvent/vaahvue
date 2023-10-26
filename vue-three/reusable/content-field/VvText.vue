@@ -1,7 +1,9 @@
 <template>
 
     <div>
-        <InputText type="text" v-model="content_value" :placeholder="props.placeholder" />
+        <InputText type="text" v-model="content_value"
+                   :placeholder="props.placeholder"
+                   class="p-inputtext-sm" />
     </div>
 
 </template>
