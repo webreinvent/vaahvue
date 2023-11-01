@@ -46,6 +46,23 @@
 
         </template>
 
+        <template v-else-if="props.field_slug === 'select' && meta">
+            <vv-select
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="'name'"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-select>
+
+        </template>
+
     </div>
 
 </template>
@@ -53,6 +70,7 @@
 <script setup>
 
 import VvText from './VvText.vue'
+import VvSelect from './VvSelect.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
 
@@ -122,6 +140,10 @@ const props = defineProps({
     is_simple: {
         type: Boolean,
         default: false,
+    },
+    meta:{
+        type: Object,
+        default: null
     }
 })
 
