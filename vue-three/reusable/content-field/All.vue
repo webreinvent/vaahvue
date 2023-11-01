@@ -28,6 +28,24 @@
                     @onInput="onInput">
             </vv-textarea>
         </template>
+
+        <template v-else-if="props.field_slug === 'editor'">
+
+            <vv-text-editor
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-text-editor>
+
+        </template>
+
     </div>
 
 </template>
@@ -36,6 +54,7 @@
 
 import VvText from './VvText.vue'
 import VvTextarea from './VvTextarea.vue'
+import VvTextEditor from './VvTextEditor.vue'
 
 const emit = defineEmits(["update:modelValue"]);
 
