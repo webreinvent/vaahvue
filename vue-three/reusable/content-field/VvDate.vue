@@ -1,7 +1,13 @@
 <template>
 
     <div>
-        <Calendar v-model="content_value" dateFormat="dd/mm/yy" showIcon />
+        <Calendar v-model="content_value"
+                  dateFormat="dd/mm/yy"
+                  class="w-full"
+                  :pt="{
+                     input: 'p-inputtext-sm'
+                  }"
+        />
     </div>
 
 </template>
