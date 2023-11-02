@@ -3,9 +3,65 @@
     <div>
         <Calendar v-model="content_value"
                   dateFormat="dd/mm/yy"
-                  class="w-full"
+                  class="w-full p-inputgroup"
+                  inputClass="p-inputtext-sm"
+                  :placeholder="props.placeholder"
+                  panelClass="p-0"
+                  :panelStyle="{minWidth: 'max-content',width: 'max-content'}"
+                  showIcon
                   :pt="{
-                     input: 'p-inputtext-sm'
+                      dropdownButton: {
+                          root: 'p-button-sm'
+                      },
+                      table: {
+                          class: 'm-0',
+                          style: {
+                              fontSize: '0.7rem'
+                          }
+                      },
+                      group: 'p-2',
+                      header: 'p-0 pb-1',
+                      tableHeaderCell: 'p-1',
+                      title: 'line-height-1',
+                      previousButton: {
+                          style: {
+                              height: '1.5rem',
+                              width: '1.5rem'
+                          }
+                      },
+                      previousIcon: {
+                          style: {
+                              height: '0.65rem',
+                              width: '0.65rem'
+                          }
+                      },
+                      nextButton: {
+                          style: {
+                              height: '1.5rem',
+                              width: '1.5rem'
+                          }
+                      },
+                      nextIcon: {
+                          style: {
+                              height: '0.65rem',
+                              width: '0.65rem'
+                          }
+                      },
+                      container: 'pt-1',
+                      weekDay: {
+                          style: {
+                              fontWeight: '500'
+                          }
+                      },
+                      monthTitle: 'p-0',
+                      yearTitle: 'p-0',
+                      day: 'p-1',
+                      dayLabel: {
+                          style: {
+                              height: '1.5rem',
+                              width: '1.5rem',
+                          }
+                      }
                   }"
         />
     </div>
