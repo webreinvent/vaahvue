@@ -3,14 +3,9 @@
     <div>
         <Calendar v-model="content_value"
                   dateFormat="dd/mm/yy"
-                  class="w-full p-inputgroup"
-                  inputClass="p-inputtext-sm"
-                  :placeholder="props.placeholder"
-                  showIcon
+                  class="w-full"
                   :pt="{
-                      dropdownButton: {
-                          root: 'p-button-sm'
-                      }
+                     input: 'p-inputtext-sm'
                   }"
         />
     </div>
