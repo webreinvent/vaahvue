@@ -1,13 +1,13 @@
 <template>
 
     <div>
-        <Calendar v-model="content_value" timeOnly  />
+        <Calendar v-model="time"  hourFormat="12" timeOnly />
     </div>
 
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import {computed, ref, onMounted,  watch } from 'vue';
 import moment from 'moment/moment';
 const emit = defineEmits(["onInput"]);
 const props = defineProps({
@@ -43,17 +43,16 @@ const props = defineProps({
     },
 })
 
-const content_value = computed({
-    // getter
-    get() {
-        return props.content;
-    },
-    // setter
-    set(newValue) {
-        // Note: we are using destructuring assignment syntax here.
-        emit('onInput', moment(newValue).format('HH:mm:ss A'));
-    }
+const time = ref()
+
+onMounted(() => {
+    time.value = props.content;
 })
+
+watch(time, async (newTime, oldTime) => {
+    emit('onInput', moment(newTime).format('hh:mm A'));
+})
+
 </script>
 
 <style scoped>
