@@ -97,6 +97,23 @@
 
         </template>
 
+        <template v-else-if="props.field_slug === 'date-time'">
+            <vv-date-time
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-date-time>
+
+        </template>
+
     </div>
 
 </template>
@@ -107,6 +124,7 @@ import VvText from './VvText.vue'
 import VvDate from './VvDate.vue'
 import VvTime from './VvTime.vue'
 import VvSelect from './VvSelect.vue'
+import VvDateTime from './VvDateTime.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
 

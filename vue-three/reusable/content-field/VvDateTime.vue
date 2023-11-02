@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <Calendar v-model="time"  hourFormat="12" timeOnly showIcon />
+        <Calendar v-model="date_time" dateFormat="dd/mm/yy"  showTime hourFormat="12" showIcon />
     </div>
 
 </template>
@@ -43,14 +43,15 @@ const props = defineProps({
     },
 })
 
-const time = ref()
+const date_time = ref()
 
 onMounted(() => {
-    time.value = props.content;
+    date_time.value = props.content;
 })
 
-watch(time, async (newTime, oldTime) => {
-    emit('onInput', moment(newTime).format('hh:mm A'));
+watch(date_time, async (newDateTime, oldDateTime) => {
+
+    emit('onInput', moment(newDateTime).format('DD/MM/YYYY hh:mm A'));
 })
 
 </script>
