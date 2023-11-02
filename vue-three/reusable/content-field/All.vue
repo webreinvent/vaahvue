@@ -80,6 +80,23 @@
 
         </template>
 
+        <template v-else-if="props.field_slug === 'time'">
+            <vv-time
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-time>
+
+        </template>
+
     </div>
 
 </template>
@@ -87,10 +104,12 @@
 <script setup>
 
 import VvText from './VvText.vue'
+import VvDate from './VvDate.vue'
+import VvTime from './VvTime.vue'
 import VvSelect from './VvSelect.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
-import VvDate from './VvDate.vue'
+
 
 const emit = defineEmits(["update:modelValue"]);
 
