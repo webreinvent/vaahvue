@@ -53,13 +53,30 @@
                 :size="props.size"
                 :options="meta.option"
                 :class="props.custom_class"
-                :label="'name'"
+                :label="props.label"
                 :labelPosition="props.labelPosition"
                 :placeholder="props.placeholder"
                 :ref="props.field_slug"
                 @onInput="onInput"
             >
             </vv-select>
+
+        </template>
+
+        <template v-else-if="props.field_slug === 'date'">
+            <vv-date
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-date>
 
         </template>
 
@@ -73,6 +90,7 @@ import VvText from './VvText.vue'
 import VvSelect from './VvSelect.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
+import VvDate from './VvDate.vue'
 
 const emit = defineEmits(["update:modelValue"]);
 
