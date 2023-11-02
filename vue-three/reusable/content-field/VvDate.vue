@@ -46,12 +46,14 @@ const props = defineProps({
 const content_value = computed({
     // getter
     get() {
-        return props.content;
+        const content = props.content;
+        const content_value = new Date(Date.parse(content.toString()));
+        return content_value;
     },
     // setter
     set(newValue) {
         // Note: we are using destructuring assignment syntax here.
-        emit('onInput', moment(newValue).format('DD/MM/YYYY'));
+        emit('onInput', newValue);
     }
 })
 </script>

@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <Calendar v-model="time"  hourFormat="12" timeOnly showIcon />
+        <Calendar v-model="content_value"  hourFormat="12" timeOnly showIcon />
     </div>
 
 </template>
@@ -43,14 +43,18 @@ const props = defineProps({
     },
 })
 
-const time = ref()
-
-onMounted(() => {
-    time.value = props.content;
-})
-
-watch(time, async (newTime, oldTime) => {
-    emit('onInput', moment(newTime).format('hh:mm A'));
+const content_value = computed({
+    // getter
+    get() {
+        const content = props.content;
+        const content_value = new Date(Date.parse(content.toString()));
+        return content_value;
+    },
+    // setter
+    set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        emit('onInput', newValue);
+    }
 })
 
 </script>
