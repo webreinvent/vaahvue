@@ -6,7 +6,7 @@
             :options="props.options"
             :optionLabel="props.optionLabel"
             :placeholder="props.placeholder"
-            class="w-full md:w-14rem"
+            class="w-full is-small"
         />
     </div>
 
