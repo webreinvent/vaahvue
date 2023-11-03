@@ -131,6 +131,22 @@
 
         </template>
 
+        <template v-else-if="props.field_slug === 'seo-meta-tags'">
+            <vv-seo-meta-tags
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-seo-meta-tags>
+        </template>
+
     </div>
 
 </template>
@@ -145,7 +161,7 @@ import VvSelect from './VvSelect.vue'
 import VvDateTime from './VvDateTime.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
-
+import VvSeoMetaTags from './VvSeoMetaTags.vue'
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -159,7 +175,7 @@ const props = defineProps({
         default: null,
     },
     modelValue: {
-        type: String,
+        type: [String, Object],
         default: null,
     },
     type: {
