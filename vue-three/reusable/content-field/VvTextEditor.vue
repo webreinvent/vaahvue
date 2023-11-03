@@ -1,7 +1,9 @@
 <template>
 
     <div>
-        <Editor v-model="content_value" :placeholder="props.placeholder" editorStyle="height: 240px" />
+        <Editor v-model="content_value"
+                :placeholder="props.placeholder"
+                editorStyle="height: 150px" />
     </div>
 
 </template>
