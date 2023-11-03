@@ -1,7 +1,13 @@
 <template>
 
     <div>
-        <Calendar v-model="time"  hourFormat="12" timeOnly />
+        <Calendar v-model="time"
+                  hourFormat="12"
+                  timeOnly
+                  :placeholder="props.placeholder"
+                  class="w-full"
+                  inputClass="p-inputtext-sm"
+        />
     </div>
 
 </template>
