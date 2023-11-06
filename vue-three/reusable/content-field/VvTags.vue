@@ -56,11 +56,6 @@ const props = defineProps({
     },
 })
 
-const getPtData = (data) => {
-    console.log(data);
-    return true;
-}
-
 const content_value = computed({
     // getter
     get() {
