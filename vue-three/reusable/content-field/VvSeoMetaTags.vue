@@ -17,7 +17,9 @@
                 v-if="field.type === 'textarea'"
                 v-model="field.content"
                 :placeholder="field.name"
+                autoResize
                 rows="5" cols="30"
+                class="p-inputtext-sm"
             />
         </div>
 
