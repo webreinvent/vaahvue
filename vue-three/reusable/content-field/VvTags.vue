@@ -25,7 +25,7 @@ import { computed } from 'vue'
 const emit = defineEmits(["onInput"]);
 const props = defineProps({
     content: {
-        type: String,
+        type: Array,
         default: function () {
             return null
         }

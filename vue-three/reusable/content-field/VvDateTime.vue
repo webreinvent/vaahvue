@@ -1,7 +1,7 @@
 <template>
 
     <div>
-        <Calendar v-model="content_value"
+        <Calendar v-model="content_value.date_time"
                   dateFormat="dd/mm/yy"
                   showTime
                   hourFormat="12"
@@ -20,12 +20,12 @@
 </template>
 
 <script setup>
-import {computed, ref, onMounted,  watch } from 'vue';
+import {computed, ref, onMounted, watch, reactive} from 'vue';
 import moment from 'moment/moment';
 const emit = defineEmits(["onInput"]);
 const props = defineProps({
     content: {
-        type: String,
+        type: [String, Date],
         default: function () {
             return null
         }
@@ -56,22 +56,12 @@ const props = defineProps({
     },
 })
 
-const content_value = computed({
-    // getter
-    get() {
-        let content_value = null;
-        if(props.content){
-            const content = props.content;
-            content_value = new Date(Date.parse(content.toString()));
-        }
-        return content_value;
+const content_value = reactive({
+    date_time : props.content ?  new Date(Date.parse(props.content.toString())) : null
+})
 
-    },
-    // setter
-    set(newValue) {
-        // Note: we are using destructuring assignment syntax here.
-        emit('onInput', newValue);
-    }
+watch(content_value, (newValue, oldValue) => {
+    emit('onInput', newValue.date_time);
 })
 
 </script>
