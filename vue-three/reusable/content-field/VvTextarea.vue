@@ -1,7 +1,12 @@
 <template>
 
     <div>
-        <Textarea v-model="content_value" autoResize rows="5" cols="30" :placeholder="props.placeholder" />
+        <Textarea v-model="content_value"
+                  autoResize rows="5"
+                  cols="30"
+                  :placeholder="props.placeholder"
+                  class="p-inputtext-sm"
+        />
     </div>
 
 </template>
