@@ -2,25 +2,47 @@
 
     <div>
         <div v-for="(field, index) in content_value.fields" :key="index">
-            <InputText
-                v-if="field.type === 'text'"
-                v-model="field.content"
-                type="text"
-                :placeholder="field.name"
-                class="p-inputtext-sm mb-1"
-            />
-            <small
-                v-if="field.message">
-                {{ field.message }}
-            </small>
-            <Textarea
-                v-if="field.type === 'textarea'"
-                v-model="field.content"
-                :placeholder="field.name"
-                autoResize
-                rows="5" cols="30"
-                class="p-inputtext-sm"
-            />
+            <div v-if="field.type === 'text'">
+                <small v-if="field.name"
+                       class="line-height-1"
+                >
+                    {{ field.name }}
+                </small>
+                <InputText
+                    v-model="field.content"
+                    type="text"
+                    :placeholder="field.name"
+                    class="p-inputtext-sm"
+                    :maxlength="field.maxlength"
+                />
+                <span v-if="field.maxlength"
+                      class="flex justify-content-end line-height-1 mt-1"
+                      style="font-size: x-small"
+                >
+                    {{ field.content.length }}/{{ field.maxlength }}
+                </span>
+            </div>
+            <div v-if="field.type === 'textarea'">
+                <small v-if="field.name"
+                       class="line-height-1"
+                >
+                    {{ field.name }}
+                </small>
+                <Textarea
+                    v-model="field.content"
+                    :placeholder="field.name"
+                    autoResize
+                    rows="5" cols="30"
+                    class="p-inputtext-sm"
+                    :maxlength="field.maxlength"
+                />
+                <span v-if="field.maxlength"
+                      class="flex justify-content-end line-height-1"
+                      style="font-size: x-small"
+                >
+                    {{ field.content.length }}/{{ field.maxlength }}
+                </span>
+            </div>
         </div>
 
     </div>
@@ -72,7 +94,7 @@ const field_list = ref({ "seo_title":{
     "seo_description":{
         name: "SEO Meta Description",
         type: 'textarea',
-        message: "Description of content (maximum 200 characters)",
+        message: "Description of content",
         maxlength: 200,
         content: null
     },
