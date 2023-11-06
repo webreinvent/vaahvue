@@ -147,6 +147,38 @@
             </vv-seo-meta-tags>
         </template>
 
+        <template v-else-if="props.field_slug === 'twitter-card'">
+            <vv-twitter-card
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-twitter-card>
+        </template>
+
+        <template v-else-if="props.field_slug === 'facebook-card'">
+            <vv-facebook-card
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-facebook-card>
+        </template>
+
     </div>
 
 </template>
@@ -162,6 +194,8 @@ import VvDateTime from './VvDateTime.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
 import VvSeoMetaTags from './VvSeoMetaTags.vue'
+import VvTwitterCard from './VvTwitterCard.vue'
+import VvFacebookCard from './VvFacebookCard.vue'
 
 const emit = defineEmits(["update:modelValue"]);
 
@@ -175,7 +209,7 @@ const props = defineProps({
         default: null,
     },
     modelValue: {
-        type: [String, Object],
+        type:  [String, Object],
         default: null,
     },
     type: {

@@ -1,7 +1,20 @@
 <template>
 
     <div>
-        <Calendar v-model="content_value" dateFormat="dd/mm/yy"  showTime hourFormat="12" showIcon />
+        <Calendar v-model="content_value"
+                  dateFormat="dd/mm/yy"
+                  showTime
+                  hourFormat="12"
+                  showIcon
+                  class="w-full p-inputgroup"
+                  inputClass="p-inputtext-sm"
+                  :placeholder="props.placeholder"
+                  :pt="{
+                      dropdownButton: {
+                          root: 'p-button-sm'
+                      }
+                  }"
+        />
     </div>
 
 </template>
@@ -46,9 +59,13 @@ const props = defineProps({
 const content_value = computed({
     // getter
     get() {
-        const content = props.content;
-        const content_value = new Date(Date.parse(content.toString()));
+        let content_value = null;
+        if(props.content){
+            const content = props.content;
+            content_value = new Date(Date.parse(content.toString()));
+        }
         return content_value;
+
     },
     // setter
     set(newValue) {
