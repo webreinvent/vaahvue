@@ -57,8 +57,12 @@ const props = defineProps({
 const content_value = computed({
     // getter
     get() {
-        const content = props.content;
-        const content_value = new Date(Date.parse(content.toString()));
+
+        let content_value = null;
+        if(props.content){
+            const content = props.content;
+            content_value = new Date(Date.parse(content.toString()));
+        }
         return content_value;
     },
     // setter
