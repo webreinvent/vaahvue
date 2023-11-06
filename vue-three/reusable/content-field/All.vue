@@ -179,6 +179,22 @@
             </vv-facebook-card>
         </template>
 
+        <template v-else-if="props.field_slug === 'image'">
+            <vv-image
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-image>
+        </template>
+
     </div>
 
 </template>
@@ -189,6 +205,7 @@ import VvText from './VvText.vue'
 import VvDate from './VvDate.vue'
 import VvTime from './VvTime.vue'
 import VvTags from './VvTags.vue'
+import VvImage from './VvImage.vue'
 import VvSelect from './VvSelect.vue'
 import VvDateTime from './VvDateTime.vue'
 import VvTextarea from './VvTextarea.vue'
