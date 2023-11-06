@@ -61,22 +61,25 @@ const props = defineProps({
     },
 })
 
-const field_list = ref({ "seo_title":{
-        name: "SEO Title",
+const field_list = ref({
+    "og_title":{
+        name: "og:title",
         type: 'text',
+        message: "Title of content (max 70 characters).",
         maxlength: 70,
         content: null
     },
-    "seo_description":{
-        name: "SEO Meta Description",
+    "og_description":{
+        name: "og:description",
         type: 'textarea',
         message: "Description of content (maximum 200 characters)",
         maxlength: 200,
         content: null
     },
-    "seo_keywords":{
-        name: "SEO Meta Keywords",
-        type: 'textarea',
+    "og_image":{
+        name: "og:image",
+        type: 'text',
+        message: "URL of image to use in the card. Images must be less than 5MB in size. JPG, PNG, WEBP and GIF formats are supported.",
         maxlength: 200,
         content: null
     }
