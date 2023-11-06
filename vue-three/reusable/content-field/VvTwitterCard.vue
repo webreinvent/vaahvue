@@ -2,27 +2,58 @@
 
     <div>
         <div v-for="(field, index) in content_value.fields" :key="index">
-            <InputText
-                v-if="field.type === 'text'"
-                v-model="field.content"
-                type="text"
-                :placeholder="field.name"
-                class="p-inputtext-sm mb-1"
-            />
-            <small
-                v-if="field.type === 'text' && field.message">
-                {{ field.message }}
-            </small>
-            <Textarea
-                v-if="field.type === 'textarea'"
-                v-model="field.content"
-                :placeholder="field.name"
-                rows="5" cols="30"
-            />
-            <small
-                v-if="field.type === 'textarea' && field.message">
-                {{ field.message }}
-            </small>
+            <div v-if="field.type === 'text'">
+                <small v-if="field.name"
+                       class="line-height-1"
+                >
+                    {{ field.name }}
+                </small>
+                <InputText
+                    v-model="field.content"
+                    type="text"
+                    :placeholder="field.name"
+                    class="p-inputtext-sm"
+                    :maxlength="field.maxlength"
+                />
+                <div v-if="field.maxlength"
+                     class="flex justify-content-between line-height-1 mt-1 gap-2"
+                     style="font-size: x-small"
+                >
+                    <div>
+                        <span v-if="field.message && (field.name === 'twitter:site' || field.name === 'twitter:image')"
+                              class="line-height-2 font-medium"
+                        >
+                            {{ field.message }}
+                        </span>
+                    </div>
+                    <div>
+                        <span v-if="field.content">{{ field.content.length }}</span>
+                        <span v-else>0</span>/{{ field.maxlength }}
+                    </div>
+                </div>
+            </div>
+            <div v-if="field.type === 'textarea'">
+                <small v-if="field.name"
+                       class="line-height-1"
+                >
+                    {{ field.name }}
+                </small>
+                <Textarea
+                    v-model="field.content"
+                    :placeholder="field.name"
+                    autoResize
+                    rows="5" cols="30"
+                    class="p-inputtext-sm"
+                    :maxlength="field.maxlength"
+                />
+                <span v-if="field.maxlength"
+                      class="flex justify-content-end line-height-1"
+                      style="font-size: x-small"
+                >
+                    <span v-if="field.content">{{ field.content.length }}</span>
+                    <span v-else>0</span>/{{ field.maxlength }}
+                </span>
+            </div>
         </div>
 
     </div>

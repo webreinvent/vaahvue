@@ -19,7 +19,8 @@
                       class="flex justify-content-end line-height-1 mt-1"
                       style="font-size: x-small"
                 >
-                    {{ field.content.length }}/{{ field.maxlength }}
+                    <span v-if="field.content">{{ field.content.length }}</span>
+                    <span v-else>0</span>/{{ field.maxlength }}
                 </span>
             </div>
             <div v-if="field.type === 'textarea'">
@@ -40,7 +41,8 @@
                       class="flex justify-content-end line-height-1"
                       style="font-size: x-small"
                 >
-                    {{ field.content.length }}/{{ field.maxlength }}
+                    <span v-if="field.content">{{ field.content.length }}</span>
+                    <span v-else>0</span>/{{ field.maxlength }}
                 </span>
             </div>
         </div>
