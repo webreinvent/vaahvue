@@ -1,7 +1,20 @@
 <template>
 
     <div>
-        <Calendar v-model="content_value" dateFormat="dd/mm/yy"  showTime hourFormat="12" showIcon />
+        <Calendar v-model="content_value"
+                  dateFormat="dd/mm/yy"
+                  showTime
+                  hourFormat="12"
+                  showIcon
+                  class="w-full p-inputgroup"
+                  inputClass="p-inputtext-sm"
+                  :placeholder="props.placeholder"
+                  :pt="{
+                      dropdownButton: {
+                          root: 'p-button-sm'
+                      }
+                  }"
+        />
     </div>
 
 </template>
