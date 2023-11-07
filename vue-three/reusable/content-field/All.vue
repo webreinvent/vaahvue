@@ -211,6 +211,22 @@
             </vv-json>
         </template>
 
+        <template v-else-if="props.field_slug === 'address'">
+            <vv-address
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-address>
+        </template>
+
     </div>
 
 </template>
@@ -224,6 +240,7 @@ import VvTags from './VvTags.vue'
 import VvJson from './VvJson.vue'
 import VvImage from './VvImage.vue'
 import VvSelect from './VvSelect.vue'
+import VvAddress from './VvAddress.vue'
 import VvDateTime from './VvDateTime.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
