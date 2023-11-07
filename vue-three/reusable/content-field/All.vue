@@ -243,22 +243,6 @@
             </vv-boolean>
         </template>
 
-        <template v-else-if="props.field_slug === 'boolean'">
-            <vv-boolean
-                :content="props.modelValue"
-                :type="props.type"
-                :size="props.size"
-                :options="meta.option"
-                :class="props.custom_class"
-                :label="props.label"
-                :labelPosition="props.labelPosition"
-                :placeholder="props.placeholder"
-                :ref="props.field_slug"
-                @onInput="onInput"
-            >
-            </vv-boolean>
-        </template>
-
         <template
             v-else-if="field_slug === 'number'
                         || field_slug === 'phone-number'
@@ -279,6 +263,41 @@
             </vv-number>
         </template>
 
+        <template
+            v-else-if="field_slug === 'password'"
+        >
+            <vv-password
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-password>
+        </template>
+
+        <template
+            v-else-if="field_slug === 'email'"
+        >
+            <vv-email
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-email>
+        </template>
 
 
     </div>
@@ -292,11 +311,13 @@ import VvDate from './VvDate.vue'
 import VvTime from './VvTime.vue'
 import VvTags from './VvTags.vue'
 import VvJson from './VvJson.vue'
+import VvEmail from './VvEmail.vue'
 import VvImage from './VvImage.vue'
 import VvNumber from './VvNumber.vue'
 import VvSelect from './VvSelect.vue'
 import VvBoolean from './VvBoolean.vue'
 import VvAddress from './VvAddress.vue'
+import VvPassword from './VvPassword.vue'
 import VvDateTime from './VvDateTime.vue'
 import VvTextarea from './VvTextarea.vue'
 import VvTextEditor from './VvTextEditor.vue'
