@@ -103,7 +103,15 @@ watch(store.reset_uploader, async (new_val, old_val) => {
  * Data
  */
 let files = reactive([]);
-const emit = defineEmits();
+const emit = defineEmits(["onInput"]);
+
+const content_value = reactive({
+    image_data : props.content ?  props.content : null
+})
+
+watch(content_value, (newValue, oldValue) => {
+    emit('onInput', newValue.image_data);
+})
 /**----------------------
  * Methods
  */
@@ -156,10 +164,13 @@ function uploadFile(e){
 
                 upload_refs.value.uploadedFiles = [];
                 upload_refs.value.uploadedFileCount = 0;
-                store.item[props.store_label] = res.data.data.url;
-                store.item[props.store_label + '_size'] = res.data.data.size;
-                store.item[props.store_label + '_thumbnail'] = res.data.data.url_thumbnail;
-                store.item[props.store_label + '_thumbnail_size'] = res.data.data.thumbnail_size;
+
+                content_value.image_data = {
+                    'image_url' : res.data.data.url,
+                    'image_size' : res.data.data.size,
+                    'image_thumbnail' : res.data.data.url_thumbnail,
+                    'image_thumbnail_size' : res.data.data.thumbnail_size
+                };
 
             });
         }
@@ -185,11 +196,7 @@ const formatSize = (bytes) => {
 
 function removeFile(e){
 
-    store.item[props.store_label] = null;
-    store.item[props.store_label+'_size'] = null;
-    store.item[props.store_label+'_thumbnail'] = null;
-    store.item[props.store_label+'_thumbnail_size'] = null;
-
+    content_value.image_data = null
     upload_refs.value.files = [];
     upload_refs.value.uploadedFiles = [];
     upload_refs.value.uploadedFileCount = 0;
@@ -247,27 +254,27 @@ function onUpload(e){
                 :maxFileSize="store.assets.max_file_upload_size">
         <template #empty>
 
-            <div v-if="store.item && store.item[props.store_label]">
+            <div v-if="content_value.image_data && content_value.image_data.image_url">
                 <div class="p-fileupload-file" style="
                         padding: 10px;
                         border: 1px solid #ccc;
                         min-height: 60px;">
-                    <img role="presentation" :alt="store.item[props.store_label]"
-                         :src="store.item[props.store_label]"
+                    <img role="presentation" :alt="content_value.image_data.image_url"
+                         :src="content_value.image_data.image_url"
                          width="50" height="50" class="shadow-2" />
                     <div class="p-fileupload-file-details ml-2">
-                        <span v-if="store.item[props.store_label+'_size']" class="p-fileupload-file-size">
-                            {{ formatSize(store.item[props.store_label+'_size']) }}
+                        <span v-if="content_value.image_data.image_size" class="p-fileupload-file-size">
+                            {{ formatSize(content_value.image_data.image_size) }}
                         </span>
                     </div>
                     <span class="font-semibold"></span>
                     <div class="p-fileupload-file-actions">
-                        <button class="p-button p-component p-button-icon-only
-                            p-fileupload-file-remove p-button-text p-button-danger p-button-rounded"
-                                @click="store.toPinturaAvatarEdit(props.store_label)"
-                                type="button"><!---->
-                            <span class="pi pi-pencil p-button-icon"></span>
-                        </button>
+<!--                        <button class="p-button p-component p-button-icon-only-->
+<!--                            p-fileupload-file-remove p-button-text p-button-danger p-button-rounded"-->
+<!--                                @click="store.toPinturaAvatarEdit(props.store_label)"-->
+<!--                                type="button">&lt;!&ndash;&ndash;&gt;-->
+<!--                            <span class="pi pi-pencil p-button-icon"></span>-->
+<!--                        </button>-->
                         <button class="p-button p-component p-button-icon-only
                             p-fileupload-file-remove p-button-text p-button-danger p-button-rounded"
                                 @click="onRemoveTemplatingFile(null,index)"
