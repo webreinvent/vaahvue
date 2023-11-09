@@ -1,7 +1,12 @@
 <template>
 
     <div>
-        <Password v-model="content_value" toggleMask />
+        <Password v-model="content_value"
+                  toggleMask
+                  :placeholder="props.placeholder"
+                  class="w-full"
+                  inputClass="p-inputtext-sm"
+        />
     </div>
 
 </template>

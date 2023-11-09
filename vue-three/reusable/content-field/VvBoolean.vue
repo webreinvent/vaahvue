@@ -1,8 +1,9 @@
 <template>
 
     <div>
-        <InputSwitch v-model="content_value" />
-
+        <InputSwitch v-model="content_value"
+                     class="is-small"
+        />
     </div>
 
 </template>

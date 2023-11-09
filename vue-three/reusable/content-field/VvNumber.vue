@@ -3,7 +3,7 @@
     <div>
         <InputNumber v-model="content_value"
                    :placeholder="props.placeholder"
-                   class="p-inputtext-sm" />
+                   class="p-inputtext-sm w-full" />
     </div>
 
 </template>
