@@ -1,5 +1,5 @@
 <script setup>
-import {reactive, ref, watch } from 'vue';
+import {computed, reactive, ref, watch} from 'vue';
 import {vaah} from '../../../../vaahvue/pinia/vaah'
 import { useContentStore } from '../../../../stores/store-contents'
 import axios from 'axios';
@@ -105,13 +105,18 @@ watch(store.reset_uploader, async (new_val, old_val) => {
 let files = reactive([]);
 const emit = defineEmits(["onInput"]);
 
-const content_value = reactive({
-    image_data : props.content ?  props.content : null
+const content_value = computed({
+    // getter
+    get() {
+        return props.content;
+    },
+    // setter
+    set(newValue) {
+        // Note: we are using destructuring assignment syntax here.
+        emit('onInput', newValue)
+    }
 })
 
-watch(content_value, (newValue, oldValue) => {
-    emit('onInput', newValue.image_data);
-})
 /**----------------------
  * Methods
  */
@@ -165,12 +170,7 @@ function uploadFile(e){
                 upload_refs.value.uploadedFiles = [];
                 upload_refs.value.uploadedFileCount = 0;
 
-                content_value.image_data = {
-                    'image_url' : res.data.data.url,
-                    'image_size' : res.data.data.size,
-                    'image_thumbnail' : res.data.data.url_thumbnail,
-                    'image_thumbnail_size' : res.data.data.thumbnail_size
-                };
+                content_value.value = res.data.data.full_url;
 
             });
         }
@@ -196,7 +196,7 @@ const formatSize = (bytes) => {
 
 function removeFile(e){
 
-    content_value.image_data = null
+    content_value.value = null
     upload_refs.value.files = [];
     upload_refs.value.uploadedFiles = [];
     upload_refs.value.uploadedFileCount = 0;
@@ -254,33 +254,36 @@ function onUpload(e){
                 :maxFileSize="store.assets.max_file_upload_size">
         <template #empty>
 
-            <div v-if="content_value.image_data && content_value.image_data.image_url">
+            <div v-if="content_value" >
                 <div class="p-fileupload-file" style="
                         padding: 10px;
                         border: 1px solid #ccc;
                         min-height: 60px;">
-                    <img role="presentation" :alt="content_value.image_data.image_url"
-                         :src="content_value.image_data.image_url"
-                         width="50" height="50" class="shadow-2" />
-                    <div class="p-fileupload-file-details ml-2">
-                        <span v-if="content_value.image_data.image_size" class="p-fileupload-file-size">
-                            {{ formatSize(content_value.image_data.image_size) }}
-                        </span>
+                    <div >
+                            <span v-if="content_value.split('.').pop() === 'png'
+                            || content_value.split('.').pop() === 'jpeg'
+                            || content_value.split('.').pop() === 'jpg' ">
+                                <img width="50" height="50"
+                                     :src="content_value">
+                            </span>
+                        <span v-else>
+                                <img width="50" height="50"
+                                     src="https://findicons.com/files/icons/1579/devine/256/file.png">
+                            </span>
                     </div>
+                    <a :href="content_value" target="_blank"
+                       rel="noopener noreferrer"
+                       class="p-button p-component p-button-icon-only
+                       p-button-rounded p-button-outlined">
+                        <span class="p-button-icon pi pi-external-link" data-pc-section="icon"></span>
+                    </a>
+
                     <span class="font-semibold"></span>
                     <div class="p-fileupload-file-actions">
-<!--                        <button class="p-button p-component p-button-icon-only-->
-<!--                            p-fileupload-file-remove p-button-text p-button-danger p-button-rounded"-->
-<!--                                @click="store.toPinturaAvatarEdit(props.store_label)"-->
-<!--                                type="button">&lt;!&ndash;&ndash;&gt;-->
-<!--                            <span class="pi pi-pencil p-button-icon"></span>-->
-<!--                        </button>-->
-                        <button class="p-button p-component p-button-icon-only
-                            p-fileupload-file-remove p-button-text p-button-danger p-button-rounded"
+                        <Button icon="pi pi-times" severity="danger"
                                 @click="onRemoveTemplatingFile(null,index)"
-                                type="button"><!---->
-                            <span class="pi pi-times p-button-icon"></span>
-                        </button>
+                                rounded outlined aria-label="Cancel" />
+
                     </div>
                 </div>
             </div>
