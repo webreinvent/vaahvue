@@ -2,6 +2,8 @@
 
     <div>
         <InputSwitch v-model="content_value"
+                     :trueValue="1"
+                     :falseValue="0"
                      class="is-small"
         />
     </div>
@@ -13,7 +15,7 @@ import { computed } from 'vue'
 const emit = defineEmits(["onInput"]);
 const props = defineProps({
     content: {
-        type: Boolean,
+        type: [Boolean,Number],
         default: function () {
             return null
         }
@@ -47,7 +49,7 @@ const props = defineProps({
 const content_value = computed({
     // getter
     get() {
-        return props.content ? true : false;
+        return props.content;
     },
     // setter
     set(newValue) {
