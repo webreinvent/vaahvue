@@ -208,6 +208,23 @@
             </vv-image>
         </template>
 
+        <template v-else-if="props.field_slug === 'media'">
+            <vv-image
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :file_type_accept="null"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-image>
+        </template>
+
         <template v-else-if="props.field_slug === 'json'">
             <vv-json
                 :content="props.modelValue"
