@@ -297,10 +297,20 @@ function onUpload(e){
                  v-for="(file, index) of uploadedFiles" :key="file.name + file.type + file.size"
                  class="p-fileupload-file gi-upload-file-details">
                 <div class="file-warp">
-                    <img role="presentation"
+                    <span v-if="file.type.split('.').pop() === 'png'
+                            || file.type.split('.').pop() === 'jpeg'
+                            || file.type.split('.').pop() === 'jpg' ">
+                                <img width="50" height="50"
+                                     :alt="file.name" :src="file.objectURL">
+                    </span>
+                    <span v-else>
+                            <img width="50" height="50"
+                                 src="https://findicons.com/files/icons/1579/devine/256/file.png">
+                    </span>
+<!--                    <img role="presentation"
                          class="p-fileupload-file-thumbnail"
                          :alt="file.name" :src="file.objectURL"
-                         width="50">
+                         width="50">-->
                 </div>
 
                 <div class="p-fileupload-file-details ">
@@ -332,10 +342,16 @@ function onUpload(e){
                  v-for="(file, index) of files" :key="file.name + file.type + file.size"
                  class="p-fileupload-file gi-upload-file-details">
                 <div class="file-warp">
-                    <img role="presentation"
-                         class="p-fileupload-file-thumbnail"
-                         :alt="file.name" :src="file.objectURL"
-                         width="50">
+                   <span v-if="file.type.split('.').pop() === 'png'
+                            || file.type.split('.').pop() === 'jpeg'
+                            || file.type.split('.').pop() === 'jpg' ">
+                                <img width="50" height="50"
+                                     :alt="file.name" :src="file.objectURL">
+                    </span>
+                    <span v-else>
+                            <img width="50" height="50"
+                                 src="https://findicons.com/files/icons/1579/devine/256/file.png">
+                    </span>
                 </div>
 
                 <div class="p-fileupload-file-details">
