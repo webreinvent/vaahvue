@@ -16,6 +16,19 @@
             </vv-text>
         </template>
 
+        <template v-if="props.field_slug === 'uuid'">
+            <vv-uuid :content="props.modelValue"
+                     :type="props.type"
+                     :size="props.size"
+                     :class="props.custom_class"
+                     :label="props.label"
+                     :labelPosition="props.labelPosition"
+                     :placeholder="props.placeholder"
+                     :ref="props.field_slug"
+                    @onInput="onInput">
+            </vv-uuid>
+        </template>
+
         <template v-if="props.field_slug === 'textarea'">
             <vv-textarea :content="props.modelValue"
                      :type="props.type"
@@ -307,6 +320,7 @@
 <script setup>
 
 import VvText from './VvText.vue'
+import VvUuid from './VvUuid.vue'
 import VvDate from './VvDate.vue'
 import VvTime from './VvTime.vue'
 import VvTags from './VvTags.vue'
