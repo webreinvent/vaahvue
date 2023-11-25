@@ -384,6 +384,27 @@
             </vv-list>
         </template>
 
+        <template
+            v-else-if="field_slug === 'relation'"
+        >
+            <vv-tree-select
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :ajax_url="props.app_url"
+                :options="props.meta.option"
+                :is_multiple="props.meta.is_multiple"
+                :meta="props.meta"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-tree-select>
+        </template>
+
 
     </div>
 
@@ -412,6 +433,7 @@ import VvTextEditor from './VvTextEditor.vue'
 import VvSeoMetaTags from './VvSeoMetaTags.vue'
 import VvTwitterCard from './VvTwitterCard.vue'
 import VvFacebookCard from './VvFacebookCard.vue'
+import VvTreeSelect from './VvTreeSelect.vue'
 
 const emit = defineEmits(["update:modelValue"]);
 
