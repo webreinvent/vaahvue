@@ -2,6 +2,7 @@
 
     <div>
         <InputNumber v-model="content_value"
+                     :useGrouping="props.use_grouping"
                    :placeholder="props.placeholder"
                    class="p-inputtext-sm w-full" />
     </div>
@@ -29,6 +30,10 @@ const props = defineProps({
     custom_class: {
         type: String,
         default: null,
+    },
+    use_grouping: {
+        type: Boolean,
+        default: true,
     },
     label: {
         type: String,

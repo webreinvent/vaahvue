@@ -200,12 +200,31 @@
                 :options="meta.option"
                 :class="props.custom_class"
                 :label="props.label"
+                :file_limit="1"
                 :labelPosition="props.labelPosition"
                 :placeholder="props.placeholder"
                 :ref="props.field_slug"
                 @onInput="onInput"
             >
             </vv-image>
+        </template>
+
+        <template v-else-if="props.field_slug === 'image-group'">
+            <vv-image-group
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :can_select_multiple="true"
+                :file_limit="100"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-image-group>
         </template>
 
         <template v-else-if="props.field_slug === 'media'">
@@ -274,8 +293,26 @@
         </template>
 
         <template
+            v-else-if="field_slug === 'phone-number'"
+        >
+            <vv-number
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :use_grouping="false"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-number>
+        </template>
+
+        <template
             v-else-if="field_slug === 'number'
-                        || field_slug === 'phone-number'
                         || field_slug === 'price'"
         >
             <vv-number
@@ -363,6 +400,7 @@ import VvTags from './VvTags.vue'
 import VvJson from './VvJson.vue'
 import VvEmail from './VvEmail.vue'
 import VvImage from './VvImage.vue'
+import VvImageGroup from './VvImageGroup.vue'
 import VvNumber from './VvNumber.vue'
 import VvSelect from './VvSelect.vue'
 import VvBoolean from './VvBoolean.vue'

@@ -5,9 +5,9 @@
             v-model="content_value"
             :placeholder="props.placeholder"
             class="p-inputtext-sm"
-            :class="{'p-invalid': !is_email_valid}"
+            :class="{'p-invalid': content_value && !is_email_valid}"
         />
-        <small class="text-red-700" v-if="!is_email_valid">Invalid Email.</small>
+        <small class="text-red-700" v-if="content_value && !is_email_valid">Invalid Email.</small>
     </div>
 
 </template>
