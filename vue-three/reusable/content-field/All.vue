@@ -329,6 +329,24 @@
             </vv-email>
         </template>
 
+        <template
+            v-else-if="field_slug === 'list'"
+        >
+            <vv-list
+                :content="props.modelValue"
+                :type="props.type"
+                :size="props.size"
+                :options="meta.option"
+                :class="props.custom_class"
+                :label="props.label"
+                :labelPosition="props.labelPosition"
+                :placeholder="props.placeholder"
+                :ref="props.field_slug"
+                @onInput="onInput"
+            >
+            </vv-list>
+        </template>
+
 
     </div>
 
@@ -337,6 +355,7 @@
 <script setup>
 
 import VvText from './VvText.vue'
+import VvList from './VvList.vue'
 import VvUuid from './VvUuid.vue'
 import VvDate from './VvDate.vue'
 import VvTime from './VvTime.vue'
