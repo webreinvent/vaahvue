@@ -1,7 +1,6 @@
 <template>
 
     <div>
-
         <TreeSelect class="w-full"
                      v-model="content_value"
                      selectionMode="single"
@@ -65,7 +64,6 @@ const props = defineProps({
 })
 
 onMounted(() => {
-    console.log(1111);
     if(props.ajax_url&&props.meta){
         getOptions();
     }
@@ -86,7 +84,7 @@ const content_value = computed({
     // setter
     set(newValue) {
         // Note: we are using destructuring assignment syntax here.
-        emit('onInput', newValue)
+        emit('onInput', Object.keys(newValue)[0])
     }
 })
 
