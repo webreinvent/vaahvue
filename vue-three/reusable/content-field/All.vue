@@ -244,7 +244,7 @@
             </vv-image>
         </template>
 
-        <template v-else-if="props.field_slug === 'json'">
+<!--        <template v-else-if="props.field_slug === 'json'">
             <vv-json
                 :content="props.modelValue"
                 :type="props.type"
@@ -258,7 +258,7 @@
                 @onInput="onInput"
             >
             </vv-json>
-        </template>
+        </template>-->
 
         <template v-else-if="props.field_slug === 'address'">
             <vv-address
@@ -418,7 +418,7 @@ import VvUuid from './VvUuid.vue'
 import VvDate from './VvDate.vue'
 import VvTime from './VvTime.vue'
 import VvTags from './VvTags.vue'
-import VvJson from './VvJson.vue'
+// import VvJson from './VvJson.vue'
 import VvEmail from './VvEmail.vue'
 import VvImage from './VvImage.vue'
 import VvImageGroup from './VvImageGroup.vue'

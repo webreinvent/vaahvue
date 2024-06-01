@@ -13,8 +13,9 @@ const upload_refs = ref([])
 const is_media_uploading = ref(false)
 const store = useContentStore();
 
-const temp_setter = ref(store.reset_uploader);
-
+defineOptions({
+    inheritAttrs: false
+})
 const props = defineProps({
     uploadUrl: {
         type: String,
@@ -91,13 +92,6 @@ const props = defineProps({
         default: null,
     }
 });
-
-
-watch(store.reset_uploader, async (new_val, old_val) => {
-    console.log('watch',new_val);
-    upload_refs.value.files = [];
-    upload_refs.value.uploadedFiles = [];
-})
 
 /**----------------------
  * Data

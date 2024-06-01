@@ -33,6 +33,9 @@
 <script setup>
 import { reactive, watch} from 'vue'
 const emit = defineEmits(["onInput"]);
+defineOptions({
+    inheritAttrs: false
+})
 const props = defineProps({
     content: {
         type: [Array, String],

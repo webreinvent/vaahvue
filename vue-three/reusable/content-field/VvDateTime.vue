@@ -21,7 +21,6 @@
 
 <script setup>
 import {computed, ref, onMounted, watch, reactive} from 'vue';
-import moment from 'moment/moment';
 const emit = defineEmits(["onInput"]);
 const props = defineProps({
     content: {

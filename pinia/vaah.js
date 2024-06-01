@@ -1,6 +1,10 @@
 import {defineStore, acceptHMRUpdate} from 'pinia'
 import axios from 'axios'
 import qs from "qs";
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+
+TimeAgo.addDefaultLocale(en)
 
 export const vaah = defineStore({
     id: 'vaah',
@@ -458,6 +462,18 @@ export const vaah = defineStore({
             }
 
             return value.toString();
+        },
+        //----------------------------------------------------------
+
+        //----------------------------------------------------------
+        ago: function (value) {
+            if(!value)
+            {
+                return null;
+            }
+
+            const timeAgo = new TimeAgo('en-US')
+            return timeAgo.format(new Date(value));
         },
         //----------------------------------------------------------
         //----------------------------------------------------------
