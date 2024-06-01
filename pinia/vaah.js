@@ -1,7 +1,6 @@
 import {defineStore, acceptHMRUpdate} from 'pinia'
 import axios from 'axios'
 import qs from "qs";
-import moment from 'moment-timezone';
 
 export const vaah = defineStore({
     id: 'vaah',
@@ -271,15 +270,6 @@ export const vaah = defineStore({
         clone: function (source)
         {
             return JSON.parse(JSON.stringify(source));
-        },
-        //----------------------------------------------------------
-        ago: function (value) {
-            if(!value)
-            {
-                return null;
-            }
-            let time = moment(value);
-            return time.from();
         },
         //----------------------------------------------------------
         cleanObject: function (obj)
