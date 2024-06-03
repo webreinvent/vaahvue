@@ -1,7 +1,10 @@
 import {defineStore, acceptHMRUpdate} from 'pinia'
 import axios from 'axios'
 import qs from "qs";
-import moment from 'moment-timezone';
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en'
+
+TimeAgo.addDefaultLocale(en)
 
 export const vaah = defineStore({
     id: 'vaah',
@@ -129,12 +132,16 @@ export const vaah = defineStore({
         //----------------------------------------------------------
         processResponse: function(response, show_success)
         {
-            if(
-                (response.data.failed || response.data.success === false)
-                && response.data.messages
-            )
+            if(response.data.failed
+                || response.data.success === false)
             {
-                this.toastErrors(response.data.messages);
+                if(response.data.messages){
+                    this.toastSuccess(response.data.messages);
+                }
+                if(response.data.errors){
+                    this.toastErrors(response.data.errors);
+                }
+
             }
 
             if(
@@ -212,6 +219,8 @@ export const vaah = defineStore({
         },
         //----------------------------------------------------------
         toastSuccess(messages){
+            this.toast.removeAllGroups();
+
             let data = this.getMessageAndDuration(messages);
             if(data && data.html !== "")
             {
@@ -225,6 +234,8 @@ export const vaah = defineStore({
 
         //----------------------------------------------------------
         toastErrors(messages){
+            this.toast.removeAllGroups();
+
             let data = this.getMessageAndDuration(messages);
             if(data && data.html !== "")
             {
@@ -264,61 +275,6 @@ export const vaah = defineStore({
         {
             return JSON.parse(JSON.stringify(source));
         },
-        //----------------------------------------------------------
-ago: function (value) {
-
-        if(!value)
-        {
-            return null;
-        }
-
-        const utcTime = moment.utc(value);
-
-        const clientTime = utcTime.local();
-
-        return clientTime.fromNow();
-    },
-    //---------------------------------------------------------------------
-    agoLocalTime: function (value) {
-
-        const utcTime = moment.utc(value);
-
-        const clientTime = utcTime.local();
-
-        return clientTime.fromNow();
-    },
-    //---------------------------------------------------------------------
-    localTimeShortFormat: function (value) {
-
-        const utcTime = moment.utc(value);
-
-        const date = utcTime.format('DD');
-        const dateYear = utcTime.format('YYYY');
-
-        const current = moment();
-
-        const currentDate = current.format('DD');
-        const currentYear = current.format('YYYY');
-
-        if(date === currentDate){
-            return utcTime.local().format('hh:mm A');
-        } else if(dateYear === currentYear){
-
-            return utcTime.local().format('MMM DD');
-        } else{
-            return utcTime.local().format('MMM DD YYYY');
-        }
-
-
-    },
-    //---------------------------------------------------------------------
-    localDateTime: function (value) {
-
-        const utcTime = moment.utc(value);
-
-        return utcTime.local().format('YYYY-MM-DD hh:mm A');
-
-    },
         //----------------------------------------------------------
         cleanObject: function (obj)
         {
@@ -466,6 +422,58 @@ ago: function (value) {
                 )
             })
             return capitalized.join(' ')
+        },
+        //----------------------------------------------------------
+        hasPermission: function (permissions, slug) {
+
+            if(!permissions)
+            {
+                return false;
+            }
+
+            if(permissions.length < 1)
+            {
+                return false;
+            }
+
+            return permissions.indexOf(slug) > -1 ? true : false;
+        },
+        //----------------------------------------------------------
+        existInArray: function(array, element) {
+            const index = array.indexOf(element);
+
+            if(index == -1)
+            {
+                return false;
+            } else
+            {
+                return true;
+            }
+        },
+        //----------------------------------------------------------
+        validateEmail(value) {
+            return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value);
+        },
+        //----------------------------------------------------------
+        convertToStr(value) {
+
+            if (!value) {
+                return  null
+            }
+
+            return value.toString();
+        },
+        //----------------------------------------------------------
+
+        //----------------------------------------------------------
+        ago: function (value) {
+            if(!value)
+            {
+                return null;
+            }
+
+            const timeAgo = new TimeAgo('en-US')
+            return timeAgo.format(new Date(value));
         },
         //----------------------------------------------------------
         //----------------------------------------------------------

@@ -6,6 +6,10 @@ const props = defineProps({
         type: String,
         default: null
     },
+    label_class: {
+        type: String,
+        default: ''
+    },
     label_width: {
         type: String,
         default: '150px'
@@ -28,10 +32,10 @@ const props = defineProps({
 </script>
 <template>
     <tr>
-        <td :style="{width: label_width}"><b>{{vaah().toLabel(label)}}</b></td>
+        <td :class="label_class" :style="{width: label_width}"><b>{{vaah().toLabel(label)}}</b></td>
         <template v-if="can_copy">
             <td v-html="value"></td>
-            <td style="width: 40px;">
+            <td>
                 <Button icon="pi pi-copy" @click="vaah().copy(value)" class=" p-button-text"></Button>
             </td>
         </template>
