@@ -477,20 +477,36 @@ export const vaah = defineStore({
         },
         //----------------------------------------------------------
 
-        convertUtcToLocal: function (utc) {
+        convertUtcToLocal: function (utc, format = 'Y-m-d') {
             let iso_string = utc.includes('T') ? utc : utc.replace(' ', 'T') + 'Z';
             const local_date = new Date(iso_string);
 
-            const day = local_date.getDate().toString().padStart(2, '0');
-            const month = local_date.toLocaleString('en-US', { month: 'long' });
+            const pad = (n) => n.toString().padStart(2, '0');
+            const day = pad(local_date.getDate());
+            const month = pad(local_date.getMonth() + 1);
+            const fullMonth = local_date.toLocaleString('en-US', { month: 'long' });
+            const shortMonth = local_date.toLocaleString('en-US', { month: 'short' });
             const year = local_date.getFullYear();
-            let hours = local_date.getHours();
-            const minutes = local_date.getMinutes().toString().padStart(2, '0');
-            const ampm = hours >= 12 ? 'PM' : 'AM';
-            hours = hours % 12 || 12;
+            let hours24 = local_date.getHours();
+            const minutes = pad(local_date.getMinutes());
+            const ampm = hours24 >= 12 ? 'PM' : 'AM';
+            const hours12 = hours24 % 12 || 12;
 
-            return`${day} ${month}, ${year} ${hours}:${minutes} ${ampm}`;
+            const replacements = {
+                'Y': year,
+                'm': month,
+                'd': day,
+                'H': pad(hours24),
+                'h': pad(hours12),
+                'i': minutes,
+                'A': ampm,
+                'M': shortMonth,
+                'F': fullMonth
+            };
+
+            return format.replace(/Y|m|d|H|h|i|A|M|F/g, (match) => replacements[match] || match);
         }
+
         //----------------------------------------------------------
         //----------------------------------------------------------
     }
