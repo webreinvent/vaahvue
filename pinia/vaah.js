@@ -477,36 +477,52 @@ export const vaah = defineStore({
         },
         //----------------------------------------------------------
 
-        convertUtcToLocal: function (utc, format = 'Y-m-d') {
+        convertUtcToLocal: function (utc, format) {
+            if (!utc) return '';
+
             let iso_string = utc.includes('T') ? utc : utc.replace(' ', 'T') + 'Z';
             const local_date = new Date(iso_string);
 
-            const pad = (n) => n.toString().padStart(2, '0');
-            const day = pad(local_date.getDate());
-            const month = pad(local_date.getMonth() + 1);
-            const fullMonth = local_date.toLocaleString('en-US', { month: 'long' });
-            const shortMonth = local_date.toLocaleString('en-US', { month: 'short' });
+            const day = local_date.getDate();
+            const month = local_date.getMonth() + 1;
             const year = local_date.getFullYear();
-            let hours24 = local_date.getHours();
-            const minutes = pad(local_date.getMinutes());
-            const ampm = hours24 >= 12 ? 'PM' : 'AM';
-            const hours12 = hours24 % 12 || 12;
+            let hours = local_date.getHours();
+            const minutes = local_date.getMinutes();
+            const seconds = local_date.getSeconds();
 
-            const replacements = {
-                'Y': year,
-                'm': month,
-                'd': day,
-                'H': pad(hours24),
-                'h': pad(hours12),
-                'i': minutes,
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const ampm_lower = ampm.toLowerCase();
+            const hour12 = hours % 12 || 12;
+
+            const month_name = local_date.toLocaleString('en-US', { month: 'long' });
+            const short_month_name = local_date.toLocaleString('en-US', { month: 'short' });
+
+            if(!format) return`${day} ${month_name}, ${year} ${hours}:${minutes} ${ampm}`;   // return default format if no format received
+
+            const map = {
+                'DD': day.toString().padStart(2, '0'),
+                'D': day.toString(),
+                'MM': month.toString().padStart(2, '0'),
+                'M': month.toString(),
+                'MMMM': month_name,
+                'MMM': short_month_name,
+                'YYYY': year.toString(),
+                'YY': year.toString().slice(-2),
+                'hh': hour12.toString().padStart(2, '0'),
+                'h': hour12.toString(),
+                'HH': hours.toString().padStart(2, '0'),
+                'H': hours.toString(),
+                'mm': minutes.toString().padStart(2, '0'),
+                'm': minutes.toString(),
+                'ss': seconds.toString().padStart(2, '0'),
+                's': seconds.toString(),
                 'A': ampm,
-                'M': shortMonth,
-                'F': fullMonth
+                'a': ampm_lower
             };
 
-            return format.replace(/Y|m|d|H|h|i|A|M|F/g, (match) => replacements[match] || match);
-        }
+            return format.replace(/DD|D|MM|M|MMMM|MMM|YYYY|YY|hh|h|HH|H|mm|m|ss|s|A|a/g, match => map[match]);
 
+        }
         //----------------------------------------------------------
         //----------------------------------------------------------
     }
