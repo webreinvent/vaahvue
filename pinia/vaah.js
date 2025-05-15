@@ -476,6 +476,21 @@ export const vaah = defineStore({
             return timeAgo.format(new Date(value));
         },
         //----------------------------------------------------------
+
+        convertUtcToLocal: function (utc) {
+            let iso_string = utc.includes('T') ? utc : utc.replace(' ', 'T') + 'Z';
+            const local_date = new Date(iso_string);
+
+            const day = local_date.getDate().toString().padStart(2, '0');
+            const month = local_date.toLocaleString('en-US', { month: 'long' });
+            const year = local_date.getFullYear();
+            let hours = local_date.getHours();
+            const minutes = local_date.getMinutes().toString().padStart(2, '0');
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            hours = hours % 12 || 12;
+
+            return`${day} ${month}, ${year} ${hours}:${minutes} ${ampm}`;
+        }
         //----------------------------------------------------------
         //----------------------------------------------------------
     }
